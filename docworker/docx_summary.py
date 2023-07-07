@@ -8,18 +8,6 @@ import openai
 
 from . import docx_util
 
-def start_doc_completion(session_file, session, prompt):
-  docx_util.start_docgen(session_file, session, prompt)  
-
-def run_doc_completion(session_file, session):
-  print("Running doc completion")
-  while  session.status.next_item()is not None:
-    item = session.get_item_by_id(session.status.next_item())
-    print("Processing: %s" % item.name())
-    docx_util.run_next_docgen(session_file, session)
-  print("Complete")  
-
-
 def run_docx_summary():
   parser = argparse.ArgumentParser(description='Completions for a docx file.')
   group = parser.add_mutually_exclusive_group(required=True)
@@ -133,10 +121,12 @@ def run_docx_summary():
       print("Start completion requires a prompt")
       return
     prompt = args.prompt
-    start_doc_completion(args.session_file, session, prompt)
+    docx_util.start_docgen(args.session_file, session, prompt)      
 
   if args.run_doc_completion:
-    run_doc_completion(args.session_file, session)
+    print("Running doc completion")
+    docx_util.run_all_docgen(args.session_file, session)
+    print("Complete")  
     
   if args.completion is not None:
     for name in args.completion:
@@ -153,15 +143,21 @@ def run_docx_summary():
       prompt_id = session.get_prompt_id(prompt)
       print("Running [%s] on %s" % (prompt, name))
 
-      (text,
-       token_count,
-       cost) = docx_util.run_completion(prompt, item.text())
-      
-      completion = session.add_new_completion(prompt_id, [ item.id() ],
-                                              text, token_count, cost)
-      docx_util.save_session(args.session_file, session)
-      print("Generated: %s" % completion.name())
-      print()
+      response_record = docx_util.run_completion(prompt, item.text(),
+                                                 max_tokens=-1)
+      docx_util.post_process_completion(response_record)
+      if response_record.text is not None:
+        completion = session.add_new_completion(
+          prompt_id, [ item.id() ],
+          response_record.text,
+          response_record.completion_tokens,
+          response_record.prompt_tokens + response_record.completion_tokens)
+        completion.set_final_result()        
+        docx_util.save_session(args.session_file, session)
+        print("Generated: %s" % completion.name())
+        print()
+      else:
+        print("Error running completion")
 
   if args.combined_completion is not None:
     input = []
@@ -178,20 +174,14 @@ def run_docx_summary():
       input.append(item.text())
       input_ids.append(item.id())      
 
-
     prompt = args.prompt
     prompt_id = session.get_prompt_id(prompt)
+
+    docx_util.start_docgen(args.session_file, session, prompt, input_ids)      
+    print("Running doc completion")
+    docx_util.run_all_docgen(args.session_file, session)
+    print("Complete")  
       
-    print("Running [%s] on [ %s ]" % (prompt,
-                                      ' '.join(args.combined_completion)))
-
-    text = '\n'.join(input)
-
-    (text, token_count, cost) = docx_util.run_completion(prompt, text)
-    completion = session.add_new_completion(prompt_id, input_ids,
-                               text, token_count, cost)
-    docx_util.save_session(args.session_file, session)      
-    print("Generated: %s" % completion.name())
 
   if args.export:
     token_count = 0
