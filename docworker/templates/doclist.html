@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block nav %}
+{% endblock %}
+{% block body%}
+  
+<div>
+    <h1>DocWorker</h1>
+    <i>A tool for applying GPT to documents.</i>
+    <p>
+      DocWorker uses OpenAI's GPT AI model to help summarize
+      and analyze DOCX (MS Word) documents. ChatGPT is effective at summarizing
+      and explaining text, but it is limited in the amount of text that
+      can be consumed and generally doesn't handle information contained in
+      tables well.
+    </p>
+    <p>
+      DocWorker does three key things to help run GPT on DOCX files:
+      <ul>
+	<li>
+	  Extract text from files in DOCX format, and splits
+	  the text up into blocks that can be consumed by GTP. As much as
+	  possible, the blocks are aligned  with the sections of the document.
+	</li>
+	<li>
+	  Run GTP operations on the individual parts to produce intermediate
+	  results, and further process intermediate results to (eventually)
+	  produce a final result.
+	</li>
+	<li>
+	  Makes all of the intermediate results available for reading, export,
+	  and further GPT operations.
+	</li>
+      </ul>
+      Use this page to load a DOCX file or open a previously loaded file
+      to run GPT functions on an MS Word document.
+    </p>
+    <p>
+      <u>Note:</u> The user interface is primitive an may be difficult to
+      understand. Be assured, it is the interface, not you. Good luck!
+    </p>
+
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class=flashes>
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}  
+
+    <h2>Available Files:</h2>
+    <div style="border-witdh:1px;border-style:solid;border-color:black;"> 
+      <ul>
+	{% for file in files %}
+	<li>
+	  <a href="{{ url_for('analysis.docview', doc=file) }}">
+	    {{ file }}
+	  </a>
+	</li>
+	{% endfor %}
+      </ul>
+    </div>
+  <h2>Upload File:</h2>
+  <div style="background:#d9e8f6;padding:5px;">
+    <form action="{{ url_for('analysis.upload')}}" enctype="multipart/form-data" method="post" id="form">
+      <p>	
+	<label for="prompt_menu">Document to upload:</label>
+	<input type="file" id="file" name="file"/>
+      </p>
+      <p>
+	<input type="submit" id="upload_button" value="Upload"/>
+      </p>
+  </form>
+  <div>
+    {% endblock %}
+    {% block script %}
+  function submit() {
+      var button = document.getElementById('upload_button');
+      button.disabled = true;
+      button.value = "Loading...";
+  }
+  var form = document.getElementById("form");
+  form.onsubmit = submit
+{% endblock %}
+
+
+  
+      

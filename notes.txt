@@ -1,0 +1,75 @@
+General Notes
+
+Production Notes:
+
+Buildand Install:
+git pull
+python3 -m build  --wheel
+result: dist/docworker-0.1.0-py3-none-any.whl
+pip uninstall docworker
+pip install docworker-0.1.0-py3-none-any.whl
+
+Initial Configuration:
+cp config.py ~/.local/var/docworker.analysis_app-instance/
+
+config.py:
+OPENAI_API_KEY = 'xx'
+SECRET_KEY = 'xx'
+PROXY_CONFIG=True
+
+
+Run a production server:
+waitress-serve --url-prefix docworker  --port 8082 --call docworker.analysis_app:create_app
+
+
+Configure Apache as a proxy server:
+
+/etc/apache2/sites-enabled/000-default-le-ssl.conf 
+    ProxyPass /docworker http://127.0.0.1:8082
+    ProxyPassReverse /docworker http://127.0.0.1:8082
+
+use --url-prefix instead of:
+    #RequestHeader set X-Forwarded-Prefix /docworker
+sudo service apache2 restart
+
+
+
+
+Configure as a system service
+
+cp docworker.service /lib/systemd/system
+sudo systemctl enable docworker
+
+sudo service docworker status
+sudo service docworker restart
+
+
+Command line:
+
+python3 -m docworker.add_user
+python3 -m unittest docworker/docx_util_test.py
+python3 -m docworker.docx_summary
+
+
+
+Run in debug mode
+flask --app "analysis_app:create_app(debug=True)" run --debug
+or
+flask --app "analysis_app:create_app(debug=True,fakeai=True)" run --debug
+
+
+Update sample docs:
+rm docworker/samples/*.daf
+
+python3 -m docworker.docx_summary --new docworker/samples/PA\ utility.docx docworker/samples/PA_utility.docx.daf 
+python3 -m docworker.docx_summary --new docworker/samples/PA\ Agenda.docx docworker/samples/PA_Agenda.docx.daf
+python3 -m docworker.docx_summary --new docworker/samples/'DRAFT SCAP Key Actions and Work Plan (February 2023).docx' docworker/samples/DRAFT_SCAP_Key_Actions_and_Work_Plan_February_2023.docx.daf
+python3 -m docworker.docx_summary --new docworker/samples/creative-llc-v-elenis.docx docworker/samples/creative-llc-v-elenis.docx.daf
+
+# Load and debug a session in Python: 
+from docworker import docx_util
+s = docx_util.load_session("instance/jwanderer/DRAFT_SCAP_Key_Actions_and_Work_Plan_February_2023.docx.daf")
+
+
+
+

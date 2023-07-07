@@ -1,0 +1,15 @@
+[Unit]
+Description=Doc Analysis Web Service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=ubuntu
+WorkingDirectory=/home/ubuntu
+Environment="PATH=/home/ubuntu/.local/bin:/bin:/usr/bin"
+ExecStart=/home/ubuntu/.local/bin/waitress-serve --url-prefix=docworker --port 8082 --call docworker.analysis_app:create_app
+
+[Install]
+WantedBy=multi-user.target

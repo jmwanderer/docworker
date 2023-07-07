@@ -1,0 +1,5 @@
+include docworker/static/*
+include docworker/templates/*
+include docworker/samples/*
+include docworker/docworker.service
+global-exclude *.pyc

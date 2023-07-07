@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block body%}
+
+  <h1>Export Text</h1>
+  <p>
+    The Export Text page provides the ability to download
+    the results of the GTP operations. For example, after extracting
+    the main ideas for key sections, you might download these for further
+    editing.
+  </p>
+  <p>
+    You can use controls to reorder and remove blocks from the content
+    that will be included in the download.
+  </p>
+  
+  <hr>
+
+  <p><form action="{{ url_for('analysis.export')}}" method="post">
+    <input type="submit" value="Export Text"
+	   {% if not items_state.selected() %}
+	   disabled
+	   {% endif %}
+	   />
+    <input type="hidden" id="doc" name="doc" value="{{ doc }}"/>
+    {% for item in items_state.selected_items %}
+    <input type="hidden" id="items" name="items"
+	   value="{{ item.name() }}">
+    {% endfor %}
+  </form></p>
+  
+  <p><form action="{{ url_for('analysis.sel_export') }}" method="get">
+    <input type="submit" value="Select Items">
+    <input type="hidden" id="doc" name="doc" value="{{ doc }}"/>    
+    {% for item in items_state.selected_items %}
+    <input type="hidden" id="items" name="items"
+	   value="{{ item.name() }}">
+    {% endfor %}
+  </form></p>
+
+  <p>Content:</p>
+  <div style="border-width:1px;border-style:solid;border-color:grey;">
+    {% if not items_state.selected() %}
+    <p>No text segments selected.</p>
+    {% endif %}
+    
+    <table>
+      {% for item in items_state.selected_items %}
+      <tr id="{{ items_state.sel_id(item) }}">
+	<td>
+	  <p style="line-height:1;margin-bottom:1px;">
+	    {% if item.is_doc_segment() %}
+	    Section
+	    {% endif %}
+	    {{ item.name() }}:
+	    {% if not item.is_doc_segment() %}
+	    [
+	    {{ item.prompt(session) }}
+	    ]
+	    {% endif %}
+	  </p>
+	</td>
+      </tr>
+      <tr>
+	<td>
+	  <pre style="line-height:1.5;background:{{ session.item_color(item) }};white-space:pre-wrap;overflow-x:auto;padding:1em;margin:0;font-family:PT Mono;">{{ item.text() | e}}</pre>
+	</td>
+	<td style="vertical-align: top;">
+	  <a href="{{ url_for('analysis.export', doc=doc,  
+		   items=items_state.del_selected(item),
+		   open=items_state.open_names(), focus='prompt') }}">
+	    <img src="{{ url_for('static', filename='close-icon.png') }}"></img>
+	  </a>
+	</td>
+	<td style="vertical-align: top;">
+	  <a href="{{ url_for('analysis.export', doc=doc,  
+		   items=items_state.move_selected(item, -1),
+		   open=items_state.open_names(), focus=items_state.sel_id(item)) }}">
+	    <img src="{{ url_for('static', filename='up-arrow.png') }}"></img>
+	  </a>
+	</td>	  
+	<td style="vertical-align: top;">
+	  <a href="{{ url_for('analysis.export', doc=doc,  
+		   items=items_state.move_selected(item, 1),
+		   open=items_state.open_names(), focus=items_state.sel_id(item)) }}">
+	    <img src="{{ url_for('static', filename='down-arrow.png') }}"></img>
+	  </a>
+	</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+  <p></p>
+  Credits: <a href="https://www.flaticon.com/free-icons/down-arrow" title="down arrow icons">Down arrow icons created by Freepik - Flaticon</a>
+{% endblock %}
+{% block script %}
+  var focus_item = "{{ items_state.focus_item }}"
+  var element = document.getElementById(focus_item);
+  if (element) { element.scrollIntoView({ block: "nearest"}); }
+{% endblock %}
+

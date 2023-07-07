@@ -1,0 +1,16 @@
+[project]
+name = "docworker"
+version = "0.1.0"
+description = "DocWorker GTP Doc Analysis tool"
+authors = [
+  { name = "Jim Wanderer", email = "jmwanderer@gmail.com" },
+]
+dependencies = [
+  "flask",
+  "openai"
+]
+
+[build-system]
+requires = ["setuptools>61.0"]
+build-backend = "setuptools.build_meta"
+
