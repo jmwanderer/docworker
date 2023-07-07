@@ -1,6 +1,12 @@
+"""
+Utilitiy functions for supporting generating web pages
+"""
+
 import os
 import os.path
 from flask import current_app
+
+
 
 class ItemsState:
   """
