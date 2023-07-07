@@ -22,7 +22,7 @@ import openai
 
 def create_app(test_config=None,debug=False,fakeai=False):
   BASE_DIR = os.getcwd()
-  log_file_name = os.path.join(BASE_DIR, 'analysis.log.txt')
+  log_file_name = os.path.join(BASE_DIR, 'docworker.log.txt')
   FORMAT = '%(asctime)s:%(levelname)s:%(name)s:%(message)s'
   app = Flask(__name__, instance_relative_config=True)
   app.config.from_mapping(
