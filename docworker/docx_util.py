@@ -588,7 +588,7 @@ def build_prompt(prompt):
   Extend the given prompt to something that is effective for 
   GPT completions.
   """
-  return  "You will be provided with text delimited by triple quotes. Using this text, " + prompt
+  return  "You will be provided with text delimited by triple quotes. Using all of the text, " + prompt
 
   
 FAKE_AI_COMPLETION=False
@@ -622,10 +622,13 @@ def run_completion(prompt, text, max_tokens, status_cb=None):
   completion_cost = 0
   prompt_tokens = len(tokenizer.encode(prompt))
   text_tokens = len(tokenizer.encode(text))
-  if max_tokens == -1:
-    max_tokens = (section_util.AI_MODEL_SIZE -
+
+  # Enusre the total request is less than the max
+  limit_tokens =  (section_util.AI_MODEL_SIZE -
                   prompt_tokens - text_tokens - 50)
-  max_tokens = min(max_tokens, text_tokens - 1)
+  if max_tokens == -1 or max_tokens > limit_tokens:
+    max_tokens = limit_tokens
+
   logging.info("prompt tokens: %d, text tokens: %d, max_tokens: %d" %
                (prompt_tokens, text_tokens, max_tokens))
 
@@ -688,6 +691,9 @@ def post_process_completion(response_record):
 
     
 def start_docgen(file_path, session, prompt, item_ids=None):
+  """
+  Setup state for a docgen run.
+  """
   if not item_ids:
     # Run on all doc segments by default.
     item_ids = []
@@ -707,14 +713,18 @@ def run_all_docgen(file_path, session):
     # loop to consume all run items
     while session.status.next_item() is not None:
       if session.status.skip_remaining_gen():
+        # Skip procesing an already processed item
         id = session.status.pop_item()
-        logging.debug("skip unnecessary docgen: %d", id)        
+        logging.debug("skip unnecessary docgen: %d", id)
+        # Add directly to results list for further processing
         session.status.note_step_complete(id)
       else:
         logging.debug("loop for running docgen")
         run_next_docgen(file_path, session)
         save_session(file_path, session)
 
+    # Done with the to_run queue, check if we process the
+    # set of generated results.
     if not session.status.next_result_set():
       # Complete - mark final result and save
       logging.debug("doc gen complete")      
