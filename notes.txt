@@ -2,7 +2,8 @@ General Notes
 
 Production Notes:
 
-Buildand Install:
+Build and Install docworker package:
+
 git pull
 python3 -m build  --wheel
 result: dist/docworker-0.1.0-py3-none-any.whl
@@ -16,6 +17,13 @@ config.py:
 OPENAI_API_KEY = 'xx'
 SECRET_KEY = 'xx'
 PROXY_CONFIG=True
+
+Using venv:
+mkdir project
+cd project
+python3 -m venv .venv
+. ./venv/bin/activate
+`pip install -r docworker/requirements.txt`
 
 
 Run a production server:
@@ -31,7 +39,6 @@ Configure Apache as a proxy server:
 use --url-prefix instead of:
     #RequestHeader set X-Forwarded-Prefix /docworker
 sudo service apache2 restart
-
 
 
 
@@ -51,7 +58,6 @@ python3 -m unittest docworker/docx_util_test.py
 python3 -m docworker.docx_summary
 
 
-
 Run in debug mode
 flask --app "analysis_app:create_app(debug=True)" run --debug
 or
@@ -68,7 +74,7 @@ python3 -m docworker.docx_summary --new docworker/samples/creative-llc-v-elenis.
 
 # Load and debug a session in Python: 
 from docworker import docx_util
-s = docx_util.load_session("instance/jwanderer/DRAFT_SCAP_Key_Actions_and_Work_Plan_February_2023.docx.daf")
+s = docx_util.load_session("instance/username/DRAFT_SCAP_Key_Actions_and_Work_Plan_February_2023.docx.daf")
 
 
 
