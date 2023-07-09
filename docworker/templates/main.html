@@ -44,14 +44,14 @@ ToDo:
 	      Upload a file.
 	      {% else %}
 	      <a href="{{ url_for('analysis.docview', doc=doc) }}">
-		{{ doc_name }}
+		{{ session.name }}
 	      </a>
 	      {% endif %}
 	    </div>
 	    <form action="{{ url_for('analysis.main')}}"
 		  enctype="multipart/form-data" method="post" id="form">
 	      <p>	
-		<label for="prompt_menu">Document to upload:</label>
+		<label for="upload">Document to upload:</label>
 		<input type="file" id="file" name="file"/>
 	      </p>
 	      <p>
@@ -64,12 +64,15 @@ ToDo:
 	  <div>
 	    <form action="{{ url_for('analysis.main')}}"
 		  method="post" id="form">
-	      <label for="prompt_menu" style="vertical-align:top;">Prompt:</label>
+	      <p>
+		<label for="prompt_menu" style="vertical-align:top;">Prompt:</label>
+	      </p>
 	      <select name="prompt_manu" id="prompt_menu"
 		      style="vertical-align:top;" onchange="prompt_change()">
 		<option value=""></option>	
-		<option value="Summarize">Summarize</option>
-		<option value="Explain">Explain</option>	
+		{% for prompt in prompts %}
+		<option value="{{ prompt[1] }}">{{ prompt[0] }}</option>
+		{% endfor %}
 	      </select>
 	      <textarea id="prompt" name="prompt" rows="3" cols="70"></textarea>
 	      <input id="run" name="run" type="submit" value="Run Prompt"

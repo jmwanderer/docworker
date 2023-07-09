@@ -189,8 +189,8 @@ def main():
       doc = doc_id
                     
     return render_template("main.html",
-                           doc_name=doc_name,
                            doc=doc,
+                           prompts=docx_util.INITIAL_PROMPTS,
                            session=session)
 
   else:
