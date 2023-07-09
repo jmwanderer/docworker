@@ -3,8 +3,7 @@
 Single pane application page.
 ToDo:
 - populate prompt
-- details link - open segview
-- doc details link - open doc view
+- add a doc icon for loaded doc
 - documents link and page - select a prev upload doc
 - add run id and only show current run
 - history link and page - list and select previous runs
@@ -44,7 +43,9 @@ ToDo:
 	      {% if doc is none %}
 	      Upload a file.
 	      {% else %}
-	      {{ doc_name }}
+	      <a href="{{ url_for('analysis.docview', doc=doc) }}">
+		{{ doc_name }}
+	      </a>
 	      {% endif %}
 	    </div>
 	    <form action="{{ url_for('analysis.main')}}"
@@ -120,7 +121,12 @@ ToDo:
 	    </form>
 	  </p>
 	  <p>
-	    <button>Details</button>
+	    <form action="{{ url_for('analysis.segview')}}" method="get">
+	      <input type="submit" value="Details"/>
+	      <input type="hidden" id="doc" name="doc" value="{{ doc }}"/>
+	      <input type="hidden" id="item" name="item"
+		     value="{{ session.get_result_item().name() }}">
+	    </form>
 	  </p>
 	</td>
       </tr>
