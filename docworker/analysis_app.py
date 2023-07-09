@@ -1,6 +1,7 @@
 import os
 import os.path
 import io
+import time
 import functools
 from threading import Thread
 import flask
@@ -18,9 +19,11 @@ from . import docx_summary
 from . import docx_util
 from . import analysis_util
 import openai
+import sqlite3
+import click
 
 
-def create_app(test_config=None,debug=False,fakeai=False):
+def create_app(test_config=None,fakeai=False):
   BASE_DIR = os.getcwd()
   log_file_name = os.path.join(BASE_DIR, 'docworker.log.txt')
   FORMAT = '%(asctime)s:%(levelname)s:%(name)s:%(message)s'
@@ -29,13 +32,14 @@ def create_app(test_config=None,debug=False,fakeai=False):
     SECRET_KEY='DEV',
     OPENAI_API_KEY = os.getenv('OPENAI_API_KEY'),
     MAX_CONTENT_LENGTH = 16 * 1000 * 1000,
+    DATABASE=os.path.join(app.instance_path, 'docworker.sqlite'),    
   )
   if test_config is None:
     app.config.from_pyfile('config.py', silent=True)
   else:
     app.config.from_mapping(test_config)
 
-  if not debug:
+  if not app.debug:
     # Configure logging
     logging.basicConfig(filename=log_file_name,
                         level=logging.INFO,
@@ -66,15 +70,70 @@ def create_app(test_config=None,debug=False,fakeai=False):
     logging.exception("Internal error")
     return e
 
+  app.teardown_appcontext(close_db)
+
   @app.route('/favicon.ico')
   def favicon():
     return redirect(url_for('static', filename='favicon.ico'))
 
   return app
 
+def get_db():
+  if 'db' not in g:
+    g.db = sqlite3.connect(
+      current_app.config['DATABASE'],
+      detect_types=sqlite3.PARSE_DECLTYPES)
+    g.db.row_factory = sqlite3.Row
+
+  return g.db
+
+def close_db(e=None):
+  db = g.pop('db', None)
+  if db is not None:
+    db.close()
+
+def init_db():
+  db = get_db()
+  with current_app.open_resource('schema.sql') as f:
+    db.executescript(f.read().decode('utf8'))
 
 
-bp = Blueprint('analysis', __name__)
+bp = Blueprint('analysis', __name__, cli_group=None)
+    
+@bp.cli.command('init-db')
+def init_db_command():
+  """Drop and recreate tables."""
+  init_db()
+  click.echo('Initialized database.')
+
+@bp.cli.command('set-user')
+@click.argument('name')
+@click.argument('limit', default=100000)
+def set_user_command(name, limit):
+  """Create or update a user."""
+  db = get_db()
+  (count,) = db.execute("SELECT COUNT(*) FROM user WHERE username = ?",
+                     (name,)).fetchone()
+  print("count %d" % count)
+  if count == 0:
+    print("add user")
+    db.execute("INSERT INTO user (username, limit_tokens) VALUES (?,?)",
+               (name, limit))
+  else:
+    db.execute("UPDATE user SET limit_tokens = ? WHERE username = ?",
+               (limit,name))
+  db.commit()
+  click.echo('Configured user.')
+
+@bp.cli.command('list-users')
+def list_command():
+  """List the users in the DB."""
+  db = get_db()  
+  q = db.execute("SELECT username, consumed_tokens, limit_tokens, datetime(last_access, 'unixepoch') FROM user")
+  for (user, consumed, limit, last_access) in q.fetchall():
+    print("user: %s, limit: %d, consumed %d, last access: %s" %
+          (user, limit, consumed, last_access))
+    
 
 @bp.before_app_request
 def load_logged_in_user():
@@ -456,3 +515,7 @@ def sel_gen():
     return redirect(url_for('analysis.docview', doc=doc))      
   
 
+if __name__ == "__main__":
+  app = create_app()
+  app.run(debug=True)
+  
