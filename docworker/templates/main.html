@@ -2,10 +2,8 @@
 {#
 Single pane application page.
 ToDo:
-- populate prompt
 - add a doc icon for loaded doc
 - documents link and page - select a prev upload doc
-- add run id and only show current run
 - history link and page - list and select previous runs
   - ideally log these in an sql table
   - open up a run id in main.html
@@ -43,9 +41,15 @@ ToDo:
 	      {% if doc is none %}
 	      Upload a file.
 	      {% else %}
-	      <a href="{{ url_for('analysis.docview', doc=doc) }}">
-		{{ session.name }}
-	      </a>
+	      <div>
+		<img class="center" src="{{ url_for('static', filename='document.png') }}"
+		     </img>
+	      </div>
+	      <div style="text-align:center;">
+		<a  href="{{ url_for('analysis.docview', doc=doc) }}">
+		  {{ session.name }}
+		</a>
+	      </div>
 	      {% endif %}
 	    </div>
 	    <form action="{{ url_for('analysis.main')}}"
@@ -138,8 +142,9 @@ ToDo:
     </table>
     {% endif %}
     {% endif %}        
-    
+    <a href="https://www.flaticon.com/free-icons/paper" title="paper icons">Paper icons created by Chanut - Flaticon</a>  
     {% endblock %}
+    
     {% block script %}
     function submit() {
       var button = document.getElementById('upload');
@@ -160,7 +165,4 @@ ToDo:
       navigator.clipboard.writeText(copyText.innerText);
     }
 {% endblock %}
-
-
-  
       
