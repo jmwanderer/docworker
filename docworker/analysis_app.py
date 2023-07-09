@@ -203,7 +203,6 @@ def main():
     if request.form.get('upload'):
       if ('file' not in request.files or
           request.files['file'].filename == ''):
-        flask.flash("No file selected.")
         return redirect(url_for('analysis.main'))
 
       file = request.files['file']

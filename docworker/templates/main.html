@@ -2,7 +2,6 @@
 {#
 Single pane application page.
 ToDo:
-- add a doc icon for loaded doc
 - documents link and page - select a prev upload doc
 - history link and page - list and select previous runs
   - ideally log these in an sql table
@@ -38,30 +37,29 @@ ToDo:
 	<td>
 	  <div style="background:#d9e8f6;padding:5px;">
 	    <div>
-	      {% if doc is none %}
-	      Upload a file.
-	      {% else %}
-	      <div>
-		<img class="center" src="{{ url_for('static', filename='document.png') }}"
-		     </img>
-	      </div>
-	      <div style="text-align:center;">
-		<a  href="{{ url_for('analysis.docview', doc=doc) }}">
-		  {{ session.name }}
-		</a>
-	      </div>
-	      {% endif %}
+	      <img class="center" src="{{ url_for('static', filename='document.png') }}"
+		   </img>
 	    </div>
-	    <form action="{{ url_for('analysis.main')}}"
-		  enctype="multipart/form-data" method="post" id="form">
-	      <p>	
-		<label for="upload">Document to upload:</label>
-		<input type="file" id="file" name="file"/>
-	      </p>
-	      <p>
-		<input type="submit" name="upload" id="upload" value="Upload"/>
-	      </p>
-	    </form>
+	    <div style="text-align:center;">	      
+	      {% if doc is none %}
+	      None
+	      {% else %}
+	      <a  href="{{ url_for('analysis.docview', doc=doc) }}">
+		{{ session.name }}
+	      </a>
+	      {% endif %}
+	      <p></p>
+	      <form action="{{ url_for('analysis.main')}}"
+		    enctype="multipart/form-data" method="post" id="form">
+		<div>
+		  <label for="file">Choose a file:</label>
+		  <input type="file" id="file" name="file" class="inputfile"/>
+		</div>
+		<div>
+		  <input type="submit" name="upload" id="upload" value="Upload"/>
+		</div>
+	      </form>
+	    </div>
 	  </div>
 	</td>
 	<td>
