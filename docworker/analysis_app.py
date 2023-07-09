@@ -316,10 +316,10 @@ def segview():
 
   item_name = request.args.get("item")
   if item_name is None:
-    return redirect(url_for('analysis.docview'), doc=doc)
+    return redirect(url_for('analysis.docview', doc=doc))
   item = session.get_item_by_name(item_name)
   if item is None:
-    return redirect(url_for('analysis.docview'), doc=doc)
+    return redirect(url_for('analysis.docview', doc=doc))
   
   # Source items for a completion (returns empty for docseg)
   (depth, item_list) = session.get_completion_family(item.id())
