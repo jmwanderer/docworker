@@ -135,6 +135,26 @@ def list_command():
           (user, limit, consumed, last_access))
     
 
+def get_doc_file_path(doc_name):
+  file_name = doc_name + '.daf'
+  return os.path.join(current_app.instance_path, g.user, file_name)
+  
+def get_session(doc_name):
+  """
+  Load a session for the given doc name.
+  If the name is None, or the session can not be loaded, return None
+  """
+  if doc_name is None:
+    return None
+  
+  file_path = get_doc_file_path(doc_name)
+  if not os.path.exists(file_path):
+    return None
+  
+  session = docx_util.load_session(file_path)
+  return session
+
+    
 @bp.before_app_request
 def load_logged_in_user():
   user_key = session.get('user_key')
@@ -152,6 +172,68 @@ def login_required(view):
       return redirect(url_for('static', filename='noauth.html'))
     return view(**kwargs)
   return wrapped_view
+
+
+@bp.route("/main", methods=("GET","POST"))
+@login_required
+def main():
+  doc = None
+  doc_name = None
+  print("main")
+  if request.method == "GET":  
+    doc_id = request.args.get('doc')  
+    session = get_session(doc_id)
+    if session is not None:
+      doc_name=escape(os.path.basename(session.name))
+      doc_name=session.name      
+      doc = doc_id
+                    
+    return render_template("main.html",
+                           doc_name=doc_name,
+                           doc=doc,
+                           session=session)
+
+  else:
+    doc_id = request.form.get('doc')
+    
+    if request.form.get('upload'):
+      if ('file' not in request.files or
+          request.files['file'].filename == ''):
+        flask.flash("No file selected.")
+        return redirect(url_for('analysis.main'))
+
+      file = request.files['file']
+      filename = werkzeug.utils.secure_filename(file.filename)
+      user_dir = os.path.join(current_app.instance_path, g.user)
+
+      doc = None
+      try:    
+        doc = docx_util.find_or_create_doc(user_dir, filename, file)
+      except Exception as err:
+        flask.flash("Error loading file. (Internal error: %s)" % str(err))      
+        flask.flash("Upload a DOCX file.")      
+
+      return redirect(url_for('analysis.main', doc=doc))
+
+    elif request.form.get('run'):
+      prompt = request.form['prompt'].strip()      
+      session = get_session(doc_id)
+      if (session is None or session.status.is_running() or
+          prompt is None or len(prompt) == 0):
+        return redirect(url_for('analysis.main'))
+      
+      print("start run prompt")
+      file_path = get_doc_file_path(doc_id)
+      docx_util.start_docgen(file_path, session, prompt)
+      t = Thread(target=docx_util.run_all_docgen,
+                 args=[file_path, session])
+      t.start()
+      return redirect(url_for('analysis.main', doc=doc_id))
+
+    else:
+      return redirect(url_for('analysis.main', doc=doc_id))
+  
+
 
 @bp.route("/", methods=("GET",))
 def doclist():
@@ -206,25 +288,6 @@ def upload():
     flask.flash("Upload a DOCX file.")      
 
   return redirect(url_for('analysis.doclist'))
-
-def get_doc_file_path(doc_name):
-  file_name = doc_name + '.daf'
-  return os.path.join(current_app.instance_path, g.user, file_name)
-  
-def get_session(doc_name):
-  """
-  Load a session for the given doc name.
-  If the name is None, or the session can not be loaded, return None
-  """
-  if doc_name is None:
-    return None
-  
-  file_path = get_doc_file_path(doc_name)
-  if not os.path.exists(file_path):
-    return None
-  
-  session = docx_util.load_session(file_path)
-  return session
 
     
 @bp.route("/docview", methods=("GET",))

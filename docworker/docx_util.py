@@ -583,6 +583,26 @@ def save_session(file_name, session):
   f.close()
   os.replace(file_name + '.tmp', file_name)
 
+
+def find_or_create_doc(user_dir, filename, file):
+  """
+  Returns a doc name or None
+
+  Given a file and filename, find an existing matching file or
+  create a new file. 
+  """
+
+  # treat same name as matching for now
+  # TODO: use hash and equality
+  file_path = os.path.join(user_dir, filename + ".daf")
+  if not os.path.exists(file_path):
+    session = Session()    
+    session.load_doc(filename, file)
+    save_session(file_path, session)
+  return filename
+
+
+
 def build_prompt(prompt):
   """
   Extend the given prompt to something that is effective for 

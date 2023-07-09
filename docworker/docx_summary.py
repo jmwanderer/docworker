@@ -46,7 +46,7 @@ def run_docx_summary():
     file_name = args.new
     file = open(file_name, 'rb')
     print("loading file %s..." % file_name)
-    session.load_doc(file_name, file)
+    session.load_doc(os.path.basename(file_name), file)
     file.close()
     docx_util.save_session(args.session_file, session)
     print("Complete")    

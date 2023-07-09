@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{#
+Single pane application page.
+ToDo:
+- populate prompt
+- details link - open segview
+- doc details link - open doc view
+- documents link and page - select a prev upload doc
+- add run id and only show current run
+- history link and page - list and select previous runs
+  - ideally log these in an sql table
+  - open up a run id in main.html
+#}
+{%block head %}
+{% if not session is none and session.status.is_running() %}
+<meta http-equiv="refresh" content="5;URL={{ url_for('analysis.main', doc=doc) }}">
+{% endif %}
+{% endblock %}
+
+
+{% block nav %}
+{% endblock %}
+{% block body%}
+  
+<div>
+    <h1>DocWorker</h1>
+    <i>A tool for applying GPT to documents.</i>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class=flashes>
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}  
+
+    <table>
+      <tr>
+	<td>
+	  <div style="background:#d9e8f6;padding:5px;">
+	    <div>
+	      {% if doc is none %}
+	      Upload a file.
+	      {% else %}
+	      {{ doc_name }}
+	      {% endif %}
+	    </div>
+	    <form action="{{ url_for('analysis.main')}}"
+		  enctype="multipart/form-data" method="post" id="form">
+	      <p>	
+		<label for="prompt_menu">Document to upload:</label>
+		<input type="file" id="file" name="file"/>
+	      </p>
+	      <p>
+		<input type="submit" name="upload" id="upload" value="Upload"/>
+	      </p>
+	    </form>
+	  </div>
+	</td>
+	<td>
+	  <div>
+	    <form action="{{ url_for('analysis.main')}}"
+		  method="post" id="form">
+	      <label for="prompt_menu" style="vertical-align:top;">Prompt:</label>
+	      <select name="prompt_manu" id="prompt_menu"
+		      style="vertical-align:top;" onchange="prompt_change()">
+		<option value=""></option>	
+		<option value="Summarize">Summarize</option>
+		<option value="Explain">Explain</option>	
+	      </select>
+	      <textarea id="prompt" name="prompt" rows="3" cols="70"></textarea>
+	      <input id="run" name="run" type="submit" value="Run Prompt"
+		     style="vertical-align:top;"/>
+	      <input type="hidden" id="doc" name="doc" value="{{ doc }}"/>     
+	    </form>
+          </div>
+	</td>
+      </tr>
+    </table>
+
+    {% if not session is none %}
+    {% if session.get_result_item() or session.status.is_running() %}    
+    <div style="border-width:1px;border-style:solid;border-color:grey;">
+      <p>State:
+	{% if session.status.is_running() %}
+	Process Running....
+	{% else %}
+	Complete
+	{% endif %}
+      </p>
+      <p>Steps: {{ session.status.complete_steps }} completions run.	
+      </p>
+      <p> {{ session.status.status_message }} </p>      
+    </div>
+    {% endif %}
+    {% endif %}    
+
+    {% if not session is none %}
+    {% if session.get_result_item() %}        
+    <h2>Result:</h2>
+    <table>
+      <tr>
+	<td>
+    <div style="border-width:1px;border-style:solid;border-color:grey;">
+      <pre id="result" style="line-height:1.5;background:{{ session.item_color(session.get_result_item()) }};white-space:pre-wrap;overflow-x:auto;padding:1em;margin:0;font-family:PT Mono;">{{ session.get_result_item().text() | e }}</pre>
+    </div>
+	</td>
+	<td style="vertical-align:top;">
+	  <p>
+	    <button onclick="copyResults()">Copy Results</button>
+	  </p>
+	  <p>
+	    <form action="{{ url_for('analysis.export')}}" method="post">
+	      <input type="submit" value="Download"/>
+	      <input type="hidden" id="doc" name="doc" value="{{ doc }}"/>
+	      <input type="hidden" id="items" name="items"
+		     value="{{ session.get_result_item().name() }}">
+	    </form>
+	  </p>
+	  <p>
+	    <button>Details</button>
+	  </p>
+	</td>
+      </tr>
+    </table>
+    {% endif %}
+    {% endif %}        
+    
+    {% endblock %}
+    {% block script %}
+    function submit() {
+      var button = document.getElementById('upload');
+      button.value = "Loading...";
+    }
+
+    function prompt_change() {
+      var menu = document.getElementById('prompt_menu');
+      var text = document.getElementById('prompt');
+      var val = menu.options[menu.selectedIndex].value;
+      text.value = val;
+    }
+    var form = document.getElementById("form");
+    form.onsubmit = submit
+
+    function copyResults() {
+      var copyText = document.getElementById("result");
+      navigator.clipboard.writeText(copyText.innerText);
+    }
+{% endblock %}
+
+
+  
+      
