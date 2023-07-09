@@ -335,23 +335,33 @@ def segview():
     item_list.pop(0)
 
   # Generate next and prev items
+  top_name = request.args.get("top")
+  print("top name %s" % top_name)
   next_item = None
   prev_item = None
-  ordered_items = session.get_ordered_items()
+  ordered_list = []
+  
+  if top_name is not None:
+    top_item = session.get_item_by_name(top_name)
+    if top_item is not None:
+      (x, list) = session.get_completion_family(top_item.id())
+      ordered_items = [ x[1] for x in list ]
+  elif item.is_doc_segment():
+    ordered_items = session.doc_segments
+      
   if item in ordered_items:
     item_index = ordered_items.index(item)
     if item_index > 0:
       prev_item = ordered_items[item_index - 1]
     if item_index < len(ordered_items) - 1:
       next_item = ordered_items[item_index + 1]
-  else:
-    logging.error("problem with ordered list gen for item %s" % item.name)
   
   return render_template("segview.html",
                          doc_name=escape(os.path.basename(session.name)),
                          doc=doc,
                          depth=depth,
                          source_list=item_list,
+                         top=top_name,
                          item=item, prev_item=prev_item, next_item=next_item,
                          session=session)
 

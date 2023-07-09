@@ -34,7 +34,7 @@
   <h2>Result:</h2>
   <div style="border-width:1px;border-style:solid;border-color:grey;">  
     {% if session.get_result_item() %}
-    <a href="{{ url_for('analysis.segview', doc=doc, item=session.get_result_item().name()) }}">    
+    <a href="{{ url_for('analysis.segview', doc=doc, top=session.get_result_item().name(), item=session.get_result_item().name()) }}">    
       {{ session.get_result_item().name() }}:
     </a>
     [ {{ session.get_result_item().prompt_name(session) }} ]
@@ -50,7 +50,7 @@
       {% for item in session.get_gen_items() %}
       <tr id="{{ item.name() }}">
 	<td style="vertical-align: top;" NOWRAP>
-	  <a href="{{ url_for('analysis.segview', doc=doc, item=item.name()) }}">
+	  <a href="{{ url_for('analysis.segview', doc=doc, top=session.get_result_item().name(), item=item.name()) }}">
 	    {{ item.name() }}
 	    </a>
 	</td>

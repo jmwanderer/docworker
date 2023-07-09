@@ -11,7 +11,7 @@
     <div style="width: 50%;float:left;">
       {% if not prev_item is none %}
       <a
-	href="{{ url_for('analysis.segview', doc=doc, item=prev_item.name()) }}">
+	href="{{ url_for('analysis.segview', doc=doc, top=top, item=prev_item.name()) }}">
 	{{ prev_item.name() }}
       </a>
       {% endif %}
@@ -20,7 +20,7 @@
     <div style="width: 50%;float:right;text-align:right;">
       {% if not next_item is none %}
       <a
-	href="{{ url_for('analysis.segview', doc=doc, item=next_item.name()) }}">
+	href="{{ url_for('analysis.segview', doc=doc, top=top, item=next_item.name()) }}">
 	{{ next_item.name() }}
       </a>
       {% endif %}
@@ -68,7 +68,7 @@
 	{% if item.is_doc_segment() %}
 	Section
 	{% endif %}
-	<a href="{{ url_for('analysis.segview', doc=doc, item=item.name()) }}">
+	<a href="{{ url_for('analysis.segview', doc=doc, top=top, item=item.name()) }}">
 	  {{ item.name() }}:	    
 	</a>
 	  
