@@ -12,7 +12,7 @@ ToDo:
 #}
 {%block head %}
 {% if not session is none and session.status.is_running() %}
-<meta http-equiv="refresh" content="5;URL={{ url_for('analysis.main', doc=doc) }}">
+<meta http-equiv="refresh" content="5;URL={{ url_for('analysis.main', doc=doc, run_id=run_id) }}">
 {% endif %}
 {% endblock %}
 
@@ -85,7 +85,7 @@ ToDo:
     </table>
 
     {% if not session is none %}
-    {% if session.get_result_item() or session.status.is_running() %}    
+    {% if session.get_result_item(run_id) or session.status.is_running() %}    
     <div style="border-width:1px;border-style:solid;border-color:grey;">
       <p>State:
 	{% if session.status.is_running() %}
@@ -102,13 +102,13 @@ ToDo:
     {% endif %}    
 
     {% if not session is none %}
-    {% if session.get_result_item() %}        
+    {% if session.get_result_item(run_id) %}        
     <h2>Result:</h2>
     <table>
       <tr>
 	<td>
     <div style="border-width:1px;border-style:solid;border-color:grey;">
-      <pre id="result" style="line-height:1.5;background:{{ session.item_color(session.get_result_item()) }};white-space:pre-wrap;overflow-x:auto;padding:1em;margin:0;font-family:PT Mono;">{{ session.get_result_item().text() | e }}</pre>
+      <pre id="result" style="line-height:1.5;background:{{ session.item_color(session.get_result_item(run_id)) }};white-space:pre-wrap;overflow-x:auto;padding:1em;margin:0;font-family:PT Mono;">{{ session.get_result_item(run_id).text() | e }}</pre>
     </div>
 	</td>
 	<td style="vertical-align:top;">
@@ -120,7 +120,7 @@ ToDo:
 	      <input type="submit" value="Download"/>
 	      <input type="hidden" id="doc" name="doc" value="{{ doc }}"/>
 	      <input type="hidden" id="items" name="items"
-		     value="{{ session.get_result_item().name() }}">
+		     value="{{ session.get_result_item(run_id).name() }}">
 	    </form>
 	  </p>
 	  <p>
@@ -128,7 +128,7 @@ ToDo:
 	      <input type="submit" value="Details"/>
 	      <input type="hidden" id="doc" name="doc" value="{{ doc }}"/>
 	      <input type="hidden" id="item" name="item"
-		     value="{{ session.get_result_item().name() }}">
+		     value="{{ session.get_result_item(run_id).name() }}">
 	    </form>
 	  </p>
 	</td>

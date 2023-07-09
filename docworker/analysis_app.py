@@ -181,7 +181,10 @@ def main():
   doc_name = None
   print("main")
   if request.method == "GET":  
-    doc_id = request.args.get('doc')  
+    doc_id = request.args.get('doc')
+    run_id = request.args.get('run_id')
+    if run_id != None:
+      run_id = int(run_id)
     session = get_session(doc_id)
     if session is not None:
       doc_name=escape(os.path.basename(session.name))
@@ -190,11 +193,15 @@ def main():
                     
     return render_template("main.html",
                            doc=doc,
+                           run_id=run_id,
                            prompts=docx_util.INITIAL_PROMPTS,
                            session=session)
 
   else:
     doc_id = request.form.get('doc')
+    run_id = request.form.get('run_id')    
+    if run_id != None:
+      run_id = int(run_id)
     
     if request.form.get('upload'):
       if ('file' not in request.files or
@@ -213,7 +220,7 @@ def main():
         flask.flash("Error loading file. (Internal error: %s)" % str(err))      
         flask.flash("Upload a DOCX file.")      
 
-      return redirect(url_for('analysis.main', doc=doc))
+      return redirect(url_for('analysis.main', doc=doc, run_id=run_id))
 
     elif request.form.get('run'):
       prompt = request.form['prompt'].strip()      
@@ -224,11 +231,11 @@ def main():
       
       print("start run prompt")
       file_path = get_doc_file_path(doc_id)
-      docx_util.start_docgen(file_path, session, prompt)
+      run_id = docx_util.start_docgen(file_path, session, prompt)
       t = Thread(target=docx_util.run_all_docgen,
                  args=[file_path, session])
       t.start()
-      return redirect(url_for('analysis.main', doc=doc_id))
+      return redirect(url_for('analysis.main', doc=doc_id, run_id=run_id))
 
     else:
       return redirect(url_for('analysis.main', doc=doc_id))
@@ -378,12 +385,12 @@ def docgen():
         session.status.is_running()):
       return redirect(url_for('analysis.docgen', doc=doc))
 
-    docx_util.start_docgen(file_path, session, prompt)
+    run_id = docx_util.start_docgen(file_path, session, prompt)
     t = Thread(target=docx_util.run_all_docgen,
                args=[file_path, session])
     t.start()
 
-    return redirect(url_for('analysis.genresult', doc=doc))    
+    return redirect(url_for('analysis.genresult', doc=doc, run_id=run_id))    
   
 
 @bp.route("/generate", methods=("GET","POST"))
@@ -431,12 +438,12 @@ def generate():
         
     prompt_id = session.get_prompt_id(prompt)
   
-    docx_util.start_docgen(file_path, session, prompt, id_list)
+    run_id = docx_util.start_docgen(file_path, session, prompt, id_list)
     t = Thread(target=docx_util.run_all_docgen,
                args=[file_path, session])
     t.start()
 
-    return redirect(url_for('analysis.genresult', doc=doc))
+    return redirect(url_for('analysis.genresult', doc=doc, run_id=run_id))
 
 
 @bp.route("/genresult")

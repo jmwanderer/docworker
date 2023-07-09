@@ -50,6 +50,7 @@ class DynamicStatus:
     self.prompt = ""
     self.result_id = 0
     self.start_time = None
+    self.run_id = 0
     
   def is_running(self):
     # Time limit on how long a task can be considered running.
@@ -236,6 +237,7 @@ class Session:
 
   def __init__(self):
     self.status = DynamicStatus()
+    self.next_run_id = 1
     self.name = None
     self.next_text_id = 1
     self.text_records = {}  # key is record_id
@@ -280,7 +282,7 @@ class Session:
       elif prompt[2] != value:
         index = self.prompts.index(prompt)
         self.prompts[index] = (prompt[0], name, value)
-        
+
   def strip_text(self, text):
     # combine multiple lines into one
     return text.replace('\n', ' ').replace('  ', ' ')
@@ -428,10 +430,13 @@ class Session:
         items.append(item)
     return items
 
-  def get_result_item(self):
+  def get_result_item(self, run_id=0):
     """
     Return the final result item of the given completion run.
     """
+    # Check if we are looking for a specific run
+    if run_id != 0 and run_id != self.status.run_id:
+      return None
     return self.get_item_by_id(self.status.result_id)
       
 
@@ -549,6 +554,12 @@ class Session:
         return prompt[2]
     return None
 
+  def start_run(self, prompt, item_ids):
+    self.status = DynamicStatus()
+    self.status.run_id = self.next_run_id
+    self.next_run_id += 1
+    self.status.start_run(prompt, item_ids)
+
   def add_prompt(self, name, value):
     id = self.next_prompt_id
     self.prompts.append((id, name, value))
@@ -568,10 +579,14 @@ def load_session(file_name):
   session = pickle.load(f)
   session.fixup_prompts()
   # Fix up new attributes
+  if not hasattr(session, 'next_run_id'):
+    session.next_run_id = 1
   if not hasattr(session, 'status'):
     session.status = DynamicStatus()
   if not hasattr(session.status, 'result_id'):
     session.status.result_id = 0 
+  if not hasattr(session.status, 'run_id'):
+    session.status.run_id = 0 
   
   return session
   
@@ -721,9 +736,9 @@ def start_docgen(file_path, session, prompt, item_ids=None):
       if item.is_doc_segment():
         item_ids.append(item.id())
 
-  session.status = DynamicStatus()
-  session.status.start_run(prompt, item_ids)
+  session.start_run(prompt, item_ids)
   save_session(file_path, session)
+  return session.status.run_id
 
   
 def run_all_docgen(file_path, session):
