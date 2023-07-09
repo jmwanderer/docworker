@@ -178,7 +178,6 @@ def login_required(view):
 @login_required
 def main():
   doc = None
-  doc_name = None
   print("main")
   if request.method == "GET":  
     doc_id = request.args.get('doc')
@@ -187,8 +186,6 @@ def main():
       run_id = int(run_id)
     session = get_session(doc_id)
     if session is not None:
-      doc_name=escape(os.path.basename(session.name))
-      doc_name=session.name      
       doc = doc_id
                     
     return render_template("main.html",
@@ -309,7 +306,6 @@ def docview():
   focus_item = request.args.get("focus")    
 
   return render_template("docview.html",
-                         doc_name=escape(os.path.basename(session.name)),
                          doc=doc,
                          session=session)
 
@@ -357,7 +353,6 @@ def segview():
       next_item = ordered_items[item_index + 1]
   
   return render_template("segview.html",
-                         doc_name=escape(os.path.basename(session.name)),
                          doc=doc,
                          depth=depth,
                          source_list=item_list,
@@ -380,7 +375,6 @@ def docgen():
       return redirect(url_for('analysis.genresult', doc=doc))          
       
     return render_template("docgen.html",
-                           doc_name=escape(os.path.basename(session.name)),
                            doc=doc,
                            session=session)
   else:
@@ -418,7 +412,6 @@ def generate():
 
 
     return render_template("generate.html",
-                           doc_name=escape(os.path.basename(session.name)),
                            doc=doc,
                            items_state=items_state,
                            session=session)
@@ -465,7 +458,6 @@ def genresult():
     return redirect(url_for('analysis.doclist'))
 
   return render_template("genresult.html",
-                         doc_name=escape(os.path.basename(session.name)),
                          doc=doc,
                          session=session)
   
@@ -501,7 +493,6 @@ def export():
     items_state.set_state(session, item_names)
 
     return render_template("export.html",
-                           doc_name=escape(os.path.basename(session.name)),
                            doc=doc,
                            items_state=items_state,
                            session=session)
@@ -540,7 +531,6 @@ def sel_export():
 
     action="Select items for export."
     return render_template("select.html",
-                           doc_name=escape(os.path.basename(session.name)),
                            doc=doc,
                            action=action,
                            depth=depth,
@@ -579,7 +569,6 @@ def sel_gen():
 
     action="Select individual items for GPT processing."    
     return render_template("select.html",
-                           doc_name=escape(os.path.basename(session.name)),
                            doc=doc,
                            action=action,
                            depth=depth,
