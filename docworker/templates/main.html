@@ -87,9 +87,13 @@ ToDo:
 	    <div>
 	      <a href="{{ url_for("analysis.doclist")}}">File list...</a>
 	    </div>
+	    {% if not doc is none %}
 	    <div>
-	      <a href="not-done-yet">Run history...</a>
+	      <a href="{{ url_for('analysis.runlist', doc=doc) }}">
+		Run history...
+	      </a>
 	    </div>
+	    {% endif %}
 	  </div>
 	</td>
 	{% if session is none or not session.is_active_or_result(run_id) %} 

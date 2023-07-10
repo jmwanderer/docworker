@@ -264,6 +264,17 @@ def doclist():
   return render_template("doclist.html", files=file_list)
   
 
+
+@bp.route("/runlist", methods=("GET",))
+@login_required
+def runlist():
+  doc = request.args.get('doc')  
+  session = get_session(doc)
+  if session is None:
+    return redirect(url_for('analysis.main'))
+  return render_template("runlist.html", doc=doc, session=session)
+  
+
 @bp.route("/upload", methods=("POST",))
 @login_required
 def upload():

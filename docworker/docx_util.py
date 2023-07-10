@@ -600,6 +600,15 @@ class Session:
     run_record = RunRecord(self.status.run_id, self.status.start_time)
     self.run_list.append(run_record)
 
+  def run_date_time(self, run_record):
+    return run_record.start_time.isoformat(sep=' ')
+  
+  def run_record_prompt(self, run_record):
+    item = self.get_item_by_id(run_record.result_id)
+    if item is not None:
+      return self.get_prompt_by_id(item.prompt_id)    
+    return ""
+
   def set_final_result(self, completion):
     completion.set_final_result()
     if len(self.run_list) > 0:
