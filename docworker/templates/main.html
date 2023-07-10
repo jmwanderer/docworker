@@ -45,37 +45,44 @@ ToDo:
 	<td>
 	  Load a document...
 	</td>
+	{% if not session.is_active_or_result(run_id) %}    	
 	<td>
 	  Select a prompt...
 	</td>
+	{% endif %}
       </tr>
       <tr>
 	<td>
 	  <div style="background:#d9e8f6;padding:5px;">
+	    {% if doc is none %}
+	    <p>
+	      No file loaded.
+	    </p>
+	    {% else %}
 	    <div>
-	      <img class="center" src="{{ url_for('static', filename='document.png') }}"
+	      <img class="center"
+		   src="{{ url_for('static', filename='document.png') }}"
+		   width="64" height="64">
 		   </img>
 	    </div>
 	    <div style="text-align:center;">	      
-	      {% if doc is none %}
-	      None
-	      {% else %}
 	      <a  href="{{ url_for('analysis.docview', doc=doc) }}">
 		{{ session.name }}
 	      </a>
-	      {% endif %}
-	      <hr>
-	      <form action="{{ url_for('analysis.main')}}"
-		    enctype="multipart/form-data" method="post" id="form">
-		<div>
-		  <label for="file">Choose a file:</label>
-		  <input type="file" id="file" name="file" class="inputfile"/>
-		</div>
-		<div>
-		  <input type="submit" name="upload" id="upload" value="Upload"/>
-		</div>
-	      </form>
 	    </div>
+	    {% endif %}
+	      
+	    <hr>
+	    <form action="{{ url_for('analysis.main')}}"
+		  enctype="multipart/form-data" method="post" id="form">
+	      <div>
+		<label for="file">Choose a file:</label>
+		<input type="file" id="file" name="file" class="inputfile"/>
+	      </div>
+	      <div>
+		<input type="submit" name="upload" id="upload" value="Upload"/>
+	      </div>
+	    </form>
 	    <hr>
 	    <div>
 	      <a href="{{ url_for("analysis.doclist")}}">File list...</a>
@@ -85,6 +92,7 @@ ToDo:
 	    </div>
 	  </div>
 	</td>
+	{% if not session.is_active_or_result(run_id) %}    		
 	<td style="vertical-align:top;">
 	  <form action="{{ url_for('analysis.main')}}"
 		method="post" id="form">
@@ -101,12 +109,18 @@ ToDo:
 	    <input type="hidden" id="doc" name="doc" value="{{ doc }}"/>     
 	  </form>
 	</td>
+	{% endif %}
       </tr>
     </table>
 
     {% if not session is none %}
+    {% if session.get_result_item(run_id) %}
+    <button onclick="window.location.href='{{ url_for('analysis.main', doc=doc) }}';">
+      New Prompt
+    </button>
+    {% endif %}
     <p></p>
-    {% if session.get_result_item(run_id) or session.status.is_running() %}    
+    {% if session.is_active_or_result(run_id) %}    
     <div style="border-width:1px;border-style:solid;border-color:grey;padding:1em;">
       Prompt: {{ session.status.prompt }}
       <p>State:
@@ -160,7 +174,7 @@ ToDo:
     </table>
     {% endif %}
     {% endif %}        
-    <a href="https://www.flaticon.com/free-icons/paper" title="paper icons">Paper icons created by Chanut - Flaticon</a>  
+    <a href="https://www.flaticon.com/free-icons/paper" title="paper icons" target="_blank" rel="noopener noreferrer">Paper icons created by smalllikeart - Flaticon</a>
     {% endblock %}
     
     {% block script %}

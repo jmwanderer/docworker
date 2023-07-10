@@ -448,7 +448,12 @@ class Session:
     if run_id != 0 and run_id != self.status.run_id:
       return None
     return self.get_item_by_id(self.status.result_id)
-      
+
+  def is_active_or_result(self, run_id):
+    """
+    Check if there is a result or a run in progress
+    """
+    return self.get_result_item(run_id) or self.status.is_running()
 
   def doc_tokens(self):
     total = 0
