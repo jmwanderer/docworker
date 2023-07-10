@@ -129,6 +129,21 @@ class DynamicStatus:
 
     return self.source_items
 
+
+class RunRecord:
+  """
+  Records a user session running a prompt.
+  Includes the start time, run id, and (eventually) the final result id
+  """
+
+  def __init__(self, run_id, start_time=None):
+    self.run_id = run_id
+    self.start_time = start_time
+    if self.start_time is None:
+      self.start_time = datetime.datetime.now()
+    self.result_id = 0
+
+
 class TextRecord:
   """
   A unit of text, either a chunk from a document or generated
@@ -238,6 +253,7 @@ class Session:
   def __init__(self):
     self.status = DynamicStatus()
     self.next_run_id = 1
+    self.run_list = []     # List of RunRecord instances
     self.name = None
     self.next_text_id = 1
     self.text_records = {}  # key is record_id
@@ -444,9 +460,16 @@ class Session:
     """
     Return the final result item of the given completion run.
     """
-    # Check if we are looking for a specific run
-    if run_id != 0 and run_id != self.status.run_id:
+    # Check if we are looking for a specific run or the latest
+    if run_id != 0:
+      # Look for matching run_id
+      for run_record in self.run_list:
+        if run_record.run_id == run_id:
+          return self.get_item_by_id(run_record.result_id)
+      # Not found
       return None
+
+    # Return current result if any
     return self.get_item_by_id(self.status.result_id)
 
   def is_active_or_result(self, run_id):
@@ -574,6 +597,13 @@ class Session:
     self.status.run_id = self.next_run_id
     self.next_run_id += 1
     self.status.start_run(prompt, item_ids)
+    run_record = RunRecord(self.status.run_id, self.status.start_time)
+    self.run_list.append(run_record)
+
+  def set_final_result(self, completion):
+    completion.set_final_result()
+    if len(self.run_list) > 0:
+      self.run_list[-1].result_id = completion.id()
 
   def add_prompt(self, name, value):
     id = self.next_prompt_id
@@ -602,8 +632,16 @@ def load_session(file_name):
   if not hasattr(session.status, 'result_id'):
     session.status.result_id = 0 
   if not hasattr(session.status, 'run_id'):
-    session.status.run_id = 0 
-  
+    session.status.run_id = 0
+  if not hasattr(session, 'run_list'):
+    session.run_list = []
+    # Add run records
+    for completion in session.completions:
+      if completion.is_final_result():
+        run_record = RunRecord(session.next_run_id)
+        run_record.result_id = completion.id()
+        session.next_run_id += 1
+        session.run_list.append(run_record)
   return session
   
 def save_session(file_name, session):
@@ -788,6 +826,7 @@ def run_all_docgen(file_path, session):
       done = True
       completion = session.get_item_by_id(session.status.result_id)
       if completion is not None:
+        session.set_final_result(completion)
         completion.set_final_result()
         save_session(file_path, session)
 
