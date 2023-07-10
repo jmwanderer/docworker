@@ -26,8 +26,8 @@ ToDo:
     <p>
       DocWorker uses OpenAI's GPT AI model to summarize
       and analyze DOCX (MS Word) documents.
-      Use this page to load a DOCX file 
-      to run GPT functions on an MS Word document.
+      Use this page to load a DOCX file and run
+      GPT functions over the document.
     </p>
     
     {% with messages = get_flashed_messages() %}
@@ -81,7 +81,7 @@ ToDo:
 	      <a href="{{ url_for("analysis.doclist")}}">File list...</a>
 	    </div>
 	    <div>
-	      <a href="xxx">Run history...</a>
+	      <a href="not-done-yet">Run history...</a>
 	    </div>
 	  </div>
 	</td>
@@ -107,7 +107,8 @@ ToDo:
     {% if not session is none %}
     <p></p>
     {% if session.get_result_item(run_id) or session.status.is_running() %}    
-    <div style="border-width:1px;border-style:solid;border-color:grey;">
+    <div style="border-width:1px;border-style:solid;border-color:grey;padding:1em;">
+      Prompt: {{ session.status.prompt }}
       <p>State:
 	{% if session.status.is_running() %}
 	Process Running....
@@ -117,7 +118,7 @@ ToDo:
       </p>
       <p>Steps: {{ session.status.complete_steps }} completions run.	
       </p>
-      <p> {{ session.status.status_message }} </p>      
+      {{ session.status.status_message }}
     </div>
     {% endif %}
     {% endif %}    

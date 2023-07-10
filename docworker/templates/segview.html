@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+{% block backlink %}
+<a href="{{ url_for('analysis.main', doc=doc) }}">Main View</a>
+{% endblock %}
 {% block body%}
   <h1>Text View</h1>
   <p>
