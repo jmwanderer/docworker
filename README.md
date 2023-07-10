@@ -15,9 +15,13 @@ All commands should be run from the top level of the project directory.
 
 `export OPENAI_API_KEY=<key>`
 
+### Initialize database
+
+`flask --app docworker.analysis_app init-db`
+
 ### Add a user
 
-`python3 -m docworker.add_user instance/ user-name`
+`flask --app docworker.analysis_app set-user <user-name>`
 
 
 ## Run Debug Server
