@@ -45,7 +45,7 @@ ToDo:
 	<td>
 	  Load a document...
 	</td>
-	{% if not session.is_active_or_result(run_id) %}    	
+	{% if session is none or not session.is_active_or_result(run_id) %}    	
 	<td>
 	  Select a prompt...
 	</td>
@@ -92,7 +92,7 @@ ToDo:
 	    </div>
 	  </div>
 	</td>
-	{% if not session.is_active_or_result(run_id) %}    		
+	{% if session is none or not session.is_active_or_result(run_id) %} 
 	<td style="vertical-align:top;">
 	  <form action="{{ url_for('analysis.main')}}"
 		method="post" id="form">
