@@ -112,29 +112,14 @@ def init_db_command():
 @click.argument('limit', default=100000)
 def set_user_command(name, limit):
   """Create or update a user."""
-  db = get_db()
-  (count,) = db.execute("SELECT COUNT(*) FROM user WHERE username = ?",
-                     (name,)).fetchone()
-  print("count %d" % count)
-  if count == 0:
-    print("add user")
-    db.execute("INSERT INTO user (username, limit_tokens) VALUES (?,?)",
-               (name, limit))
-    users.add_user(current_app.instance_path, name)
-  else:
-    db.execute("UPDATE user SET limit_tokens = ? WHERE username = ?",
-               (limit,name))
-  db.commit()
+  user_dir = os.path.join(current_app.instance_path, name)
+  users.add_or_update_user(get_db(), user_dir, name, limit)
   click.echo('Configured user.')
 
 @bp.cli.command('list-users')
 def list_command():
   """List the users in the DB."""
-  db = get_db()  
-  q = db.execute("SELECT id, username, consumed_tokens, limit_tokens, datetime(last_access, 'unixepoch') FROM user")
-  for (id, user, consumed, limit, last_access) in q.fetchall():
-    print("user: [%d] %s, limit: %d, consumed %d, last access: %s" %
-          (id, user, limit, consumed, last_access))
+  users.list_users(get_db())
 
 def get_doc_file_path(doc_name):
   file_name = doc_name + '.daf'
@@ -165,6 +150,7 @@ def load_logged_in_user():
     user_dir = os.path.join(current_app.instance_path, user_key)      
     if os.path.exists(user_dir):
       g.user = user_key
+      users.note_user_access(get_db(), user_key)
 
 def login_required(view):
   @functools.wraps(view)
@@ -176,8 +162,21 @@ def login_required(view):
 
 
 @bp.route("/", methods=("GET","POST"))
-@login_required
 def main():
+  # Handle initial authorization
+  auth_key = request.args.get("authkey")
+  if auth_key is not None:
+    user_dir = os.path.join(current_app.instance_path, auth_key)
+    if os.path.exists(user_dir):
+      session.permanent = True
+      session['user_key'] = auth_key
+    else:
+      session.permanent = False      
+      session['user_key'] = None
+  load_logged_in_user()
+  if g.user is None:  
+    return redirect(url_for('static', filename='noauth.html'))
+  
   doc = None
   print("main")
   if request.method == "GET":  
@@ -185,15 +184,15 @@ def main():
     run_id = request.args.get('run_id')
     if run_id != None:
       run_id = int(run_id)
-    session = get_session(doc_id)
-    if session is not None:
+    dsession = get_session(doc_id)
+    if dsession is not None:
       doc = doc_id
                     
     return render_template("main.html",
                            doc=doc,
                            run_id=run_id,
                            prompts=docx_util.INITIAL_PROMPTS,
-                           session=session)
+                           session=dsession)
 
   else:
     doc_id = request.form.get('doc')
@@ -221,16 +220,16 @@ def main():
 
     elif request.form.get('run'):
       prompt = request.form['prompt'].strip()      
-      session = get_session(doc_id)
-      if (session is None or session.status.is_running() or
+      dsession = get_session(doc_id)
+      if (dsession is None or dsession.status.is_running() or
           prompt is None or len(prompt) == 0):
         return redirect(url_for('analysis.main'))
       
       print("start run prompt")
       file_path = get_doc_file_path(doc_id)
-      run_id = docx_util.start_docgen(file_path, session, prompt)
+      run_id = docx_util.start_docgen(file_path, dsession, prompt)
       t = Thread(target=docx_util.run_all_docgen,
-                 args=[file_path, session])
+                 args=[file_path, dsession])
       t.start()
       return redirect(url_for('analysis.main', doc=doc_id, run_id=run_id))
 
@@ -240,22 +239,8 @@ def main():
 
 
 @bp.route("/doclist", methods=("GET",))
+@login_required
 def doclist():
-  # Handle initial authorization
-  auth_key = request.args.get("authkey")
-  if auth_key is not None:
-    # TODO: validate auth_key
-    user_dir = os.path.join(current_app.instance_path, auth_key)
-    if os.path.exists(user_dir):
-      session.permanent = True
-      session['user_key'] = auth_key
-    else:
-      session.permanent = False      
-      session['user_key'] = None
-  load_logged_in_user()
-  if g.user is None:  
-    return redirect(url_for('static', filename='noauth.html'))
-
   user_dir = os.path.join(current_app.instance_path, g.user)  
   file_list = []
   for filename in os.listdir(user_dir):
