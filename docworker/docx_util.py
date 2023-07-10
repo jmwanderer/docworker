@@ -430,6 +430,16 @@ class Session:
         items.append(item)
     return items
 
+  def get_result_item_name(self, run_id=0):
+    """
+    Return the name of the result item.
+    None if no result yet
+    """
+    item = self.get_result_item(run_id)
+    if item is not None:
+      return item.name()
+    return None
+  
   def get_result_item(self, run_id=0):
     """
     Return the final result item of the given completion run.
