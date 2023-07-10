@@ -687,14 +687,16 @@ def run_completion(prompt, text, max_tokens, status_cb=None):
   while not done:
     try:
       # TODO: set max_tokens to appropriate amount
-      response = openai.ChatCompletion.create(model=section_util.AI_MODEL,
-                                              max_tokens = max_tokens,
-                                              temperature = 0.1,
-                                              messages=[
-                                                {"role": "system",
-                                                 "content": prompt},
-                                                {"role": "user",
-                                                 "content": text }])
+      start_time = datetime.datetime.now()
+      request_timeout = 20 + 10 * count
+      response = openai.ChatCompletion.create(
+        model=section_util.AI_MODEL,
+        max_tokens = max_tokens,
+        temperature = 0.1,
+        messages=[ {"role": "system", "content": prompt},
+                   {"role": "user", "content": text }],
+        request_timeout=request_timeout)
+      
       completion = response['choices'][0]['message']['content']
       # TODO: use these to detect truncation.
       completion_tokens = response['usage']['completion_tokens']
@@ -702,12 +704,16 @@ def run_completion(prompt, text, max_tokens, status_cb=None):
       done = True
       if response['choices'][0]['finish_reason'] == "length":
         truncated = True
+      end_time = datetime.datetime.now()
 
     except Exception as err:
+      end_time = datetime.datetime.now()
       logging.error(str(err))      
       if status_cb is not None:
         status_cb(str(err))
 
+    logging.info("completion required %d seconds" %
+                 (end_time - start_time).total_seconds())
     count += 1
     if count >= max_try:
       done = True
@@ -820,10 +826,13 @@ def run_next_docgen(file_path, session):
   # Run a completion
   prompt = session.status.prompt
   prompt_id = session.get_prompt_id(prompt)
-  session.status.set_status_message("%s on %s" %
-                                    (prompt, item.name()))
   logging.info("run completion with %d items" % len(item_id_list))
 
+  # Update status with last item
+  session.status.set_status_message("%s on %s" %
+                                    (prompt, item.name()))
+  save_session(file_path, session)
+  
   err_message = ''
   def status_cb(message):
     err_message = str(message)
