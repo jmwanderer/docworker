@@ -593,6 +593,7 @@ def load_session(file_name):
   f = open(file_name, 'rb')
   session = pickle.load(f)
   session.fixup_prompts()
+  session.name = os.path.basename(session.name)  
   # Fix up new attributes
   if not hasattr(session, 'next_run_id'):
     session.next_run_id = 1
