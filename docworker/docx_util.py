@@ -23,7 +23,7 @@ INITIAL_PROMPTS = [
   ('Summarize', 'Summarize the main points'),
   ('Main Ideas', 'Describe the main ideas'),
   ('Explain', 'Explain the concepts'),
-  ('Important', 'Explain why this is imporant'),
+  ('Important', 'Explain why this is important'),
   ('Should know', 'What should we know about this'),
   ('Understand', 'Help me understand this'),
   ('Target Dates', 'List deliverables and target dates'),

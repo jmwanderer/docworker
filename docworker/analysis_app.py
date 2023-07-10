@@ -174,7 +174,7 @@ def login_required(view):
   return wrapped_view
 
 
-@bp.route("/main", methods=("GET","POST"))
+@bp.route("/", methods=("GET","POST"))
 @login_required
 def main():
   doc = None
@@ -238,7 +238,7 @@ def main():
   
 
 
-@bp.route("/", methods=("GET",))
+@bp.route("/doclist", methods=("GET",))
 def doclist():
   # Handle initial authorization
   auth_key = request.args.get("authkey")
