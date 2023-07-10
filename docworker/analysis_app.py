@@ -18,6 +18,7 @@ import logging
 from . import docx_summary
 from . import docx_util
 from . import analysis_util
+from . import users
 import openai
 import sqlite3
 import click
@@ -119,6 +120,7 @@ def set_user_command(name, limit):
     print("add user")
     db.execute("INSERT INTO user (username, limit_tokens) VALUES (?,?)",
                (name, limit))
+    users.add_user(current_app.instance_path, name)
   else:
     db.execute("UPDATE user SET limit_tokens = ? WHERE username = ?",
                (limit,name))
@@ -129,11 +131,10 @@ def set_user_command(name, limit):
 def list_command():
   """List the users in the DB."""
   db = get_db()  
-  q = db.execute("SELECT username, consumed_tokens, limit_tokens, datetime(last_access, 'unixepoch') FROM user")
-  for (user, consumed, limit, last_access) in q.fetchall():
-    print("user: %s, limit: %d, consumed %d, last access: %s" %
-          (user, limit, consumed, last_access))
-    
+  q = db.execute("SELECT id, username, consumed_tokens, limit_tokens, datetime(last_access, 'unixepoch') FROM user")
+  for (id, user, consumed, limit, last_access) in q.fetchall():
+    print("user: [%d] %s, limit: %d, consumed %d, last access: %s" %
+          (id, user, limit, consumed, last_access))
 
 def get_doc_file_path(doc_name):
   file_name = doc_name + '.daf'

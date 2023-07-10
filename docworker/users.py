@@ -6,7 +6,6 @@ import pkg_resources
 import docworker
 
 
-
 def add_user(dir_name, user_name):
   """
   Create a user directory and populate with samples
@@ -17,8 +16,9 @@ def add_user(dir_name, user_name):
   print("samples dir = %s" % samples_dir)  
   if not os.path.exists(samples_dir):
     print("%s not found" % samples_dir)
-  
-  os.makedirs(user_dir)
+
+  if not os.path.exists(user_dir):    
+    os.makedirs(user_dir)
   for filename in os.listdir(samples_dir):
     if filename.endswith(".daf"):
       shutil.copyfile(os.path.join(samples_dir, filename),
@@ -26,10 +26,5 @@ def add_user(dir_name, user_name):
   print("done")
   
 
-if __name__ == '__main__':
-  if len(sys.argv) == 3:
-    add_user(sys.argv[1], sys.argv[2])
-  else:
-    print("Usage: <instance-directory> <user-name>")
     
 

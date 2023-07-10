@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS user;
 
 CREATE TABLE user (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   username TEXT UNIQUE NOT NULL,
   consumed_tokens INTEGER DEFAULT 0,
   limit_tokens INTEGER,
