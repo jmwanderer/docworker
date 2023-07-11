@@ -17,9 +17,8 @@ def run_docx_summary():
   group.add_argument('--prompts', action='store_true')  
   group.add_argument('--show', metavar='ITEM', nargs='+')
   group.add_argument('--completion', metavar='ITEM', nargs='+')
-  group.add_argument('--combined_completion', metavar='ITEM', nargs='+')
-  group.add_argument('--start_doc_completion', action='store_true')
-  group.add_argument('--run_doc_completion', action='store_true')    
+  group.add_argument('--run_selected_docgen', metavar='ITEM', nargs='+')
+  group.add_argument('--run_docgen', action='store_true')    
   group.add_argument('--export', action='store_true')
   parser.add_argument('--prompt')
   parser.add_argument('--config')
@@ -116,14 +115,13 @@ def run_docx_summary():
                session.get_names_for_ids(item.input_ids)))
         print(item.text())
 
-  if args.start_doc_completion:
+  if args.run_docgen:
+    # Run a standard docgen
     if args.prompt is None:
       print("Start completion requires a prompt")
       return
     prompt = args.prompt
     docx_util.start_docgen(args.session_file, session, prompt)      
-
-  if args.run_doc_completion:
     print("Running doc completion")
     docx_util.run_all_docgen(args.session_file, session)
     print("Complete")  
@@ -159,14 +157,15 @@ def run_docx_summary():
       else:
         print("Error running completion")
 
-  if args.combined_completion is not None:
+  if args.run_selected_docgen is not None:
+    # Run docgen on selected items
     input = []
     input_ids = []
     if args.prompt is None:
       print("Completion requires a prompt")
       return
     
-    for name in args.combined_completion:
+    for name in args.run_selected_docgen:
       item = session.get_item_by_name(name)
       if (item is None):
         print("Item %s not found" % name)
@@ -178,10 +177,13 @@ def run_docx_summary():
     prompt_id = session.get_prompt_id(prompt)
 
     docx_util.start_docgen(args.session_file, session, prompt, input_ids)      
-    print("Running doc completion")
-    docx_util.run_all_docgen(args.session_file, session)
-    print("Complete")  
-      
+    print("Running doc completion %s" % str(input_ids))
+    id = docx_util.run_all_docgen(args.session_file, session)
+    if id is not None:
+      item = session.get_item_by_id(id)
+      print("Generated: %s" % item.name())
+    else:
+      print("No item generated")
 
   if args.export:
     token_count = 0

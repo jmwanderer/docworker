@@ -404,6 +404,18 @@ class Session:
     max_depth = self.comp_family_visit_node(1, completion, result)
     return (max_depth, result)
 
+  def get_completion_family_list(self, id):
+    """
+    Return a simple list of completions in the family of the
+    the specified completion.
+    """
+    result = []
+    (max, list) = self.get_completion_family(id)
+    for (depth, item) in list:
+      if not item.is_doc_segment():
+        result.append(item)
+    return result
+      
 
   def get_item_by_name(self, name):
     for segment in self.doc_segments:
@@ -811,12 +823,9 @@ def start_docgen(file_path, session, prompt, item_ids=None):
   return session.status.run_id
 
   
-def run_all_docgen(db_config, name, file_path, session):
-  # Open database
-  db = sqlite3.connect(db_config, detect_types=sqlite3.PARSE_DECLTYPES)
-  db.row_factory = sqlite3.Row
-  
+def run_all_docgen(file_path, session):
   done = False
+  result_id = None
   while not done:
     logging.debug("loop to run a set of docgen ops")      
     # loop to consume all run items
@@ -829,7 +838,7 @@ def run_all_docgen(db_config, name, file_path, session):
         session.status.note_step_complete(id)
       else:
         logging.debug("loop for running docgen")
-        run_next_docgen(db, name, file_path, session)
+        run_next_docgen(file_path, session)
         save_session(file_path, session)
 
     # Done with the to_run queue, check if we process the
@@ -842,13 +851,12 @@ def run_all_docgen(db_config, name, file_path, session):
       if completion is not None:
         session.set_final_result(completion)
         completion.set_final_result()
+        result_id = completion.id()
         save_session(file_path, session)
-
-  # Close database
-  db.close()
-
+  return result_id
+        
   
-def run_next_docgen(db, name, file_path, session):
+def run_next_docgen(file_path, session):
   tokenizer = section_util.get_tokenizer()
   done = False
   item_id_list = []
@@ -926,9 +934,8 @@ def run_next_docgen(db, name, file_path, session):
     response_record.completion_tokens,
     response_record.prompt_tokens + response_record.completion_tokens)
   session.status.note_step_complete(completion.id())
-  users.increment_tokens(db, name,
-                         response_record.prompt_tokens + response_record.completion_tokens)
 
+  
 def run_test():
   session = Session()
   file_name = 'DRAFT SCAP Key Actions and Work Plan (February 2023).docx'

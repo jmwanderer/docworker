@@ -227,13 +227,33 @@ def main():
       print("start run prompt")
       file_path = get_doc_file_path(doc_id)
       run_id = docx_util.start_docgen(file_path, dsession, prompt)
-      t = Thread(target=docx_util.run_all_docgen,
+      t = Thread(target=background_docgen,
                  args=[current_app.config['DATABASE'], g.user, file_path, dsession])
       t.start()
       return redirect(url_for('analysis.main', doc=doc_id, run_id=run_id))
 
     else:
       return redirect(url_for('analysis.main', doc=doc_id))
+  
+def background_docgen(db_config, name, file_path, session):
+  """
+  Runs from a background thread to process the document and 
+  update the consumed token accouting.
+  """
+  # Open database
+  db = sqlite3.connect(db_config, detect_types=sqlite3.PARSE_DECLTYPES)
+  db.row_factory = sqlite3.Row
+
+  id = docx_util.run_all_docgen(file_path, session)
+  if id is not None:
+    family = session.get_completion_family_list(id)
+    tokens = sum(item.token_cost for item in family)
+    users.increment_tokens(db, name, tokens)
+    logging.info("updated cost for %s of %d tokens", name, tokens)
+  
+  # Close database
+  db.close()
+
   
 
 
@@ -385,7 +405,7 @@ def docgen():
       return redirect(url_for('analysis.docgen', doc=doc))
 
     run_id = docx_util.start_docgen(file_path, session, prompt)
-    t = Thread(target=docx_util.run_all_docgen,
+    t = Thread(target=background_docgen,
                args=[current_app.config['DATABASE'], g.user, file_path, session])
     t.start()
 
@@ -437,7 +457,7 @@ def generate():
     prompt_id = session.get_prompt_id(prompt)
   
     run_id = docx_util.start_docgen(file_path, session, prompt, id_list)
-    t = Thread(target=docx_util.run_all_docgen,
+    t = Thread(target=background_docgen,
                args=[current_app.config['DATABASE'], g.user, file_path, session])
     t.start()
 
