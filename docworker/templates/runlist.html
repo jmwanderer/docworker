@@ -16,7 +16,7 @@
       <a href="{{ url_for('analysis.main', doc=doc, run_id=run_record.run_id) }}">
 	{{ session.run_date_time(run_record) }}
       </a>
-	: {{ session.run_record_prompt(run_record) }}
+	&nbsp; {{ session.run_record_prompt(run_record) }}
     </li>
     {% endfor %}
   </ul>

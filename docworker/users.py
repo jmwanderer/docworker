@@ -80,7 +80,8 @@ def populate_samples(user_dir):
   
 
 def list_users(db):
-  q = db.execute("SELECT id, username, consumed_tokens, limit_tokens, datetime(last_access, 'unixepoch') FROM user")
+  q = db.execute("SELECT id, username, consumed_tokens, limit_tokens, last_access FROM user")
   for (id, user, consumed, limit, last_access) in q.fetchall():
+    dt = datetime.datetime.fromtimestamp(last_access)
     print("user: [%d] %s, limit: %d, consumed %d, last access: %s" %
-          (id, user, limit, consumed, last_access))
+          (id, user, limit, consumed, dt.isoformat(sep=' ')))

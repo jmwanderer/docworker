@@ -617,7 +617,14 @@ class Session:
     self.run_list.append(run_record)
 
   def run_date_time(self, run_record):
-    return run_record.start_time.isoformat(sep=' ')
+    # Return the time without microseconds.
+    dt = datetime.datetime(run_record.start_time.year,
+                           run_record.start_time.month,
+                           run_record.start_time.day,
+                           run_record.start_time.hour,
+                           run_record.start_time.minute,
+                           run_record.start_time.second)
+    return dt.isoformat(sep=' ')
   
   def run_record_prompt(self, run_record):
     item = self.get_item_by_id(run_record.result_id)
