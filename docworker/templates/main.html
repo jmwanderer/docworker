@@ -2,11 +2,6 @@
 {#
 Single pane application page.
 ToDo:
-- documents link and page - select a prev upload doc
-- history link and page - list and select previous runs
-  - ideally log these in an sql table
-  - open up a run id in main.html
-- get_result_item works for all run_ids
 - check for same name not equal files
 #}
 {%block head %}
@@ -14,7 +9,6 @@ ToDo:
 <meta http-equiv="refresh" content="5;URL={{ url_for('analysis.main', doc=doc, run_id=run_id) }}">
 {% endif %}
 {% endblock %}
-
 
 {% block nav %}
 {% endblock %}
@@ -27,7 +21,8 @@ ToDo:
       DocWorker uses OpenAI's GPT AI model to summarize
       and analyze DOCX (MS Word) documents.
       Use this page to load a DOCX file and run
-      GPT functions over the document.
+      GPT functions over the document. Note that you can also open a previously
+      uploaded file and see any previous GPT runs.
     </p>
     
     {% with messages = get_flashed_messages() %}
@@ -76,23 +71,27 @@ ToDo:
 	    <form action="{{ url_for('analysis.main')}}"
 		  enctype="multipart/form-data" method="post" id="form">
 	      <div>
-		<label for="file">Choose a file:</label>
 		<input type="file" id="file" name="file" class="inputfile"/>
-	      </div>
-	      <div>
 		<input type="submit" name="upload" id="upload" value="Upload"/>
 	      </div>
 	    </form>
 	    <hr>
 	    <div>
-	      <a href="{{ url_for("analysis.doclist")}}">File list...</a>
+	      <a href="{{ url_for("analysis.doclist")}}">File list</a>
 	    </div>
 	    {% if not doc is none %}
 	    <div>
 	      <a href="{{ url_for('analysis.runlist', doc=doc) }}">
-		Run history...
+		Run history
 	      </a>
 	    </div>
+	    {% if session.get_result_item(run_id) %}	    
+	    <div>
+	      <a href="{{ url_for('analysis.main', doc=doc) }}">
+		New prompt
+	      </a>
+	    </div>
+	    {% endif %}	    
 	    {% endif %}
 	  </div>
 	</td>
@@ -116,14 +115,8 @@ ToDo:
 	{% endif %}
       </tr>
     </table>
-
-    {% if not session is none %}
-    {% if session.get_result_item(run_id) %}
-    <button onclick="window.location.href='{{ url_for('analysis.main', doc=doc) }}';">
-      New Prompt
-    </button>
-    {% endif %}
     <p></p>
+    {% if not session is none %}
     {% if session.is_active_or_result(run_id) %}    
     <div style="border-width:1px;border-style:solid;border-color:grey;padding:1em;">
       Prompt: {{ session.status.prompt }}
