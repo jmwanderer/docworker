@@ -134,23 +134,3 @@ class ItemsState:
       if item is not None and item not in self.open_items:
         self.open_items.append(item)
 
-      
-
-def get_new_filename(filename, user):
-  """
-  Return a variation on the filename that does not yet exist.
-  TODO: race condition (fix with a DB)
-  """
-  file_path = os.path.join(current_app.instance_path, user, filename + ".daf")
-  if not os.path.exists(file_path):
-    return filename
-
-  for i in range(1, 1000):
-    new_filename = filename + "(%d)" % (i)
-    file_path = os.path.join(current_app.instance_path,
-                             user, new_filename + ".daf")
-    if not os.path.exists(file_path):
-      return new_filename
-
-  return None
-    

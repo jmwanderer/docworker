@@ -12,6 +12,8 @@ import pickle
 import re
 import logging
 import datetime
+import tempfile
+import hashlib
 import os
 import math
 import time
@@ -253,6 +255,7 @@ class Session:
 
   def __init__(self):
     self.status = DynamicStatus()
+    self.md5_digest = b''
     self.next_run_id = 1
     self.run_list = []     # List of RunRecord instances
     self.name = None
@@ -633,13 +636,14 @@ class Session:
     self.next_prompt_id += 1
     return id
   
-  def load_doc(self, name, file):
+  def load_doc(self, name, file, md5_digest):
     self.name = name
     docx_extract = extract_docx.DocXExtract()
     docx_extract.load_doc(file)
     in_file = docx_extract.get_result()
     for chunk in section_util.chunks_from_structured_file(in_file):
       self.add_new_segment(chunk.get_text(), chunk.size)
+    self.md5_digest = md5_digest
     
 def load_session(file_name):
   f = open(file_name, 'rb')
@@ -664,6 +668,9 @@ def load_session(file_name):
         run_record.result_id = completion.id()
         session.next_run_id += 1
         session.run_list.append(run_record)
+  if not hasattr(session, 'md5_digest'):
+    session.md5_digest = b''
+    
   return session
   
 def save_session(file_name, session):
@@ -682,14 +689,46 @@ def find_or_create_doc(user_dir, filename, file):
   Given a file and filename, find an existing matching file or
   create a new file. 
   """
+  # Read in file to a tmp file
+  tmp_file = tempfile.TemporaryFile()
+  tmp_file.write(file.read())
+  tmp_file.seek(0, 0)
 
-  # treat same name as matching for now
+  # Generate an md5 sum
+  md5_digest = hashlib.md5(tmp_file.read()).digest()
+  print("digest %s" % str(md5_digest))
+  tmp_file.seek(0, 0)
+
+  # Find a matching name and md5_digest, or exit loop with a
+  # unique filename
+  target_file = filename
+  i = 0
+  done = False
+  while not done:
+    file_path = os.path.join(user_dir, target_file + ".daf")
+    if os.path.exists(file_path):
+      session = load_session(file_path)
+      if session.md5_digest == md5_digest:
+        done = True
+      else:
+        # Try a different filename
+        i += 1
+        target_file = filename + "(%d)" % (i)
+      
+    else:
+      # File does not exist, create it
+      done = True
+      session = Session()    
+      session.load_doc(target_file, tmp_file, md5_digest)
+      save_session(file_path, session)
+  return target_file
+      
+      
+
   # TODO: use hash and equality
-  file_path = os.path.join(user_dir, filename + ".daf")
-  if not os.path.exists(file_path):
-    session = Session()    
-    session.load_doc(filename, file)
-    save_session(file_path, session)
+    
+  
+  tmp_file.close()
   return filename
 
 
@@ -936,15 +975,4 @@ def run_next_docgen(file_path, session):
   session.status.note_step_complete(completion.id())
 
   
-def run_test():
-  session = Session()
-  file_name = 'DRAFT SCAP Key Actions and Work Plan (February 2023).docx'
-  file = open(file_name, 'rb')
-  session.load_doc('SCAP', file)
-  file.close()
-  save_session(session.name, session)
-  session = load_session('SCAP')
-
-if __name__ == "__main__":
-  run_test()
     

@@ -277,36 +277,6 @@ def runlist():
   if session is None:
     return redirect(url_for('analysis.main'))
   return render_template("runlist.html", doc=doc, session=session)
-  
-
-@bp.route("/upload", methods=("POST",))
-@login_required
-def upload():
-  if ('file' not in request.files or
-      request.files['file'].filename == ''):
-    flask.flash("No selected file")
-    return redirect(url_for('analysis.doclist'))
-
-  file = request.files['file']
-  filename = werkzeug.utils.secure_filename(file.filename)
-  filename = analysis_util.get_new_filename(filename, g.user)
-  if filename is None:
-    flask.flash("Unable to handle filename.")      
-    return redirect(url_for('analysis.doclist'))  
-
-  file_path = get_doc_file_path(filename)
-
-  session = docx_util.Session()
-  try:
-    session.load_doc(filename, file)
-    docx_util.save_session(file_path, session)
-    flask.flash("Loaded new file: " +
-                escape(os.path.basename(session.name)))                  
-  except Exception as err:
-    flask.flash("Error loading file. (Internal error: %s)" % str(err))      
-    flask.flash("Upload a DOCX file.")      
-
-  return redirect(url_for('analysis.doclist'))
 
     
 @bp.route("/docview", methods=("GET",))
