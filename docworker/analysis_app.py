@@ -76,8 +76,8 @@ def create_app(test_config=None,fakeai=False):
   @app.route('/favicon.ico')
   def favicon():
     return redirect(url_for('static', filename='favicon.ico'))
-
   return app
+
 
 def get_db():
   if 'db' not in g:
@@ -85,7 +85,6 @@ def get_db():
       current_app.config['DATABASE'],
       detect_types=sqlite3.PARSE_DECLTYPES)
     g.db.row_factory = sqlite3.Row
-
   return g.db
 
 def close_db(e=None):
@@ -229,7 +228,7 @@ def main():
       file_path = get_doc_file_path(doc_id)
       run_id = docx_util.start_docgen(file_path, dsession, prompt)
       t = Thread(target=docx_util.run_all_docgen,
-                 args=[file_path, dsession])
+                 args=[current_app.config['DATABASE'], g.user, file_path, dsession])
       t.start()
       return redirect(url_for('analysis.main', doc=doc_id, run_id=run_id))
 
@@ -387,7 +386,7 @@ def docgen():
 
     run_id = docx_util.start_docgen(file_path, session, prompt)
     t = Thread(target=docx_util.run_all_docgen,
-               args=[file_path, session])
+               args=[current_app.config['DATABASE'], g.user, file_path, session])
     t.start()
 
     return redirect(url_for('analysis.genresult', doc=doc, run_id=run_id))    
@@ -439,7 +438,7 @@ def generate():
   
     run_id = docx_util.start_docgen(file_path, session, prompt, id_list)
     t = Thread(target=docx_util.run_all_docgen,
-               args=[file_path, session])
+               args=[current_app.config['DATABASE'], g.user, file_path, session])
     t.start()
 
     return redirect(url_for('analysis.genresult', doc=doc, run_id=run_id))

@@ -22,6 +22,7 @@ def increment_tokens(db, name, count):
   """
   Update the token count.
   """
+  print("increment tokens for %s - %d" % (name, count))
   (tokens,) = db.execute("SELECT consumed_tokens FROM user WHERE username = ?",
                      (name,)).fetchone()
   tokens += count

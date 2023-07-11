@@ -15,9 +15,10 @@ import datetime
 import os
 import math
 import time
-
+from . import users
 import tiktoken
 import openai
+import sqlite3
 
 INITIAL_PROMPTS = [
   ('Summarize', 'Summarize the main points'),
@@ -810,7 +811,11 @@ def start_docgen(file_path, session, prompt, item_ids=None):
   return session.status.run_id
 
   
-def run_all_docgen(file_path, session):
+def run_all_docgen(db_config, name, file_path, session):
+  # Open database
+  db = sqlite3.connect(db_config, detect_types=sqlite3.PARSE_DECLTYPES)
+  db.row_factory = sqlite3.Row
+  
   done = False
   while not done:
     logging.debug("loop to run a set of docgen ops")      
@@ -824,7 +829,7 @@ def run_all_docgen(file_path, session):
         session.status.note_step_complete(id)
       else:
         logging.debug("loop for running docgen")
-        run_next_docgen(file_path, session)
+        run_next_docgen(db, name, file_path, session)
         save_session(file_path, session)
 
     # Done with the to_run queue, check if we process the
@@ -839,7 +844,11 @@ def run_all_docgen(file_path, session):
         completion.set_final_result()
         save_session(file_path, session)
 
-def run_next_docgen(file_path, session):
+  # Close database
+  db.close()
+
+  
+def run_next_docgen(db, name, file_path, session):
   tokenizer = section_util.get_tokenizer()
   done = False
   item_id_list = []
@@ -917,7 +926,8 @@ def run_next_docgen(file_path, session):
     response_record.completion_tokens,
     response_record.prompt_tokens + response_record.completion_tokens)
   session.status.note_step_complete(completion.id())
-  
+  users.increment_tokens(db, name,
+                         response_record.prompt_tokens + response_record.completion_tokens)
 
 def run_test():
   session = Session()
