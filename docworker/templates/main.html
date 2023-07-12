@@ -5,7 +5,7 @@ ToDo:
 - check for same name not equal files
 #}
 {%block head %}
-{% if not session is none and session.status.is_running() %}
+{% if not session is none and session.is_running(run_id) %}
 <meta http-equiv="refresh" content="5;URL={{ url_for('analysis.main', doc=doc, run_id=run_id) }}">
 {% endif %}
 {% endblock %}
@@ -68,14 +68,23 @@ ToDo:
 	    {% endif %}
 	      
 	    <hr>
+	    {# Browse and upload does not work well when page is refreshed #}
 	    <form action="{{ url_for('analysis.main')}}"
 		  enctype="multipart/form-data" method="post" id="form">
 	      <div>
+		{% if session is none or not session.is_running(run_id) %}
 		<input type="file" id="file" name="file" class="inputfile"/>
 		<input type="submit" name="upload" id="upload" value="Upload"/>
+		{% else %}
+		<input type="file" id="file" name="file"
+		       class="inputfile" disabled/>
+		<input type="submit" name="upload" id="upload"
+		       value="Upload" disabled/>
+		{% endif %}		
 	      </div>
 	    </form>
 	    <hr>
+
 	    <div>
 	      <a href="{{ url_for("analysis.doclist")}}">File list</a>
 	    </div>
@@ -85,14 +94,17 @@ ToDo:
 		Run history
 	      </a>
 	    </div>
-	    {% if not run_id is none %}	    
+	    {# Show new prompt if a result is up and we are not running #}
+	    {% if not run_id is none %}
+	    {% if not session is none and not session.is_running(run_id) %}
 	    <div>
 	      <a href="{{ url_for('analysis.main', doc=doc) }}">
 		New prompt
 	      </a>
 	    </div>
-	    {% endif %}	    
 	    {% endif %}
+	    {% endif %}
+	    {% endif %}	    
 	  </div>
 	</td>
 	{% if session is none or run_id is none %} 
@@ -121,7 +133,7 @@ ToDo:
     <div style="border-width:1px;border-style:solid;border-color:grey;padding:1em;">
       Prompt: {{ session.prompt(run_id) }}
       <p>State:
-	{% if session.status.is_running() %}
+	{% if session.is_running(run_id) %}
 	Process Running....
 	{% else %}
 	Complete

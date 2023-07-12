@@ -44,36 +44,18 @@ class DynamicStatus:
   State of running completion task.
   """
   def __init__(self):
-    self.complete_steps = 0
-    self.status_message = ""
     self.source_items = []
     self.to_run = []
     self.current_results = []    
     self.completed_run = []
     self.prompt = ""
     self.result_id = 0
-    self.start_time = None
-    self.stop_time = None    
     self.run_id = 0
     
-  def is_running(self):
-    # Time limit on how long a task can be considered running.
-    return (self.start_time is not None and self.stop_time is None and
-            (datetime.datetime.now() -
-             self.start_time).total_seconds() < 60 * 60)
-
-  def set_status_message(self, message):
-    self.status_message = message
-
   def start_run(self, prompt, item_ids):
-    self.start_time = datetime.datetime.now()
     self.prompt = prompt
     self.to_run = item_ids.copy()
     self.source_items = item_ids.copy()    
-    self.status_message = "Running..."
-
-  def complete_run(self):
-    self.stop_time = datetime.datetime.now()
 
   def next_item(self):
     if len(self.to_run) == 0:
@@ -95,7 +77,6 @@ class DynamicStatus:
             not self.to_run[0] in self.source_items)
     
   def note_step_complete(self, result_id=None):
-    self.complete_steps += 1
     if result_id is not None:
       self.completed_run.append(result_id)
       self.current_results.append(result_id)
@@ -109,7 +90,6 @@ class DynamicStatus:
       # End condition, one result produced.
       self.result_id = self.current_results[0]
       self.current_results = []
-      self.status_message = ""
       return False
 
     if len(self.current_results) > 1:
@@ -146,6 +126,7 @@ class RunRecord:
   def __init__(self, run_id, prompt_id, start_time=None):
     self.run_id = run_id
     self.start_time = start_time
+    self.stop_time = None
     if self.start_time is None:
       self.start_time = datetime.datetime.now()
     self.result_id = 0
@@ -501,6 +482,21 @@ class Session:
         return run_record
     return None
 
+  def is_running(self, run_id=None):
+    # Time limit on how long a task can be considered running.
+    run_record = self.get_run_record(run_id)
+    if run_record is not None:    
+      return (run_record.start_time is not None and
+              run_record.stop_time is None and
+              (datetime.datetime.now() -
+               run_record.start_time).total_seconds() < 60 * 60)
+    return False
+
+  def complete_run(self):
+    run_record = self.get_run_record()
+    if run_record is not None:
+      run_record.stop_time = datetime.datetime.now()
+  
   def status_message(self, run_id=None):
     run_record = self.get_run_record(run_id)
     if run_record is not None:
@@ -522,7 +518,7 @@ class Session:
     run_record = self.get_run_record(run_id)
     if run_record is not None:
       return run_record.complete_steps
-    return o
+    return 0
     
   def note_step_complete(self, result_id=None):
     run_record = self.get_run_record()
@@ -657,13 +653,13 @@ class Session:
     self.status.start_run(prompt, item_ids)
     prompt_id = self.get_prompt_id(prompt)    
     run_record = RunRecord(self.status.run_id,
-                           prompt_id,
-                           self.status.start_time)
+                           prompt_id)
+    run_record.status_message = "Running..."    
     self.run_list.append(run_record)
 
   def cancel_run(self, message):
     self.set_status_message(message)
-    self.status.complete_run()
+    self.complete_run()
     self.status.to_run = []
     
 
@@ -726,8 +722,6 @@ def load_session(file_name):
     session.status = DynamicStatus()
   if not hasattr(session.status, 'result_id'):
     session.status.result_id = 0 
-  if not hasattr(session.status, 'stop_time'):
-    session.status.stop_time = None
   if not hasattr(session.status, 'run_id'):
     session.status.run_id = 0
   if not hasattr(session, 'run_list'):
@@ -750,6 +744,8 @@ def load_session(file_name):
       run_record.complete_steps = 0
     if not hasattr(run_record, "status_message"):
       run_record.status_message = ""
+    if not hasattr(run_record, "stop_time"):
+      run_record.stop_time = None
         
   if not hasattr(session, 'md5_digest'):
     session.md5_digest = b''
@@ -973,7 +969,7 @@ def run_all_docgen(file_path, session):
       if completion is not None:
         session.set_final_result(completion)
         session.set_status_message("")
-        session.status.complete_run()
+        session.complete_run()
         completion.set_final_result()
         result_id = completion.id()
         save_session(file_path, session)

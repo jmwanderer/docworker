@@ -187,7 +187,7 @@ def main():
     if dsession is not None:
       doc = doc_id
       # If a run is in progress, show that run
-      if run_id is None and dsession.status.is_running():
+      if run_id is None and dsession.is_running():
         run_id = dsession.status.run_id
                     
     return render_template("main.html",
@@ -223,7 +223,7 @@ def main():
     elif request.form.get('run'):
       prompt = request.form['prompt'].strip()      
       dsession = get_session(doc_id)
-      if (dsession is None or dsession.status.is_running() or
+      if (dsession is None or dsession.is_running() or
           prompt is None or len(prompt) == 0):
         return redirect(url_for('analysis.main'))
       
@@ -365,7 +365,7 @@ def docgen():
     if session is None:
       return redirect(url_for('analysis.doclist'))
 
-    if session.status.is_running():
+    if session.is_running():
       # Go to in progress run
       return redirect(url_for('analysis.genresult', doc=doc))          
       
@@ -381,7 +381,7 @@ def docgen():
     
     prompt = request.form['prompt'].strip()
     if (prompt is None or len(prompt) == 0 or
-        session.status.is_running()):
+        session.is_running()):
       return redirect(url_for('analysis.docgen', doc=doc))
 
     run_id = docx_util.start_docgen(file_path, session, prompt)
@@ -437,7 +437,7 @@ def generate():
         id_list.append(item.id())
 
     if (prompt is None or len(prompt) == 0 or len(id_list) == 0 or
-        session.status.is_running()):
+        session.is_running()):
       return redirect(url_for('analysis.generate', doc=doc, items=item_names))
         
     prompt_id = session.get_prompt_id(prompt)
@@ -560,7 +560,7 @@ def sel_gen():
     doc = request.args.get('doc')
     session = get_session(doc)
 
-    if session.status.is_running():
+    if session.is_running():
       # Go to in progress run
       return redirect(url_for('analysis.genresult', doc=doc))          
     
