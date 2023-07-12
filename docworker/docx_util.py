@@ -53,12 +53,12 @@ class DynamicStatus:
     self.prompt = ""
     self.result_id = 0
     self.start_time = None
+    self.stop_time = None    
     self.run_id = 0
     
   def is_running(self):
     # Time limit on how long a task can be considered running.
-    return (self.start_time != None and self.result_id == 0 and
-            len(self.to_run) > 0 and
+    return (self.start_time is not None and self.stop_time is None and
             (datetime.datetime.now() -
              self.start_time).total_seconds() < 60 * 60)
 
@@ -71,6 +71,9 @@ class DynamicStatus:
     self.to_run = item_ids.copy()
     self.source_items = item_ids.copy()    
     self.status_message = "Running..."
+
+  def complete_run(self):
+    self.stop_time = datetime.datetime.now()
 
   def next_item(self):
     if len(self.to_run) == 0:
@@ -476,37 +479,62 @@ class Session:
       return item.name()
     return None
   
-  def get_result_item(self, run_id=0):
+  def get_result_item(self, run_id=None):
     """
     Return the final result item of the given completion run.
     """
-    # Check if we are looking for a specific run or the latest
-    if run_id != 0:
-      # Look for matching run_id
-      for run_record in self.run_list:
-        if run_record.run_id == run_id:
-          return self.get_item_by_id(run_record.result_id)
-      # Not found
-      return None
+    run_record = self.get_run_record(run_id)
+    if run_record != None:
+      return self.get_item_by_id(run_record.result_id)
+    return None
 
-    # Return current result if any
-    return self.get_item_by_id(self.status.result_id)
-
-  def is_active_or_run_exists(self, run_id):
+  def get_run_record(self, run_id=None):
     """
-    Return true if there is a dog_gen running or the specified
-    run exists.
+    Return the matching run_record, or the curret one
+    if no ID is specified.
     """
-    if self.status.is_running():
-      return True
-
+    if run_id is None:
+      run_id = self.status.run_id
     # Look for matching run_id
     for run_record in self.run_list:
       if run_record.run_id == run_id:
-        return True
+        return run_record
+    return None
 
-    return False
-  
+  def status_message(self, run_id=None):
+    run_record = self.get_run_record(run_id)
+    if run_record is not None:
+      return run_record.status_message
+    return None
+
+  def set_status_message(self, message, run_id=None):
+    run_record = self.get_run_record(run_id)
+    if run_record is not None:
+      run_record.status_message = message
+
+  def prompt(self, run_id=None):
+    run_record = self.get_run_record(run_id)
+    if run_record is not None:
+      return self.get_prompt_by_id(run_record.prompt_id)
+    return None
+
+  def completed_steps(self, run_id=None):
+    run_record = self.get_run_record(run_id)
+    if run_record is not None:
+      return run_record.complete_steps
+    return o
+    
+  def note_step_complete(self, result_id=None):
+    run_record = self.get_run_record()
+    if run_record is not None:
+      run_record.complete_steps += 1
+    self.status.note_step_complete(result_id)
+    
+  def run_exists(self, run_id):
+    """
+    Return true if the run exists.
+    """
+    return self.get_run_record(run_id) is not None
 
   def doc_tokens(self):
     total = 0
@@ -629,12 +657,13 @@ class Session:
     self.status.start_run(prompt, item_ids)
     prompt_id = self.get_prompt_id(prompt)    
     run_record = RunRecord(self.status.run_id,
-                           self.status.prompt_id,
+                           prompt_id,
                            self.status.start_time)
     self.run_list.append(run_record)
 
   def cancel_run(self, message):
-    self.status.set_status_message(message)
+    self.set_status_message(message)
+    self.status.complete_run()
     self.status.to_run = []
     
 
@@ -697,6 +726,8 @@ def load_session(file_name):
     session.status = DynamicStatus()
   if not hasattr(session.status, 'result_id'):
     session.status.result_id = 0 
+  if not hasattr(session.status, 'stop_time'):
+    session.status.stop_time = None
   if not hasattr(session.status, 'run_id'):
     session.status.run_id = 0
   if not hasattr(session, 'run_list'):
@@ -845,7 +876,7 @@ def run_completion(prompt, text, max_tokens, status_cb=None):
     try:
       # TODO: set max_tokens to appropriate amount
       start_time = datetime.datetime.now()
-      request_timeout = 20 + 10 * count
+      request_timeout = 30 + 10 * count
       response = openai.ChatCompletion.create(
         model=section_util.AI_MODEL,
         max_tokens = max_tokens,
@@ -926,7 +957,7 @@ def run_all_docgen(file_path, session):
         id = session.status.pop_item()
         logging.debug("skip unnecessary docgen: %d", id)
         # Add directly to results list for further processing
-        session.status.note_step_complete(id)
+        session.note_step_complete(id)
       else:
         logging.debug("loop for running docgen")
         run_next_docgen(file_path, session)
@@ -941,7 +972,8 @@ def run_all_docgen(file_path, session):
       completion = session.get_item_by_id(session.status.result_id)
       if completion is not None:
         session.set_final_result(completion)
-        session.status.set_status_message("")
+        session.set_status_message("")
+        session.status.complete_run()
         completion.set_final_result()
         result_id = completion.id()
         save_session(file_path, session)
@@ -992,14 +1024,14 @@ def run_next_docgen(file_path, session):
   logging.info("run completion with %d items" % len(item_id_list))
 
   # Update status with last item
-  session.status.set_status_message("%s on %s" %
-                                    (prompt, item.name()))
+  session.set_status_message("%s on %s" %
+                             (prompt, item.name()))
   save_session(file_path, session)
   
   err_message = ''
   def status_cb(message):
     err_message = str(message)
-    session.status.set_status_message(str(message))
+    session.set_status_message(str(message))
     save_session(file_path, session)
 
 
@@ -1025,7 +1057,7 @@ def run_next_docgen(file_path, session):
     text,
     response_record.completion_tokens,
     response_record.prompt_tokens + response_record.completion_tokens)
-  session.status.note_step_complete(completion.id())
+  session.note_step_complete(completion.id())
 
   
     

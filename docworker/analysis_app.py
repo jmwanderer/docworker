@@ -177,7 +177,7 @@ def main():
     return redirect(url_for('static', filename='noauth.html'))
   
   doc = None
-  print("main")
+
   if request.method == "GET":  
     doc_id = request.args.get('doc')
     run_id = request.args.get('run_id')
@@ -186,6 +186,9 @@ def main():
     dsession = get_session(doc_id)
     if dsession is not None:
       doc = doc_id
+      # If a run is in progress, show that run
+      if run_id is None and dsession.status.is_running():
+        run_id = dsession.status.run_id
                     
     return render_template("main.html",
                            doc=doc,
@@ -227,7 +230,7 @@ def main():
       print("start run prompt")
       file_path = get_doc_file_path(doc_id)
       run_id = docx_util.start_docgen(file_path, dsession, prompt)
-      # Check if there are obviously not enough tokens
+      # Check if there are clearly not  enough tokens to run the generation
       if dsession.run_input_tokens() > users.token_count(get_db(), g.user):
         dsession.cancel_run("Insufficient tokens")
         docx_util.save_session(file_path, dsession)
@@ -382,9 +385,15 @@ def docgen():
       return redirect(url_for('analysis.docgen', doc=doc))
 
     run_id = docx_util.start_docgen(file_path, session, prompt)
-    t = Thread(target=background_docgen,
-               args=[current_app.config['DATABASE'], g.user, file_path, session])
-    t.start()
+    # Check if there are clearly not  enough tokens to run the generation
+    if session.run_input_tokens() > users.token_count(get_db(), g.user):
+      session.cancel_run("Insufficient tokens")
+      docx_util.save_session(file_path, session)
+    else:
+      t = Thread(target=background_docgen,
+                 args=[current_app.config['DATABASE'], g.user,
+                       file_path, session])
+      t.start()
 
     return redirect(url_for('analysis.genresult', doc=doc, run_id=run_id))    
   
@@ -434,9 +443,15 @@ def generate():
     prompt_id = session.get_prompt_id(prompt)
   
     run_id = docx_util.start_docgen(file_path, session, prompt, id_list)
-    t = Thread(target=background_docgen,
-               args=[current_app.config['DATABASE'], g.user, file_path, session])
-    t.start()
+    # Check if there are clearly not  enough tokens to run the generation
+    if session.run_input_tokens() > users.token_count(get_db(), g.user):
+      session.cancel_run("Insufficient tokens")
+      docx_util.save_session(file_path, session)
+    else:
+      t = Thread(target=background_docgen,
+                 args=[current_app.config['DATABASE'], g.user,
+                       file_path, session])
+      t.start()
 
     return redirect(url_for('analysis.genresult', doc=doc, run_id=run_id))
 

@@ -2,7 +2,7 @@
 
 {%block head %}
 {% if session.status.is_running() %}
-<meta http-equiv="refresh" content="10;URL={{ url_for('analysis.genresult', doc=doc) }}">
+<meta http-equiv="refresh" content="5;URL={{ url_for('analysis.genresult', doc=doc) }}">
 {% endif %}
 {% endblock %}
 
@@ -26,9 +26,9 @@
       {% endif %}
       </b>
     </p>
-    <p>Steps: {{ session.status.complete_steps }} completions run.
+    <p>Steps: {{ session.completed_steps() }} completions run.
     </p>
-    <p> {{ session.status.status_message }} </p>
+    <p> {{ session.status_message() }} </p>
   </div>
 
   <h2>Result:</h2>

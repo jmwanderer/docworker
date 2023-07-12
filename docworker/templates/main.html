@@ -40,7 +40,7 @@ ToDo:
 	<td>
 	  Load a document:
 	</td>
-	{% if session is none or not session.is_active_or_run_exists(run_id) %}
+	{% if session is none or run_id is none %}
 	<td>
 	  Select a prompt:
 	</td>
@@ -85,7 +85,7 @@ ToDo:
 		Run history
 	      </a>
 	    </div>
-	    {% if session.get_result_item(run_id) %}	    
+	    {% if not run_id is none %}	    
 	    <div>
 	      <a href="{{ url_for('analysis.main', doc=doc) }}">
 		New prompt
@@ -95,7 +95,7 @@ ToDo:
 	    {% endif %}
 	  </div>
 	</td>
-	{% if session is none or not session.is_active_or_run_exists(run_id) %} 
+	{% if session is none or run_id is none %} 
 	<td style="vertical-align:top;">
 	  <form action="{{ url_for('analysis.main')}}"
 		method="post" id="form">
@@ -117,9 +117,9 @@ ToDo:
     </table>
     <p></p>
     {% if not session is none %}
-    {% if session.is_active_or_run_exists(run_id) %}    
+    {% if not run_id is none %}    
     <div style="border-width:1px;border-style:solid;border-color:grey;padding:1em;">
-      Prompt: {{ session.status.prompt }}
+      Prompt: {{ session.prompt(run_id) }}
       <p>State:
 	{% if session.status.is_running() %}
 	Process Running....
@@ -127,15 +127,15 @@ ToDo:
 	Complete
 	{% endif %}
       </p>
-      <p>Steps: {{ session.status.complete_steps }} completions run.	
+      <p>Steps: {{ session.completed_steps(run_id) }} completions run.	
       </p>
-      {{ session.status.status_message }}
+      {{ session.status_message(run_id) }}
     </div>
     {% endif %}
     {% endif %}    
 
     {% if not session is none %}
-    {% if session.get_result_item(run_id) %}        
+    {% if not run_id is none and session.get_result_item(run_id) %}        
     <h2>Result:</h2>
     <table style="width:100%">
       <tr>
