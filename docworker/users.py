@@ -18,11 +18,20 @@ def note_user_access(db, name):
   db.commit()
   
 
+def token_count(db, name):
+  """
+  Return number of tokens available.
+  """
+  (consumed, limit) = db.execute(
+    "SELECT consumed_tokens, limit_tokens FROM user WHERE username = ?",
+    (name,)).fetchone()
+  return limit - consumed
+  
+  
 def increment_tokens(db, name, count):
   """
   Update the token count.
   """
-  print("increment tokens for %s - %d" % (name, count))
   (tokens,) = db.execute("SELECT consumed_tokens FROM user WHERE username = ?",
                      (name,)).fetchone()
   tokens += count
@@ -47,7 +56,6 @@ def add_or_update_user(db, user_dir, name, limit):
   """
   (count,) = db.execute("SELECT COUNT(*) FROM user WHERE username = ?",
                      (name,)).fetchone()
-  print("count %d" % count)
   if count == 0:
     print("add user")
     db.execute("INSERT INTO user (username, limit_tokens) VALUES (?,?)",

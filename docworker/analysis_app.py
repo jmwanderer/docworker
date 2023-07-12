@@ -227,9 +227,16 @@ def main():
       print("start run prompt")
       file_path = get_doc_file_path(doc_id)
       run_id = docx_util.start_docgen(file_path, dsession, prompt)
-      t = Thread(target=background_docgen,
-                 args=[current_app.config['DATABASE'], g.user, file_path, dsession])
-      t.start()
+      # Check if there are obviously not enough tokens
+      if dsession.run_input_tokens() > users.token_count(get_db(), g.user):
+        dsession.cancel_run("Insufficient tokens")
+        docx_util.save_session(file_path, dsession)
+      else:
+        t = Thread(target=background_docgen,
+                   args=[current_app.config['DATABASE'], g.user,
+                         file_path, dsession])
+        t.start()
+        
       return redirect(url_for('analysis.main', doc=doc_id, run_id=run_id))
 
     else:

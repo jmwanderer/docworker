@@ -40,7 +40,7 @@ ToDo:
 	<td>
 	  Load a document:
 	</td>
-	{% if session is none or not session.is_active_or_result(run_id) %}    	
+	{% if session is none or not session.is_active_or_run_exists(run_id) %}
 	<td>
 	  Select a prompt:
 	</td>
@@ -95,7 +95,7 @@ ToDo:
 	    {% endif %}
 	  </div>
 	</td>
-	{% if session is none or not session.is_active_or_result(run_id) %} 
+	{% if session is none or not session.is_active_or_run_exists(run_id) %} 
 	<td style="vertical-align:top;">
 	  <form action="{{ url_for('analysis.main')}}"
 		method="post" id="form">
@@ -117,7 +117,7 @@ ToDo:
     </table>
     <p></p>
     {% if not session is none %}
-    {% if session.is_active_or_result(run_id) %}    
+    {% if session.is_active_or_run_exists(run_id) %}    
     <div style="border-width:1px;border-style:solid;border-color:grey;padding:1em;">
       Prompt: {{ session.status.prompt }}
       <p>State:

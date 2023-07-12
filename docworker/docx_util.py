@@ -58,6 +58,7 @@ class DynamicStatus:
   def is_running(self):
     # Time limit on how long a task can be considered running.
     return (self.start_time != None and self.result_id == 0 and
+            len(self.to_run) > 0 and
             (datetime.datetime.now() -
              self.start_time).total_seconds() < 60 * 60)
 
@@ -139,12 +140,15 @@ class RunRecord:
   Includes the start time, run id, and (eventually) the final result id
   """
 
-  def __init__(self, run_id, start_time=None):
+  def __init__(self, run_id, prompt_id, start_time=None):
     self.run_id = run_id
     self.start_time = start_time
     if self.start_time is None:
       self.start_time = datetime.datetime.now()
     self.result_id = 0
+    self.prompt_id = prompt_id
+    self.complete_steps = 0
+    self.status_message = ""
 
 
 class TextRecord:
@@ -488,11 +492,21 @@ class Session:
     # Return current result if any
     return self.get_item_by_id(self.status.result_id)
 
-  def is_active_or_result(self, run_id):
+  def is_active_or_run_exists(self, run_id):
     """
-    Check if there is a result or a run in progress
+    Return true if there is a dog_gen running or the specified
+    run exists.
     """
-    return self.get_result_item(run_id) or self.status.is_running()
+    if self.status.is_running():
+      return True
+
+    # Look for matching run_id
+    for run_record in self.run_list:
+      if run_record.run_id == run_id:
+        return True
+
+    return False
+  
 
   def doc_tokens(self):
     total = 0
@@ -613,9 +627,28 @@ class Session:
     self.status.run_id = self.next_run_id
     self.next_run_id += 1
     self.status.start_run(prompt, item_ids)
-    run_record = RunRecord(self.status.run_id, self.status.start_time)
+    prompt_id = self.get_prompt_id(prompt)    
+    run_record = RunRecord(self.status.run_id,
+                           self.status.prompt_id,
+                           self.status.start_time)
     self.run_list.append(run_record)
 
+  def cancel_run(self, message):
+    self.status.set_status_message(message)
+    self.status.to_run = []
+    
+
+  def run_input_tokens(self):
+    """
+    Return the total number of tokens in the input
+    """
+    count = 0
+    for item_id in self.status.to_run:
+      item = self.get_item_by_id(item_id)
+      if item is not None:
+        count += item.token_count()
+    return count
+  
   def run_date_time(self, run_record):
     # Return the time without microseconds.
     dt = datetime.datetime(run_record.start_time.year,
@@ -627,9 +660,9 @@ class Session:
     return dt.isoformat(sep=' ')
   
   def run_record_prompt(self, run_record):
-    item = self.get_item_by_id(run_record.result_id)
-    if item is not None:
-      return self.get_prompt_by_id(item.prompt_id)    
+    prompt = self.get_prompt_by_id(run_record.prompt_id)
+    if prompt is not None:
+      return prompt
     return ""
 
   def set_final_result(self, completion):
@@ -675,6 +708,18 @@ def load_session(file_name):
         run_record.result_id = completion.id()
         session.next_run_id += 1
         session.run_list.append(run_record)
+  # Check prompt_id fields on run_record
+  for run_record in session.run_list:
+    if not hasattr(run_record, "prompt_id"):
+      run_record.prompt_id = 0
+      item = session.get_item_by_id(run_record.result_id)
+      if item is not None:
+        run_record.prompt_id = item.prompt_id
+    if not hasattr(run_record, "complete_steps"):
+      run_record.complete_steps = 0
+    if not hasattr(run_record, "status_message"):
+      run_record.status_message = ""
+        
   if not hasattr(session, 'md5_digest'):
     session.md5_digest = b''
     
@@ -896,6 +941,7 @@ def run_all_docgen(file_path, session):
       completion = session.get_item_by_id(session.status.result_id)
       if completion is not None:
         session.set_final_result(completion)
+        session.status.set_status_message("")
         completion.set_final_result()
         result_id = completion.id()
         save_session(file_path, session)
