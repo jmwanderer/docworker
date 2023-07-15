@@ -775,7 +775,6 @@ def find_or_create_doc(user_dir, filename, file):
 
   # Generate an md5 sum
   md5_digest = hashlib.md5(tmp_file.read()).digest()
-  print("digest %s" % str(md5_digest))
   tmp_file.seek(0, 0)
 
   # Find a matching name and md5_digest, or exit loop with a
