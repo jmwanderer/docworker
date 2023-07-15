@@ -295,7 +295,7 @@ def docview():
   doc = request.args.get('doc')  
   session = get_session(doc)
   if session is None:
-    return redirect(url_for('analysis.doclist'))
+    return redirect(url_for('analysis.main'))
   
   item_names = request.args.getlist("items")
   focus_item = request.args.get("focus")    
@@ -310,7 +310,7 @@ def segview():
   doc = request.args.get('doc')
   session = get_session(doc)  
   if session is None:
-    return redirect(url_for('analysis.doclist'))
+    return redirect(url_for('analysis.main'))
 
   item_name = request.args.get("item")
   if item_name is None:
@@ -363,7 +363,7 @@ def docgen():
     doc = request.args.get('doc')  
     session = get_session(doc)      
     if session is None:
-      return redirect(url_for('analysis.doclist'))
+      return redirect(url_for('analysis.main'))
 
     if session.is_running():
       # Go to in progress run
@@ -376,7 +376,7 @@ def docgen():
     doc = request.form.get('doc')
     session = get_session(doc)          
     if session is None:
-      return redirect(url_for('analysis.doclist'))
+      return redirect(url_for('analysis.main'))
     file_path = get_doc_file_path(doc)    
     
     prompt = request.form['prompt'].strip()
@@ -405,7 +405,7 @@ def generate():
     doc = request.args.get('doc')
     session = get_session(doc)              
     if session is None:
-      return redirect(url_for('analysis.doclist'))
+      return redirect(url_for('analysis.main'))
 
     item_names = request.args.getlist("items")
     items_state = analysis_util.ItemsState()
@@ -421,7 +421,7 @@ def generate():
     doc = request.form.get('doc')    
     session = get_session(doc)                  
     if session is None:
-      return redirect(url_for('analysis.doclist'))
+      return redirect(url_for('analysis.main'))
     file_path = get_doc_file_path(doc)    
 
     item_names = request.form.getlist('items')
@@ -462,7 +462,7 @@ def genresult():
   doc = request.args.get('doc')
   session = get_session(doc)              
   if session is None:
-    return redirect(url_for('analysis.doclist'))
+    return redirect(url_for('analysis.main'))
 
   return render_template("genresult.html",
                          doc=doc,
