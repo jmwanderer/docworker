@@ -7,7 +7,10 @@ authors = [
 ]
 dependencies = [
   "flask",
-  "openai"
+  "openai",
+  "python-docx",
+  "tiktoken",
+  "pdfplumber",
 ]
 
 [build-system]

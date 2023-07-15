@@ -23,19 +23,20 @@ import openai
 import sqlite3
 
 INITIAL_PROMPTS = [
-  ('Summarize', 'Summarize the main points'),
-  ('Main Ideas', 'Describe the main ideas'),
-  ('Explain', 'Explain the concepts'),
-  ('Important', 'Explain why this is important'),
-  ('Should know', 'What should we know about this'),
-  ('Understand', 'Help me understand this'),
-  ('Target Dates', 'List deliverables and target dates'),
+  ('Summarize', 'Provide a summary'),  
+  ('Summarize Main Points', 'Summarize the main points'),
+  ('Summarize with Insights', 'Summarize and give a list of bullet points with key insights and the most important facts'),  
+  ('Describe Main Ideas', 'Describe the main ideas'),
+  ('Explain Concepts', 'Explain the concepts'),
+  ('Explain Importantance', 'Explain why this is important'),
+  ('What Should We Know', 'What should we know about this'),
+  ('Help Understanding', 'Help me understand this'),
+  ('List Target Dates', 'List deliverables and target dates'),
   ('Key Challenges', 'Describe the key challenges to be addressed'),      
   ('Explain Pirate', 'Explain like a pirate'),
   ('Explain Surfer', 'Explain like a surfer'),    
-  ('Summarize with insights', 'Summarize and give a list of bullet points with key insights and the most important facts'),
-  ('List people', 'List the people that are mentioned'),
-  ('List topics', 'List the topics that are mentioned'),
+  ('List People', 'List the people that are mentioned'),
+  ('List Topics', 'List the topics that are mentioned'),
   ]
 
 
