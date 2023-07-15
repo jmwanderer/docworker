@@ -134,9 +134,9 @@ ToDo:
       Prompt: {{ session.prompt(run_id) }}
       <p>State:
 	{% if session.is_running(run_id) %}
-	Process Running....
+	<b>Process Running....</b>
 	{% else %}
-	Complete
+	<b>Complete</b>
 	{% endif %}
       </p>
       <p>Steps: {{ session.completed_steps(run_id) }} completions run.	

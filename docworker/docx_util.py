@@ -982,7 +982,8 @@ def run_next_docgen(file_path, session):
   item_id_list = []
   text_list = []
   token_count = 0
-
+  status_message = ""
+  
   # Pull items until max size would be exceeded
   while not done:
     item_id = session.status.next_item()
@@ -1009,19 +1010,23 @@ def run_next_docgen(file_path, session):
     token_count += count
     logging.debug("add id %d to source list. count = %d, total = %d" %
                   (item.id(), count, token_count))
+    if len(status_message) > 0:
+      status_message += ", "
+    status_message += item.name()
+
 
   if len(item_id_list) == 0:
     logging.error("No content for docgen")
     return
 
-  # Run a completion
+  # Setup to run a completion
   prompt = session.status.prompt
   prompt_id = session.get_prompt_id(prompt)
   logging.info("run completion with %d items" % len(item_id_list))
 
   # Update status with last item
   session.set_status_message("%s on %s" %
-                             (prompt, item.name()))
+                             (prompt, status_message))
   save_session(file_path, session)
   
   err_message = ''
