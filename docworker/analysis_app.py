@@ -16,6 +16,7 @@ import werkzeug.utils
 from logging.config import dictConfig
 import logging
 from . import docx_summary
+from . import doc_convert
 from . import docx_util
 from . import analysis_util
 from . import users
@@ -46,7 +47,7 @@ def create_app(test_config=None,fakeai=False):
                         level=logging.INFO,
                         format=FORMAT,)
   else:
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
   
   docx_util.FAKE_AI_COMPLETION=fakeai
 
@@ -214,9 +215,8 @@ def main():
       doc = None
       try:    
         doc = docx_util.find_or_create_doc(user_dir, filename, file)
-      except Exception as err:
-        flask.flash("Error loading file. (Internal error: %s)" % str(err))      
-        flask.flash("Upload a DOCX file.")      
+      except doc_convert.DocError as err:
+        flask.flash("Error loading file: %s" % str(err))
 
       return redirect(url_for('analysis.main', doc=doc, run_id=run_id))
 
@@ -513,7 +513,7 @@ def export():
       out_file.write(session.get_item_by_name(name).text().encode('utf-8'))
       out_file.write('\n\n'.encode('utf-8'))      
     out_file.seek(0, 0)
-    return flask.send_file(out_file, mimetype='text/plain',
+    return flask.send_file(out_file, mimetype='text/plain;charset=utf-8',
                            as_attachment=True,
                            download_name='%s.txt' %
                            os.path.basename(session.name))

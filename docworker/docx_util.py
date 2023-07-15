@@ -6,8 +6,8 @@ LLM. This utility supports:
 - completion of the completion results
 - saving state
 """
-from . import extract_docx
 from . import section_util
+from . import doc_convert
 import pickle
 import re
 import logging
@@ -703,10 +703,8 @@ class Session:
   
   def load_doc(self, name, file, md5_digest):
     self.name = name
-    docx_extract = extract_docx.DocXExtract()
-    docx_extract.load_doc(file)
-    in_file = docx_extract.get_result()
-    for chunk in section_util.chunks_from_structured_file(in_file):
+    chunks = doc_convert.doc_to_chunks(name, file)
+    for chunk in chunks:
       self.add_new_segment(chunk.get_text(), chunk.size)
     self.md5_digest = md5_digest
     
@@ -767,6 +765,8 @@ def find_or_create_doc(user_dir, filename, file):
 
   Given a file and filename, find an existing matching file or
   create a new file. 
+
+  May throw exception on failure.
   """
   # Read in file to a tmp file
   tmp_file = tempfile.TemporaryFile()
