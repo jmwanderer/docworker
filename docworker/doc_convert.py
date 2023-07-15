@@ -20,7 +20,6 @@ def doc_to_chunks(filename: str, file: io.BytesIO) -> [section_util.Chunk]:
   Throws exception on failure.
   """
   (type, encoding)  = mimetypes.guess_type(filename)
-  print("type: %s, encoding: %s" % (type, encoding))
   tokenizer = tiktoken.encoding_for_model(section_util.AI_MODEL)  
 
   if type is None:
@@ -44,7 +43,6 @@ def doc_to_chunks(filename: str, file: io.BytesIO) -> [section_util.Chunk]:
       if len(chunk_text) > 0:
         entry.append(chunk_text, len(chunk))
         result.append(entry)
-      print("chunk size %d" % len(tokenizer.encode(chunk_text)))
     return result
 
   elif type == 'text/plain':
@@ -86,13 +84,24 @@ def chunks(text, n, tokenizer):
     # Find the nearest end of sentence within a range of 0.5 * n and n tokens
     j = min(i + int(1.0 * n), len(tokens))
     while j > i + int(0.5 * n):
-      # Decode the tokens and check for full stop or newline
+      # Decode the tokens and check for period
       chunk = tokenizer.decode(tokens[i:j])
-      if chunk.endswith(".") or chunk.endswith("\n"):
+      if chunk.endswith("."):
         break
       j -= 1
+
     # If no end of sentence found, use n tokens as the chunk size
     if j == i + int(0.5 * n):
+      j = min(i + int(1.0 * n), len(tokens))
+      while j > i + int(0.5 * n):
+        # Decode the tokens and check for full stop or newline
+        chunk = tokenizer.decode(tokens[i:j])
+        if chunk.endswith("\n"):
+          break
+        j -= 1
+
+    # If still no end of sentence found, use n tokens as the chunk size
+    if j == i + int(0.5 * n):      
       j = min(i + n, len(tokens))
     yield tokens[i:j]
     i = j
