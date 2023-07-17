@@ -211,6 +211,7 @@ def main():
                     
     return render_template("main.html",
                            doc=doc,
+                           username=g.user,
                            run_id=run_id,
                            prompts=docx_util.INITIAL_PROMPTS,
                            session=dsession)

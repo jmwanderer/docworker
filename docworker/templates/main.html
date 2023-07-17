@@ -9,6 +9,11 @@ Single pane application page.
 {% endblock %}
 
 {% block nav %}
+{% if not username is none %}
+<div style="float:right;text-align:right;">              
+  {{ username }}
+</div>	 
+{% endif %}
 {% endblock %}
 {% block body%}
   
