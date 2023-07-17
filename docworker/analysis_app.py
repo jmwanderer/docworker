@@ -128,6 +128,12 @@ def set_user_command(name, key):
   users.set_user_key(get_db(), name, key)
   click.echo('Updated user.')
 
+@bp.cli.command('get-user')
+@click.argument('name')
+def get_user_command(name):
+  """Dump details of given user."""
+  users.report_user(get_db(), name)
+
 @bp.cli.command('list-users')
 def list_command():
   """List the users in the DB."""

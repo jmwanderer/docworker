@@ -144,6 +144,26 @@ def populate_samples(user_dir):
   print("done")
   
 
+
+
+def report_user(db, name):
+  result = db.execute(
+    "SELECT id, access_key, consumed_tokens, limit_tokens, last_access, last_email FROM user WHERE username = ?",
+    (name,)).fetchone()
+  if result is None:
+    print("User %s not found." % name)
+  else:
+    (id, access_key, consumed_tokens, limit_tokens, last_access, last_email) = result
+    print("User (%d) %s" % (id, name))
+    print("\taccess_key: %s" % (access_key))
+    print("\tconsumed tokens: %s" % (consumed_tokens))
+    print("\tlimit tokens: %s" % (limit_tokens))
+    access_dt = datetime.datetime.fromtimestamp(last_access)
+    email_dt = datetime.datetime.fromtimestamp(last_email)    
+    print("\tlast_access: %s" % (access_dt.isoformat(sep=' ')))
+    print("\tlast_email: %s" % (email_dt.isoformat(sep=' ')))
+      
+    
 def list_users(db):
   q = db.execute("SELECT id, username, access_key, consumed_tokens, limit_tokens, last_access, last_email FROM user")
   for (id, user, access_key, consumed, limit, last_access, last_email) in q.fetchall():
@@ -153,12 +173,3 @@ def list_users(db):
           (id, user, access_key, limit, consumed,
            access_dt.isoformat(sep=' '),
            email_dt.isoformat(sep=' ')))          
-           
-
-
-def get_or_create_user(name):
-  """
-  If user exists, return the access key.
-  If user does not exist, create the account and return the access key.
-  """
-  return 'xxxx'

@@ -22,6 +22,9 @@ All commands should be run from the top level of the project directory.
 
 `flask --app docworker.analysis_app set-user <user-name>`
 
+### Lookup access key
+
+`flask --app docworker.analysis_app get-user <user-name>``
 
 ## Run Debug Server
 
@@ -36,7 +39,7 @@ Run with OpenAI calls mocked out:
 `flask --app "docworker.analysis_app:create_app(fakeai=True)" run --debug`
 
 
-Open: http://localhost:5000/?authkey=user-name
+Open: http://localhost:5000/?authkey=<access_key>
 
 ## Test
 
