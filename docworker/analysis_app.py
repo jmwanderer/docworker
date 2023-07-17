@@ -120,6 +120,14 @@ def set_user_command(name, limit):
   users.add_or_update_user(get_db(), user_dir, name, limit)
   click.echo('Configured user.')
 
+@bp.cli.command('set-user-key')
+@click.argument('name')
+@click.argument('key')
+def set_user_command(name, key):
+  """Update an access key for a user."""
+  users.set_user_key(get_db(), name, key)
+  click.echo('Updated user.')
+
 @bp.cli.command('list-users')
 def list_command():
   """List the users in the DB."""

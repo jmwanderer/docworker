@@ -6,6 +6,7 @@ import pkg_resources
 import datetime
 import docworker
 import uuid
+import logging
 
 def note_user_access(db, name):
   """
@@ -99,8 +100,13 @@ def check_available_tokens(db, name):
     (name,)).fetchone()
   
   return consumed < limit
-  
-  
+
+def set_user_key(db, name, key):
+    logging.info("set user key %s", name)
+    db.execute("UPDATE user SET access_key = ? WHERE username = ?",
+               (key,name))
+    db.commit()
+    
 def add_or_update_user(db, user_dir, name, limit):
   """
   Add a user if it doesn't exist. Otherwise update the limit.
@@ -108,12 +114,12 @@ def add_or_update_user(db, user_dir, name, limit):
   (count,) = db.execute("SELECT COUNT(*) FROM user WHERE username = ?",
                      (name,)).fetchone()
   if count == 0:
-    print("add user")
+    logging.info("add user %s", name)
     db.execute("INSERT INTO user (username, access_key, limit_tokens) VALUES (?,?,?)",
                (name, uuid.uuid4().hex, limit))
     populate_samples(user_dir)
   else:
-    print("update user")
+    logging.info("update user %s", name)
     db.execute("UPDATE user SET limit_tokens = ? WHERE username = ?",
                (limit,name))
   db.commit()
