@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{%block head %}
+{% endblock %}
+
+{% block nav %}
+{% endblock %}
+
+{% block body%}
+  
+<h1>DocWorker</h1>
+<i>A tool for applying GPT to documents.</i>
+<h2>Register for access:</h2>
+{% if status is none %}
+<p>
+Get an access link in email
+</p>
+<form action="{{ url_for('analysis.register')}}"
+      method="post" id="form">
+  <label for="address">Email:</label>
+  <input type="email" id="address" name="address"/>
+  <input type="submit" value="Submit"/>
+</form>
+{% else %}
+<p>
+  {{ status }}
+</p>
+{% endif %}
+
+{% endblock %}
+
+{% block script %}
+{% endblock %}
+      

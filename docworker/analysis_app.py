@@ -34,7 +34,11 @@ def create_app(test_config=None,fakeai=False):
     SECRET_KEY='DEV',
     OPENAI_API_KEY = os.getenv('OPENAI_API_KEY'),
     MAX_CONTENT_LENGTH = 16 * 1000 * 1000,
-    DATABASE=os.path.join(app.instance_path, 'docworker.sqlite'),    
+    DATABASE=os.path.join(app.instance_path, 'docworker.sqlite'),
+    SMTP_USER = os.getenv('SMTP_USER'),
+    SMTP_PASSWORD = os.getenv('SMTP_PASSWORD'),        
+    SMTP_SERVER = os.getenv('SMTP_SERVER'),
+    SMTP_FROM = os.getenv('SMTP_FROM'),        
   )
   if test_config is None:
     app.config.from_pyfile('config.py', silent=True)
@@ -147,10 +151,10 @@ def load_logged_in_user():
   g.user = None
   # Validate user_key
   if user_key is not None and len(user_key) > 0:
-    user_dir = os.path.join(current_app.instance_path, user_key)      
-    if os.path.exists(user_dir):
-      g.user = user_key
-      users.note_user_access(get_db(), user_key)
+    user_name = users.get_user_by_key(get_db(), user_key)
+    if user_name is not None:
+      g.user = user_name
+      users.note_user_access(get_db(), user_name)
 
 def login_required(view):
   @functools.wraps(view)
@@ -166,8 +170,8 @@ def main():
   # Handle initial authorization
   auth_key = request.args.get("authkey")
   if auth_key is not None:
-    user_dir = os.path.join(current_app.instance_path, auth_key)
-    if os.path.exists(user_dir):
+    user_name = users.get_user_by_key(get_db(), auth_key)
+    if user_name is not None:
       session.permanent = True
       session['user_key'] = auth_key
     else:
@@ -589,7 +593,37 @@ def sel_gen():
     if request.form.get('donebutton'):    
       return redirect(url_for('analysis.generate', doc=doc, items=item_names))
     return redirect(url_for('analysis.docview', doc=doc))      
+
+EMAIL_TEXT = """
+Hello %s,
+
+Your access link for DocWorker is %s?authkey=%s
+
+"""
+
   
+@bp.route("/register", methods=("GET", "POST"))
+def register():
+  if request.method == "GET":
+    status = request.args.get('status')
+    return render_template("register.html", status=status)
+  else:
+    # TODO:
+    # - track emails per time unit - rate limit
+    # - track emails to target address - limit by time
+    # - limit number of accounts
+    address = flask.escape(request.form.get('address'))
+
+    user_dir = os.path.join(current_app.instance_path, address)
+    users.add_or_update_user(get_db(), user_dir, address, 50000)
+    key = users.get_user_key(get_db(), address)
+    
+    email = EMAIL_TEXT % (address, url_for('analysis.main', _external=True), key )
+    logging.info("Register request for %s, result == %s", address, key)
+    analysis_util.send_email(current_app.config, [address],
+                             "DocWorker Access Request", email)
+    status = "Email sent to: %s" % address
+    return redirect(url_for('analysis.register', status=status))      
 
 if __name__ == "__main__":
   app = create_app()

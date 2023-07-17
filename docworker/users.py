@@ -5,7 +5,7 @@ import shutil
 import pkg_resources
 import datetime
 import docworker
-
+import uuid
 
 def note_user_access(db, name):
   """
@@ -16,8 +16,31 @@ def note_user_access(db, name):
   db.execute("UPDATE user SET last_access = ? WHERE username = ?",
                (now.timestamp(), name))
   db.commit()
-  
 
+def get_user_by_key(db, key):
+  """
+  Lookup user for key and return user name
+  """
+  result = db.execute(
+    "SELECT username FROM user WHERE access_key = ?",
+    (key,)).fetchone()
+  if result is not None:
+    return result[0]
+  return None
+
+def get_user_key(db, name):
+  """
+  Lookup a user by name and return the access key
+  Return None if doesn't exist
+  """
+  result = db.execute(
+    "SELECT access_key FROM user WHERE username = ?",
+    (name,)).fetchone()
+  if result is not None:
+    return result[0]
+  return None
+
+  
 def token_count(db, name):
   """
   Return number of tokens available.
@@ -58,8 +81,8 @@ def add_or_update_user(db, user_dir, name, limit):
                      (name,)).fetchone()
   if count == 0:
     print("add user")
-    db.execute("INSERT INTO user (username, limit_tokens) VALUES (?,?)",
-               (name, limit))
+    db.execute("INSERT INTO user (username, access_key, limit_tokens) VALUES (?,?,?)",
+               (name, uuid.uuid4().hex, limit))
     populate_samples(user_dir)
   else:
     print("update user")
@@ -88,8 +111,16 @@ def populate_samples(user_dir):
   
 
 def list_users(db):
-  q = db.execute("SELECT id, username, consumed_tokens, limit_tokens, last_access FROM user")
-  for (id, user, consumed, limit, last_access) in q.fetchall():
+  q = db.execute("SELECT id, username, access_key, consumed_tokens, limit_tokens, last_access FROM user")
+  for (id, user, access_key, consumed, limit, last_access) in q.fetchall():
     dt = datetime.datetime.fromtimestamp(last_access)
-    print("user: [%d] %s, limit: %d, consumed %d, last access: %s" %
-          (id, user, limit, consumed, dt.isoformat(sep=' ')))
+    print("user: [%d] %s (%s), limit: %d, consumed %d, last access: %s" %
+          (id, user, access_key, limit, consumed, dt.isoformat(sep=' ')))
+
+
+def get_or_create_user(name):
+  """
+  If user exists, return the access key.
+  If user does not exist, create the account and return the access key.
+  """
+  return 'xxxx'

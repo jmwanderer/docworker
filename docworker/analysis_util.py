@@ -1,10 +1,35 @@
 """
-Utilitiy functions for supporting generating web pages
+Utility functions for supporting the Analysis application.
 """
 
 import os
 import os.path
-from flask import current_app
+import smtplib
+import ssl
+import email.mime.text
+
+
+def send_email(config, to_list, subject, text):
+  """
+  Send and an email via SMTP
+  config - specifies server, user, password, and from address
+  to_list: list of recipients
+  """
+  port = 587
+  msg = email.mime.text.MIMEText(text)
+  msg['Subject'] = subject
+  msg['From'] = config['SMTP_FROM']
+  msg['To'] = ', '.join(to_list)
+
+  try:
+    context = ssl.create_default_context()  
+    server = smtplib.SMTP(config['SMTP_SERVER'], port)
+    server.starttls(context = context)
+    server.login(config['SMTP_USER'], config['SMTP_PASSWORD'])
+    # Send the mail
+    server.sendmail(config['SMTP_FROM'], to_list, msg.as_string())
+  finally:
+    server.quit()
 
 
 
