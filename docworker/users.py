@@ -17,6 +17,34 @@ def note_user_access(db, name):
                (now.timestamp(), name))
   db.commit()
 
+
+def note_email_send(db, name):
+  """
+  Update last email send time for the user.
+  """
+  now = datetime.datetime.now()
+  
+  db.execute("UPDATE user SET last_email = ? WHERE username = ?",
+               (now.timestamp(), name))
+  db.commit()
+
+
+def check_allow_email_send(db, name):
+  """
+  Check if we have sent an email to a user recently.
+  If not, OK to send.
+  """
+  result = db.execute(
+    "SELECT last_email FROM user WHERE username = ?",
+    (name,)).fetchone()
+  if result is None:
+    return True
+
+  now = datetime.datetime.now()
+  sent = datetime.datetime.fromtimestamp(result[0])
+  return (now - sent).total_seconds() > (60 * 60 * 8)
+  
+
 def get_user_by_key(db, key):
   """
   Lookup user for key and return user name
@@ -111,11 +139,15 @@ def populate_samples(user_dir):
   
 
 def list_users(db):
-  q = db.execute("SELECT id, username, access_key, consumed_tokens, limit_tokens, last_access FROM user")
-  for (id, user, access_key, consumed, limit, last_access) in q.fetchall():
-    dt = datetime.datetime.fromtimestamp(last_access)
-    print("user: [%d] %s (%s), limit: %d, consumed %d, last access: %s" %
-          (id, user, access_key, limit, consumed, dt.isoformat(sep=' ')))
+  q = db.execute("SELECT id, username, access_key, consumed_tokens, limit_tokens, last_access, last_email FROM user")
+  for (id, user, access_key, consumed, limit, last_access, last_email) in q.fetchall():
+    access_dt = datetime.datetime.fromtimestamp(last_access)
+    email_dt = datetime.datetime.fromtimestamp(last_email)    
+    print("user: [%d] %s (%s), limit: %d, consumed %d, last access: %s, last email: %s" %
+          (id, user, access_key, limit, consumed,
+           access_dt.isoformat(sep=' '),
+           email_dt.isoformat(sep=' ')))          
+           
 
 
 def get_or_create_user(name):

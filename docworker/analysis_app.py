@@ -620,9 +620,21 @@ def register():
     
     email = EMAIL_TEXT % (address, url_for('analysis.main', _external=True), key )
     logging.info("Register request for %s, result == %s", address, key)
-    analysis_util.send_email(current_app.config, [address],
-                             "DocWorker Access Request", email)
-    status = "Email sent to: %s" % address
+
+    status = "unknown"
+    if users.check_allow_email_send(get_db(), address):
+      try:
+        analysis_util.send_email(current_app.config, [address],
+                                 "DocWorker Access Request", email)
+        status = "Email sent to: %s" % address
+      except Exception as e:
+        logging.info("Failed to send email %s", str(e))
+        status = "Email send failed"
+
+      users.note_email_send(get_db(), address)
+    else:
+      status = "Email already recently sent to %s" % address
+      
     return redirect(url_for('analysis.register', status=status))      
 
 if __name__ == "__main__":
