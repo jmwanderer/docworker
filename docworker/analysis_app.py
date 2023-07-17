@@ -628,27 +628,37 @@ def register():
     # - track emails to target address - limit by time
     # - limit number of accounts
     address = flask.escape(request.form.get('address'))
-
-    user_dir = os.path.join(current_app.instance_path, address)
-    users.add_or_update_user(get_db(), user_dir, address, 50000)
-    key = users.get_user_key(get_db(), address)
-    
-    email = EMAIL_TEXT % (address, url_for('analysis.main', _external=True), key )
-    logging.info("Register request for %s, result == %s", address, key)
-
     status = "unknown"
-    if users.check_allow_email_send(get_db(), address):
-      try:
-        analysis_util.send_email(current_app.config, [address],
-                                 "DocWorker Access Request", email)
-        status = "Email sent to: %s" % address
-      except Exception as e:
-        logging.info("Failed to send email %s", str(e))
-        status = "Email send failed"
+    key = users.get_user_key(get_db(), address)
+    if key is None:
+      # User does not exist. Create if we are not at max
+      if users.count_users(get_db()) >= users.MAX_ACCOUNTS:
+        status = "User limit hit. No more available at this time."
+      else:
+        # Create the user entry.
+        user_dir = os.path.join(current_app.instance_path, address)
+        users.add_or_update_user(get_db(), user_dir,
+                                 address, users.DEFAULT_TOKEN_COUNT)
+        key = users.get_user_key(get_db(), address)
 
-      users.note_email_send(get_db(), address)
-    else:
-      status = "Email already recently sent to %s" % address
+    if key is not None:
+      email = EMAIL_TEXT % (address,
+                            url_for('analysis.main', _external=True),
+                            key)
+      logging.info("Register request for %s, result == %s", address, key)
+
+      if users.check_allow_email_send(get_db(), address):
+        try:
+          analysis_util.send_email(current_app.config, [address],
+                                   "DocWorker Access Request", email)
+          status = "Email sent to: %s" % address
+        except Exception as e:
+          logging.info("Failed to send email %s", str(e))
+          status = "Email send failed"
+
+        users.note_email_send(get_db(), address)
+      else:
+        status = "Email already recently sent to %s" % address
       
     return redirect(url_for('analysis.register', status=status))      
 

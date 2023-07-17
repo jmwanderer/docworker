@@ -8,6 +8,17 @@ import docworker
 import uuid
 import logging
 
+MAX_ACCOUNTS = 100
+DEFAULT_TOKEN_COUNT = 10000
+
+def count_users(db):
+  """
+  Return the number of user accounts
+  """
+  result = db.execute("SELECT COUNT(*) FROM user").fetchone()
+  return result[0]
+  
+  
 def note_user_access(db, name):
   """
   Update last access time for the user.

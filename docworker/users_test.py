@@ -18,7 +18,9 @@ class UsersDBTestCase(unittest.TestCase):
   
   def testFunctions(self):
     # Add user
+    self.assertEqual(users.count_users(self.db), 0)
     users.add_or_update_user(self.db, USER_NAME, USER_NAME, 100)
+    self.assertEqual(users.count_users(self.db), 1)    
     users.note_user_access(self.db, USER_NAME)
     users.add_or_update_user(self.db, USER_NAME, USER_NAME, 200)    
 
@@ -39,9 +41,9 @@ class UsersDBTestCase(unittest.TestCase):
     self.assertFalse(users.check_allow_email_send(self.db, USER_NAME))
 
     # Verify token functions
-    self.assertEquals(users.token_count(self.db, USER_NAME), 200)
+    self.assertEqual(users.token_count(self.db, USER_NAME), 200)
     users.increment_tokens(self.db, USER_NAME, 100)
-    self.assertEquals(users.token_count(self.db, USER_NAME), 100)
+    self.assertEqual(users.token_count(self.db, USER_NAME), 100)
     self.assertTrue(users.check_available_tokens(self.db, USER_NAME))
     users.increment_tokens(self.db, USER_NAME, 100)
     self.assertFalse(users.check_available_tokens(self.db, USER_NAME))    
