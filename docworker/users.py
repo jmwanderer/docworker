@@ -69,7 +69,12 @@ def get_user_key(db, name):
     return result[0]
   return None
 
-  
+def set_user_key(db, name, key):
+    logging.info("set user key %s", name)
+    db.execute("UPDATE user SET access_key = ? WHERE username = ?",
+               (key,name))
+    db.commit()
+    
 def token_count(db, name):
   """
   Return number of tokens available.
@@ -101,12 +106,6 @@ def check_available_tokens(db, name):
   
   return consumed < limit
 
-def set_user_key(db, name, key):
-    logging.info("set user key %s", name)
-    db.execute("UPDATE user SET access_key = ? WHERE username = ?",
-               (key,name))
-    db.commit()
-    
 def add_or_update_user(db, user_dir, name, limit):
   """
   Add a user if it doesn't exist. Otherwise update the limit.
@@ -143,8 +142,6 @@ def populate_samples(user_dir):
                       os.path.join(user_dir, filename))
   print("done")
   
-
-
 
 def report_user(db, name):
   result = db.execute(

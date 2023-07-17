@@ -24,7 +24,7 @@ All commands should be run from the top level of the project directory.
 
 ### Lookup access key
 
-`flask --app docworker.analysis_app get-user <user-name>``
+`flask --app docworker.analysis_app get-user <user-name>`
 
 ## Run Debug Server
 
