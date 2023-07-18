@@ -614,6 +614,9 @@ Hello %s,
 
 Your access link for DocWorker is %s?authkey=%s
 
+If you didn't request this email, don't worry, your email address
+may have been entered by mistake. You can ingore and delete this email.
+
 """
 
   
@@ -650,7 +653,7 @@ def register():
       if users.check_allow_email_send(get_db(), address):
         try:
           analysis_util.send_email(current_app.config, [address],
-                                   "DocWorker Access Request", email)
+                                   "Access Link for DocWorker", email)
           status = "Email sent to: %s" % address
         except Exception as e:
           logging.info("Failed to send email %s", str(e))

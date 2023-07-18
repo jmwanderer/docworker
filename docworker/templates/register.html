@@ -9,17 +9,17 @@
   
 <h1>DocWorker</h1>
 <i>A tool for applying GPT to documents.</i>
-<h2>Register for access:</h2>
+<h2>Get an Email Link:</h2>
 {% if status is none %}
-<p>
-Get an access link in email
-</p>
 <form action="{{ url_for('analysis.register')}}"
       method="post" id="form">
   <label for="address">Email:</label>
   <input type="email" id="address" name="address"/>
-  <input type="submit" value="Submit"/>
+  <input type="submit" value="Get Link"/>
 </form>
+<p>
+We will send you an email with a link to access DocWorker.
+</p>
 {% else %}
 <p>
   {{ status }}
