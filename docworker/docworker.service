@@ -1,5 +1,5 @@
 [Unit]
-Description=Doc Analysis Web Service
+Description=DocWorker Web Service
 StartLimitIntervalSec=0
 
 [Service]
@@ -7,9 +7,10 @@ Type=simple
 Restart=always
 RestartSec=1
 User=ubuntu
-WorkingDirectory=/home/ubuntu
+WorkingDirectory=/home/ubuntu/docworker
 Environment="PATH=/home/ubuntu/.local/bin:/bin:/usr/bin"
-ExecStart=/home/ubuntu/.local/bin/waitress-serve --url-prefix=docworker --port 8082 --call docworker.analysis_app:create_app
+ExecStart=bash -c ". venv/bin/activate;python3 -m waitress --url-prefix=docworker --port 8082 --call docworker.analysis_app:create_app"
+
 
 [Install]
 WantedBy=multi-user.target

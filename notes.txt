@@ -17,17 +17,23 @@ config.py:
 OPENAI_API_KEY = 'xx'
 SECRET_KEY = 'xx'
 PROXY_CONFIG=True
+# Needed only to send registration emails
+SMTP_SERVER='xx'
+SMTP_USER='xx'
+SMTP_PASSWORD='xx'
+SMPT_FROM='xx'
 
 Using venv:
 mkdir project
 cd project
-python3 -m venv .venv
+python3 -m venv venv
 . ./venv/bin/activate
-`pip install -r docworker/requirements.txt`
+
+cp config.py venv/var/docworker.analysis_app-instance/
 
 
 Run a production server:
-waitress-serve --url-prefix docworker  --port 8082 --call docworker.analysis_app:create_app
+python3 -m waitress --url-prefix docworker  --port 8082 --call docworker.analysis_app:create_app
 
 
 Configure Apache as a proxy server:
