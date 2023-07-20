@@ -174,7 +174,7 @@ def login_required(view):
   @functools.wraps(view)
   def wrapped_view(**kwargs):
     if g.user is None:
-      return redirect(url_for('static', filename='noauth.html'))
+      return redirect(url_for('analysis.login'))
     return view(**kwargs)
   return wrapped_view
 
@@ -192,8 +192,8 @@ def main():
       session.permanent = False      
       session['user_key'] = None
   load_logged_in_user()
-  if g.user is None:  
-    return redirect(url_for('static', filename='noauth.html'))
+  if g.user is None:
+    return redirect(url_for('analysis.login'))    
   
   doc = None
 
@@ -620,11 +620,11 @@ may have been entered by mistake. You can ingore and delete this email.
 """
 
   
-@bp.route("/register", methods=("GET", "POST"))
-def register():
+@bp.route("/login", methods=("GET", "POST"))
+def login():
   if request.method == "GET":
     status = request.args.get('status')
-    return render_template("register.html", status=status)
+    return render_template("login.html", status=status)
   else:
     # TODO:
     # - track emails per time unit - rate limit
@@ -648,7 +648,7 @@ def register():
       email = EMAIL_TEXT % (address,
                             url_for('analysis.main', _external=True),
                             key)
-      logging.info("Register request for %s, result == %s", address, key)
+      logging.info("Login request for %s, result == %s", address, key)
 
       if users.check_allow_email_send(get_db(), address):
         try:
@@ -663,7 +663,7 @@ def register():
       else:
         status = "Email already recently sent to %s" % address
       
-    return redirect(url_for('analysis.register', status=status))      
+    return redirect(url_for('analysis.login', status=status))      
 
 if __name__ == "__main__":
   app = create_app()
