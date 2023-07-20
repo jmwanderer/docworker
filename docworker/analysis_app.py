@@ -191,6 +191,8 @@ def main():
     else:
       session.permanent = False      
       session['user_key'] = None
+    return redirect(url_for('analysis.main'))
+  
   load_logged_in_user()
   if g.user is None:
     return redirect(url_for('analysis.login'))    
