@@ -470,6 +470,12 @@ class Session:
       return self.get_item_by_id(run_record.result_id)
     return None
 
+  def run_record_count(self):
+    """
+    Return the number of runs.
+    """
+    return len(self.run_list)
+  
   def get_run_record(self, run_id=None):
     """
     Return the matching run_record, or the curret one
