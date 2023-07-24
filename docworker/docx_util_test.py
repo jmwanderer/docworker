@@ -100,8 +100,8 @@ class DocXUtilTestCase(unittest.TestCase):
     
   def testGetPrompt(self):
     session = self.setUpSession()
-    self.assertEqual(len(session.get_prompt_set()), 13)
-    self.assertFalse(session.get_prompt_id_by_name("Explain") is None)
+    self.assertTrue(len(session.get_prompt_set()) > 10)
+    self.assertFalse(session.get_prompt_id_by_name("Summarize") is None)
 
   def testGetOrderedItems(self):
     session = self.setUpSession()

@@ -1,6 +1,8 @@
 from . import users
 import unittest
 import sqlite3
+import tempfile
+import os
 import pkg_resources
 
 USER_NAME='test-user'
@@ -9,20 +11,28 @@ USER_KEY='test-key'
 class UsersDBTestCase(unittest.TestCase):
 
   def setUp(self):
-    schema_file = pkg_resources.resource_filename('docworker', 'schema.sql')  
-    self.db = sqlite3.connect("testdb.sqlite",
+    schema_file = pkg_resources.resource_filename('docworker', 'schema.sql')
+    self.db_fd, self.db_path = tempfile.mkstemp()    
+    self.db = sqlite3.connect(self.db_path,
                          detect_types=sqlite3.PARSE_DECLTYPES)
     self.db.row_factory = sqlite3.Row
     with open(schema_file, 'rb') as f:
       self.db.executescript(f.read().decode('utf8'))
+
+    self.user_dir = tempfile.TemporaryDirectory()
+
+  def tearDown(self):
+    os.close(self.db_fd)
+    os.unlink(self.db_path)
+    self.user_dir.cleanup()
   
   def testFunctions(self):
     # Add user
     self.assertEqual(users.count_users(self.db), 0)
-    users.add_or_update_user(self.db, USER_NAME, USER_NAME, 100)
+    users.add_or_update_user(self.db, self.user_dir.name, USER_NAME, 100)
     self.assertEqual(users.count_users(self.db), 1)    
     users.note_user_access(self.db, USER_NAME)
-    users.add_or_update_user(self.db, USER_NAME, USER_NAME, 200)    
+    users.add_or_update_user(self.db, self.user_dir.name, USER_NAME, 200)    
 
     # Verify access key functions
     key = users.get_user_key(self.db, USER_NAME)
