@@ -52,11 +52,13 @@ class DynamicStatus:
     self.prompt = ""
     self.result_id = 0
     self.run_id = 0
+    self.transform_op = False
     
-  def start_run(self, prompt, item_ids):
+  def start_run(self, prompt, item_ids, transform_op=True):
     self.prompt = prompt
     self.to_run = item_ids.copy()
-    self.source_items = item_ids.copy()    
+    self.source_items = item_ids.copy()
+    self.transform_op = transform_op
 
   def next_item(self):
     if len(self.to_run) == 0:
@@ -532,6 +534,32 @@ class Session:
     if run_record is not None:
       run_record.complete_steps += 1
     self.status.note_step_complete(result_id)
+
+  def combine_results(self):
+    # combine the results of all items on the complete run list
+    # and make it the final result
+    item_id_list = []
+    text_list = []
+    while self.status.next_item():
+      id = self.status.pop_item()
+      item_id_list.append(id)
+      completion = self.get_item_by_id(id)
+      text_list.append(completion.text() + '\n')
+
+    prompt = self.status.prompt
+    prompt_id = self.get_prompt_id(prompt)
+    text = '\n'.join(text_list)
+    tokenizer = tiktoken.encoding_for_model(section_util.AI_MODEL)    
+    text_tokens = len(tokenizer.encode(text))
+    
+    completion = self.add_new_completion(
+      prompt_id,
+      item_id_list,
+      '\n'.join(text_list), text_tokens, 0)
+    self.note_step_complete(completion.id())
+
+      
+
     
   def run_exists(self, run_id):
     """
@@ -878,7 +906,7 @@ def run_completion(prompt, text, max_tokens, status_cb=None):
     try:
       # TODO: set max_tokens to appropriate amount
       start_time = datetime.datetime.now()
-      request_timeout = 30 + 10 * count
+      request_timeout = 45 + 15 * count
       response = openai.ChatCompletion.create(
         model=section_util.AI_MODEL,
         max_tokens = max_tokens,
@@ -921,12 +949,12 @@ def post_process_completion(response_record):
   Make any fixups needed to the text after a completion run.
   """
 
-  # Detect trucated output and truncate to the previous period or CR
+  # Detect truncated output and truncate to the previous period or CR
   if response_record.truncated:
-    last_cr = response_record.text.rindex('\n')
+    last_cr = response_record.text.rfind('\n')
     if last_cr == -1:
       return
-    logging.info("trucated response. from %d to %d" %
+    logging.info("truncated response. from %d to %d" %
                  (len(response_record.text), last_cr + 1))
     response_record.text = response_record.text[0:last_cr + 1]
 
@@ -964,6 +992,12 @@ def run_all_docgen(file_path, session):
         logging.debug("loop for running docgen")
         run_next_docgen(file_path, session)
         save_session(file_path, session)
+
+    if session.status.transform_op:
+      # No repeated runs, just combine results into
+      # one final result
+      session.status.next_result_set()
+      session.combine_results()
 
     # Done with the to_run queue, check if we process the
     # set of generated results.
@@ -1045,7 +1079,7 @@ def run_next_docgen(file_path, session):
   # Ensure response is less than 1/2 the size of a request
   # to make progress on consolidation. Except on the last completion.
   max_tokens = int(section_util.TEXT_EMBEDDING_CHUNK_SIZE / 2) - 1
-  if session.status.is_last_completion():
+  if session.status.is_last_completion() or session.status.transform_op:
     max_tokens = -1
 
   response_record = run_completion(prompt, '\n'.join(text_list),
