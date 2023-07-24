@@ -165,7 +165,7 @@ class Segment:
     return self.text_record.name
 
   def suffix(self):
-    m = re.match('.*\s(\d+)', self.name())
+    m = re.match('.*\\s(\\d+)', self.name())
     if m:
       return m.group(1)
     return '0'
@@ -230,7 +230,7 @@ class Completion:
     a doc segment
     """
     # TOOD: beter way to do this using ids.
-    m = re.match('.*(\d+).\d+', self.name())
+    m = re.match('.*(\\d+).\\d+', self.name())
     if m:
       return m.group(1)
     return None
