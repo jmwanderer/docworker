@@ -185,6 +185,9 @@ def login_required(view):
     return view(**kwargs)
   return wrapped_view
 
+def set_logged_in_user(user_name):
+  # For testing
+  g.user = user_name
 
 @bp.route("/", methods=("GET","POST"))
 def main():
@@ -670,11 +673,12 @@ def login():
           analysis_util.send_email(current_app.config, [address],
                                    "Access Link for DocWorker", email)
           status = "Email sent to: %s" % address
+          users.note_email_send(get_db(), address)
+
         except Exception as e:
           logging.info("Failed to send email %s", str(e))
           status = "Email send failed"
 
-        users.note_email_send(get_db(), address)
       else:
         status = "Email already recently sent to %s" % address
       

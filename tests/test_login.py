@@ -1,5 +1,6 @@
 from docworker.analysis_app import get_db
 from docworker import users
+import docworker
 
 def test_login_get(client):
   response = client.get('/login')
@@ -7,7 +8,13 @@ def test_login_get(client):
 
 
 def test_login_post(app, client, mocker):
-  #mocker.patch.object(docworker.analysis_app.analysis_util, "send_email", 2)
+  mocker.patch('docworker.analysis_app.analysis_util.send_email')
+
+  with app.app_context():
+    db = get_db()
+    key = users.get_user_key(db, 'test3')
+    assert key is  None
+  
   response = client.post('/login',
                          data={'address': 'test3'}
                          )
@@ -17,6 +24,7 @@ def test_login_post(app, client, mocker):
     db = get_db()
     key = users.get_user_key(db, 'test3')
     assert key is not None
+    assert not users.check_allow_email_send(db, 'test3')
 
   response = client.post('/login',
                          data={'address': 'test3'}

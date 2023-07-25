@@ -855,6 +855,7 @@ def build_prompt(prompt):
 
   
 FAKE_AI_COMPLETION=False
+FAKE_AI_SLEEP=1
 
 class ResponseRecord:
   def __init__(self,
@@ -896,7 +897,7 @@ def run_completion(prompt, text, max_tokens, status_cb=None):
                (prompt_tokens, text_tokens, max_tokens))
 
   if FAKE_AI_COMPLETION:
-    time.sleep(1)
+    time.sleep(FAKE_AI_SLEEP)
     return ResponseRecord("Dummy completion, this is filler text.\n" * 80,
                           100, 50, 150)
 

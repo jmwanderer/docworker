@@ -20,7 +20,7 @@ def send_email(config, to_list, subject, text):
   msg['Subject'] = subject
   msg['From'] = config['SMTP_FROM']
   msg['To'] = ', '.join(to_list)
-
+  
   try:
     context = ssl.create_default_context()  
     server = smtplib.SMTP(config['SMTP_SERVER'], port)
