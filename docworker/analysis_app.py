@@ -25,11 +25,18 @@ import sqlite3
 import click
 
 
-def create_app(test_config=None,fakeai=False):
+def create_app(test_config=None,
+               fakeai=False,
+               instance_path=None):
   BASE_DIR = os.getcwd()
   log_file_name = os.path.join(BASE_DIR, 'docworker.log.txt')
   FORMAT = '%(asctime)s:%(levelname)s:%(name)s:%(message)s'
-  app = Flask(__name__, instance_relative_config=True)
+  if instance_path is None:
+    app = Flask(__name__, instance_relative_config=True)
+  else:
+    app = Flask(__name__, instance_relative_config=True,
+                instance_path=instance_path)
+    
   app.config.from_mapping(
     SECRET_KEY='DEV',
     OPENAI_API_KEY = os.getenv('OPENAI_API_KEY'),
@@ -515,6 +522,8 @@ def export():
   if request.method == "GET":    
     doc = request.args.get('doc')
     session = get_session(doc)                      
+    if session is None:
+      return redirect(url_for('analysis.main'))
 
     item_names = request.args.getlist("items")
     items_state = analysis_util.ItemsState()
@@ -526,7 +535,7 @@ def export():
                            session=session)
   else:
     doc = request.form.get('doc')
-    session = get_session(doc)                          
+    session = get_session(doc)
     item_names = request.form.getlist('items')
     
     out_file = io.BytesIO()
@@ -545,7 +554,9 @@ def export():
 def sel_export():
   if request.method == "GET":    
     doc = request.args.get('doc')
-    session = get_session(doc)                      
+    session = get_session(doc)
+    if session is None:
+      return redirect(url_for('analysis.main'))
 
     item_id = request.args.get("item")    
     item_names = request.args.getlist("items")
@@ -580,6 +591,8 @@ def sel_gen():
   if request.method == "GET":    
     doc = request.args.get('doc')
     session = get_session(doc)
+    if session is None:
+      return redirect(url_for('analysis.main'))
 
     if session.is_running():
       # Go to in progress run
@@ -632,7 +645,7 @@ def login():
     # - track emails per time unit - rate limit
     # - track emails to target address - limit by time
     # - limit number of accounts
-    address = flask.escape(request.form.get('address'))
+    address = escape(request.form.get('address'))
     status = "unknown"
     key = users.get_user_key(get_db(), address)
     if key is None:

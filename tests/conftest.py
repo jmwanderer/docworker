@@ -2,30 +2,30 @@ import pytest
 import os
 import tempfile
 import docworker.analysis_app
-
 from docworker.analysis_app import create_app, init_db, get_db
-
-with open(os.path.join(os.path.dirname(__file__), 'data.sql'), 'rb') as f:
-  _data_sql = f.read().decode('utf8')
+from docworker import users
 
 @pytest.fixture()
 def app():
-  db_fd, db_path = tempfile.mkstemp()
+  instance_path = tempfile.TemporaryDirectory()  
   
-  app = create_app(fakeai=True)
+  app = create_app(fakeai=True, instance_path=instance_path.name)
   app.config.update({
     "TESTING": True,
-    "DATABASE": db_path,
     })
 
   with app.app_context():
     init_db()
-    get_db().executescript(_data_sql)
+    name = 'test1'
+    user_dir = os.path.join(app.instance_path, name)
+    users.add_or_update_user(get_db(), user_dir, name, 10)
+    name = 'test2'
+    user_dir = os.path.join(app.instance_path, name)
+    users.add_or_update_user(get_db(), user_dir, name, 10)
 
   yield app
 
-  os.close(db_fd)
-  os.unlink(db_path)
+  instance_path.cleanup()
 
   
 @pytest.fixture()
@@ -39,13 +39,17 @@ def runner(app):
 
 
 class Auth:
-  def __init__(self, client):
+  def __init__(self, app, client):
+    self._app = app
     self._client = client
 
-  def login(self, key='fookey1'):
-    return self._client.get('/?authkey=%s' % key)
+  def login(self, user):
+    with self._app.app_context():
+      db = get_db()
+      key = users.get_user_key(db, user)
+      return self._client.get('/?authkey=%s' % key)
 
 
 @pytest.fixture()
-def auth(client):
-  return Auth(client)
+def auth(app, client):
+  return Auth(app, client)
