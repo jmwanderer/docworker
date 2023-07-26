@@ -1,11 +1,8 @@
 """
-Utilitiy to work with information from DOCX files and the OpenAI
-LLM. This utility supports:
-- reading a docx file and intelligently separating into sections
-- supporting completions for each section
-- completion of the completion results
-- saving state
+Classes to represent a document and doc generation runs for
+that document.
 """
+from . import prompts
 from . import section_util
 from . import doc_convert
 import pickle
@@ -17,13 +14,6 @@ import hashlib
 import os
 import math
 import time
-from . import users
-import tiktoken
-import openai
-import sqlite3
-
-
-# Move to document
 
 class TextRecord:
   """
@@ -72,6 +62,7 @@ class Completion:
   A record of generated text that includes the input, prompt, and results.
   """
   def __init__(self, prompt_id, input_ids, text_record, token_cost):
+    # TODO: Consider removing the prompt id
     self.prompt_id = prompt_id
     self.input_ids = input_ids
     self.text_record = text_record
@@ -148,14 +139,90 @@ class RunRecord:
     self.doc_segments = []
     self.completions = []
 
+  def get_item_by_name(self, name):
+    for segment in self.doc_segments:
+      if segment.name() == name:
+        return segment
+    
+    for completion in self.completions:
+      if completion.name() == name:
+        return completion
+    return None
+    
+  def get_item_by_id(self, id):
+    for segment in self.doc_segments:
+      if segment.id() == id:
+        return segment
+    for completion in self.completions:
+      if completion.id() == id:
+        return completion
+    return None
 
+  def get_name_by_id(self, id):
+    if id in self.text_records.keys():
+      return self.text_records[id].name
+    return None
+
+  def new_text_record(self, name, text, token_count):
+    text_record = TextRecord(self.next_text_id, name, text, token_count)
+    self.text_records[self.next_text_id] = text_record
+    self.next_text_id += 1
+    return text_record
+
+  def add_new_segment(self, text, token_count):
+    # name of segment is just Block 1, Block 2, Block 3, ...
+    name = "Block " + str(len(self.doc_segments) + 1)
+    text_record = self.new_text_record(name, text, token_count)
+    segment = Segment(text_record)
+    self.doc_segments.append(segment)
+    return segment
+
+  def add_new_completion(self, input_ids, text,
+                         token_count, token_cost):
+    name = self.gen_completion_name(input_ids)
+    text_record = self.new_text_record(name, text, token_count)
+    completion = Completion(self.prompt_id, input_ids, text_record, token_cost)
+    self.completions.append(completion)
+    return completion
+
+  # TODO: convert
+  def gen_completion_name(self, input_ids):
+    # name of completion is either Generated <seg>.1, ... or
+    # Generated 1, Generated 2, ...
+    name_prefix = None
+    seg_completion = False
+    
+    # Find if this is a completion for a specific doc segment.
+    if len(input_ids) == 1:
+      id = input_ids[0]
+      for segment in self.doc_segments:
+        if segment.text_record.id == id:
+          seg_completion = True
+          name_prefix = 'Generated ' + segment.suffix() + '.'
+          break
+
+    # Generated completion not based on a specific segement
+    if name_prefix is None:
+      name_prefix = 'Generated '
+
+    # Count the number of instances with the prefix for next name
+    count = 0
+    for completion in self.completions:
+      if (((seg_completion and completion.doc_segment_name()) or
+          (not seg_completion and completion.doc_segment_name() is None)) and
+          completion.text_record.name.startswith(name_prefix)):
+        count += 1
+    return name_prefix + str(count+1)
+
+  
 class Document:
   """
   An instance of work on an imporsted document.
   """
 
   def __init__(self):
-    self.status = RunState()
+    # TODO: fix
+    #self.status = RunState()
     self.md5_digest = b''
     self.next_run_id = 1
     self.run_list = []     # List of RunRecord instances
@@ -190,6 +257,87 @@ class Document:
     if len(text) < 90:
       return self.strip_text(text)
     return self.strip_text(text[0:45] + " ... " + text[-46:])
+
+  def get_run_record(self, run_id=None):
+    """
+    Return the matching run_record, or the curret one
+    if no ID is specified.
+    """
+    if run_id is None:
+      run_id = self.status.run_id
+    # Look for matching run_id
+    for run_record in self.run_list:
+      if run_record.run_id == run_id:
+        return run_record
+    return None
+
+  def get_item_by_name(self, run_id, name):
+    record = self.get_run_record(run_id)
+    if record is None:
+      return None
+    return record.get_item_by_name(name)
+
+  def get_item_by_id(self, run_id, id):
+    record = self.get_run_record(run_id)
+    if record is None:
+      return None
+    return record.get_item_by_id(id)
+
+  def get_name_by_id(self, run_id, id):
+    record = self.get_run_record(run_id)
+    if record is None:
+      return None
+    return record.get_name_by_id(id)
+    
+    if id in self.text_records.keys():
+      return self.text_records[id].name
+    return None
+
+  def get_names_for_ids(self, run_id, ids):
+    names = []
+    record = self.get_run_record(run_id)
+    if record is not None:
+      for id in ids:
+        name = record.get_name_by_id(id)
+        if name is not None:
+          names.append(name)
+    return ', '.join(names)
+
+  def get_items_for_ids(self, run_id, ids):
+    items = []
+    record = self.get_run_record(run_id)
+    if record is not None:
+      for id in ids:
+        item = record.get_item_by_id(id)
+      if item is not None:
+        items.append(item)
+    return items
+
+  def get_result_item(self, run_id=None):
+    """
+    Return the final result item of the given completion run.
+    """
+    run_record = self.get_run_record(run_id)
+    if run_record != None:
+      return run_record.get_item_by_id(run_record.result_id)
+    return None
+  
+  def get_result_item_name(self, run_id=0):
+    """
+    Return the name of the result item.
+    None if no result yet
+    """
+    item = self.get_result_item(run_id)
+    if item is not None:
+      return item.name()
+    return None
+  
+  def run_record_count(self):
+    """
+    Return the number of runs.
+    """
+    return len(self.run_list)
+  
 
   # TODO: convert  
   def get_gen_items(self):
@@ -297,91 +445,6 @@ class Document:
         result.append(item)
     return result
       
-  # TODO: convert  
-  def get_item_by_name(self, name):
-    for segment in self.doc_segments:
-      if segment.name() == name:
-        return segment
-    
-    for completion in self.completions:
-      if completion.name() == name:
-        return completion
-
-    return None
-
-  # TODO: convert    
-  def get_item_by_id(self, id):
-    for segment in self.doc_segments:
-      if segment.id() == id:
-        return segment
-    
-    for completion in self.completions:
-      if completion.id() == id:
-        return completion
-
-    return None
-
-  # TODO: convert    
-  def get_name_by_id(self, id):
-    if id in self.text_records.keys():
-      return self.text_records[id].name
-    return None
-
-  # TODO: convert    
-  def get_names_for_ids(self, ids):
-    names = []
-    for id in ids:
-      names.append(self.get_name_by_id(id))
-    return ', '.join(names)
-
-  # TODO: convert    
-  def get_items_for_ids(self, ids):
-    items = []
-    for id in ids:
-      name = self.get_name_by_id(id)
-      item = self.get_item_by_name(name)
-      if item is not None:
-        items.append(item)
-    return items
-
-  # TODO: convert    
-  def get_result_item_name(self, run_id=0):
-    """
-    Return the name of the result item.
-    None if no result yet
-    """
-    item = self.get_result_item(run_id)
-    if item is not None:
-      return item.name()
-    return None
-  # TODO: convert    
-  def get_result_item(self, run_id=None):
-    """
-    Return the final result item of the given completion run.
-    """
-    run_record = self.get_run_record(run_id)
-    if run_record != None:
-      return self.get_item_by_id(run_record.result_id)
-    return None
-
-  def run_record_count(self):
-    """
-    Return the number of runs.
-    """
-    return len(self.run_list)
-  
-  def get_run_record(self, run_id=None):
-    """
-    Return the matching run_record, or the curret one
-    if no ID is specified.
-    """
-    if run_id is None:
-      run_id = self.status.run_id
-    # Look for matching run_id
-    for run_record in self.run_list:
-      if run_record.run_id == run_id:
-        return run_record
-    return None
 
   def is_running(self, run_id=None):
     # Time limit on how long a task can be considered running.
@@ -489,71 +552,21 @@ class Document:
         count += 1
     return count
 
-  # TODO: convert  
-  def new_text_record(self, name, text, token_count):
-    text_record = TextRecord(self.next_text_id, name, text, token_count)
-    self.text_records[self.next_text_id] = text_record
-    self.next_text_id += 1
-    return text_record
-
-  # TODO: convert  
-  def add_new_segment(self, text, token_count):
-    # name of segment is just Block 1, Block 2, Block 3, ...
-    name = "Block " + str(len(self.doc_segments) + 1)
-    text_record = self.new_text_record(name, text, token_count)
-    segment = Segment(text_record)
-    self.doc_segments.append(segment)
-    return segment
-
-  # TODO: convert
-  def add_new_completion(self, prompt_id, input_ids, text,
-                         token_count, token_cost):
-    name = self.gen_completion_name(input_ids)
-    text_record = self.new_text_record(name, text, token_count)
-    completion = Completion(prompt_id, input_ids, text_record, token_cost)
-    self.completions.append(completion)
-    return completion
-
-  # TODO: convert
-  def gen_completion_name(self, input_ids):
-    # name of completion is either Generated <seg>.1, ... or
-    # Generated 1, Generated 2, ...
-    name_prefix = None
-    seg_completion = False
-    
-    # Find if this is a completion for a specific doc segment.
-    if len(input_ids) == 1:
-      id = input_ids[0]
-      for segment in self.doc_segments:
-        if segment.text_record.id == id:
-          seg_completion = True
-          name_prefix = 'Generated ' + segment.suffix() + '.'
-          break
-
-    # Generated completion not based on a specific segement
-    if name_prefix is None:
-      name_prefix = 'Generated '
-
-    # Count the number of instances with the prefix for next name
-    count = 0
-    for completion in self.completions:
-      if (((seg_completion and completion.doc_segment_name()) or
-          (not seg_completion and completion.doc_segment_name() is None)) and
-          completion.text_record.name.startswith(name_prefix)):
-        count += 1
-    return name_prefix + str(count+1)
-
-
-  def start_run(self, prompt, item_ids):
-    self.status = RunState()
-    self.status.run_id = self.next_run_id
+  def new_run_record(self, prompt_id):
+    run_record = RunRecord(self.next_run_id, prompt_id)
     self.next_run_id += 1
-    self.status.start_run(prompt, item_ids)
-    prompt_id = self.get_prompt_id(prompt)    
-    run_record = RunRecord(self.status.run_id,
-                           prompt_id)
-    run_record.status_message = "Running..."    
     self.run_list.append(run_record)
+    return run_record
+                    
+  def start_run(self, prompt, item_ids):
+    prompt_id = self.get_prompt_id(prompt)                        
+    run_record = self.new_run_record(prompt_id)
+    run_record.status_message = "Running..."
+
+    self.status = RunState()
+    self.status.run_id = run_record.run_id
+    self.status.start_run(prompt, item_ids)
+
 
   def cancel_run(self, message):
     self.set_status_message(message)
