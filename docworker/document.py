@@ -12,8 +12,7 @@ import datetime
 import tempfile
 import hashlib
 import os
-import math
-import time
+
 
 class TextRecord:
   """
@@ -118,7 +117,11 @@ class Completion:
 class RunRecord:
   """
   Represents a run of a completion task.
+  This contains historical and status information.
   Includes the start time, run id, and (eventually) the final result id
+
+  All state used in running a completion is contained in the gen_doc.RunState
+  object.
   """
   def __init__(self, run_id, prompt_id, start_time=None):
     self.run_id = run_id
@@ -128,7 +131,8 @@ class RunRecord:
       self.start_time = datetime.datetime.now()
     self.result_id = 0
     self.prompt_id = prompt_id
-
+    self.completed_steps = 0
+    
     self.next_text_id = 1
     self.text_records = {}  # key is record_id
     self.doc_segments = []
@@ -301,8 +305,10 @@ class Document:
   """
 
   def __init__(self):
-    # TODO: fix
-    #self.status = RunState()
+    # Opaque run state for a doc gen. Included here for serialization
+    # in the file. Not used by the Document class, only gen_doc.
+    self.run_state = None
+    
     self.md5_digest = b''
     self.next_run_id = 1
     self.run_list = []     # List of RunRecord instances
@@ -338,13 +344,20 @@ class Document:
       return self.strip_text(text)
     return self.strip_text(text[0:45] + " ... " + text[-46:])
 
+
+  def get_current_run_record(self):
+    if len(self.run_list) > 0:
+      return self.run_list[-1]
+    return None
+  
+
   def get_run_record(self, run_id=None):
     """
     Return the matching run_record, or the curret one
     if no ID is specified.
     """
     if run_id is None:
-      run_id = self.status.run_id
+      return self.get_current_run_record()
     # Look for matching run_id
     for run_record in self.run_list:
       if run_record.run_id == run_id:
@@ -500,7 +513,7 @@ class Document:
     return run_record
 
   #
-  # Doc Gen Control and Status Functions
+  # Doc Gen Process User Visibile Information
   #
 
   def is_running(self, run_id=None):
@@ -513,13 +526,26 @@ class Document:
                run_record.start_time).total_seconds() < 60 * 60)
     return False
 
-  # TODO: fix status
-  def complete_run(self):
-    run_record = self.get_run_record()
+  def mark_start_run(self, prompt, item_ids):
+    prompt_id = self.prompts.get_prompt_id(prompt)                        
+    run_record = self.new_run_record(prompt_id)
+    run_record.status_message = "Running..."
+
+  def mark_complete_run(self):
+    run_record = self.get_current_run_record()
     if run_record is not None:
       run_record.stop_time = datetime.datetime.now()
+
+  def mark_cancel_run(self, message):
+    self.set_status_message(message)
+    self.mark_complete_run()
+
+  def set_final_result(self, completion):
+    completion.set_final_result()
+    if len(self.run_list) > 0:
+      self.run_list[-1].result_id = completion.id()
   
-  def status_message(self, run_id=None):
+  def get_status_message(self, run_id=None):
     run_record = self.get_run_record(run_id)
     if run_record is not None:
       return run_record.status_message
@@ -530,24 +556,22 @@ class Document:
     if run_record is not None:
       run_record.status_message = message
 
-  def prompt(self, run_id=None):
+  def get_run_prompt(self, run_id=None):
     run_record = self.get_run_record(run_id)
     if run_record is not None:
       return self.prompts.get_prompt_str_by_id(run_record.prompt_id)
     return None
 
-  # TODO: fix - put in status????
-  def completed_steps(self, run_id=None):
+  def get_completed_steps(self, run_id=None):
     run_record = self.get_run_record(run_id)
     if run_record is not None:
-      return run_record.complete_steps
+      return run_record.completed_steps
     return 0
     
-  def note_step_complete(self, result_id=None):
+  def mark_step_complete(self, result_id=None):
     run_record = self.get_run_record()
     if run_record is not None:
-      run_record.complete_steps += 1
-    self.status.note_step_complete(result_id)
+      run_record.completed_steps += 1
     
   def run_exists(self, run_id):
     """
@@ -565,51 +589,13 @@ class Document:
                            run_record.start_time.second)
     return dt.isoformat(sep=' ')
 
-  # TODO: fix status
-  def start_run(self, prompt, item_ids):
-    prompt_id = self.get_prompt_id(prompt)                        
-    run_record = self.new_run_record(prompt_id)
-    run_record.status_message = "Running..."
-
-    self.status = RunState()
-    self.status.run_id = run_record.run_id
-    self.status.start_run(prompt, item_ids)
-
-  # TODO: fix status
-  def cancel_run(self, message):
-    self.set_status_message(message)
-    self.complete_run()
-    self.status.to_run = []
-
-  def set_final_result(self, completion):
-    completion.set_final_result()
-    if len(self.run_list) > 0:
-      self.run_list[-1].result_id = completion.id()
-
-  #
-  # State / Status display functions
-  #
-  
-  # TODO: fix status
-  def run_input_tokens(self):
-    """
-    Return the total number of tokens in the input
-    """
-    count = 0
-    for item_id in self.status.to_run:
-      item = self.get_item_by_id(item_id)
-      if item is not None:
-        count += item.token_count()
-    return count
-  
   def run_record_prompt(self, run_record):
     prompt = self.prompts.get_prompt_str_by_id(run_record.prompt_id)
     if prompt is not None:
       return prompt
     return ""
       
-
-  def load_doc(self, name, file, md5_digest):
+  def read_file(self, name, file, md5_digest):
     self.name = name
     chunks = doc_convert.doc_to_chunks(name, file)
     for chunk in chunks:

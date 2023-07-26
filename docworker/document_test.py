@@ -96,36 +96,39 @@ class BasicDocumentTestCase(unittest.TestCase):
     
   def testRunState(self):
     self.assertTrue(self.document.is_running(self.run_id))
-    # TODO: fix
-    #self.document.complete_run()
-    #self.assertFalse(self.document.is_running(self.run_id))
+    self.document.mark_complete_run()
+    self.assertFalse(self.document.is_running(self.run_id))
 
     msg = "a status message"
-    self.document.set_status_message(msg, self.run_id)
-    self.assertEqual(self.document.status_message(self.run_id), msg)
+    self.document.set_status_message(msg)
+    self.assertEqual(self.document.get_status_message(), msg)
 
-    self.assertEqual(self.document.prompt(self.run_id), self.prompt)
+    self.assertEqual(self.document.get_run_prompt(), self.prompt)
 
-    # TODO: fix
-    #self.assertEqual(self.document.completed_steps(self.run_id), 0)
+    self.assertEqual(self.document.get_completed_steps(), 0)
     
-    # TODO: fix
-    # self.document.note_step_compete()
+    self.document.mark_step_complete()
 
     self.assertTrue(self.document.run_exists(self.run_id))
     self.assertFalse(self.document.run_exists(0))
     
+    self.document.mark_start_run(self.prompt, [self.id1, self.id2])
+    self.assertTrue(self.document.is_running())
+    self.document.mark_cancel_run("Canceled")
+    self.assertFalse(self.document.is_running())
 
-    # TODO: fix
-    #self.document.start_run(self.prompt, [self.id1, self.id2])
-    #self.document.cancel_run("Canceled")
-    #self.set_final_result(compeltion)
-    # self.document.run_input_tokens
+    completion = self.document.get_item_by_id(self.run_id, self.id3)
+    self.document.set_final_result(completion)
 
     run_record = self.document.get_run_record(self.run_id)
     self.assertIsNotNone(run_record)
     prompt = self.document.run_record_prompt(run_record)
     self.assertIsNotNone(prompt)
+
+    run_record = self.document.get_current_run_record()
+    datetime_str = self.document.run_date_time(run_record)
+    self.assertIsNotNone(datetime_str)
+    
     
 
     
