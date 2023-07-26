@@ -95,8 +95,6 @@ class Completion:
     return (len(self.input_ids) == 1 and self.input_ids[0] == id)
 
   def is_final_result(self):
-    if not hasattr(self, 'final_result'):
-      self.final_result = not self.doc_segment_name()
     return self.final_result
 
   def set_final_result(self):
@@ -122,7 +120,6 @@ class RunRecord:
   Represents a run of a completion task.
   Includes the start time, run id, and (eventually) the final result id
   """
-
   def __init__(self, run_id, prompt_id, start_time=None):
     self.run_id = run_id
     self.start_time = start_time
@@ -131,8 +128,6 @@ class RunRecord:
       self.start_time = datetime.datetime.now()
     self.result_id = 0
     self.prompt_id = prompt_id
-    self.complete_steps = 0
-    self.status_message = ""
 
     self.next_text_id = 1
     self.text_records = {}  # key is record_id
@@ -214,6 +209,91 @@ class RunRecord:
         count += 1
     return name_prefix + str(count+1)
 
+  def get_gen_items(self):
+    """
+    Return list of items associated with a gen run in an
+    appropriate order for display.
+    """
+    # TODO: simplify based on new assumptions
+    source_ids = [ x.id() for x in self.doc_segments ]
+    result = []
+    for completion in self.completions:
+      if completion.id() != self.result_id:
+        for source_id in completion.input_ids:
+          source_item = self.get_item_by_id(source_id)
+          if source_id in source_ids:
+            source_ids.remove(source_id)
+            result.append(source_item)            
+        result.append(completion)
+    for source_id in source_ids:
+      result.append(self.get_item_by_id(source_id))
+      
+    return result
+  
+  def get_ordered_items_visit_node(self, node, result):
+    result.append(node)
+    # TODO - make a BFS(?)
+    for id in node.input_ids:
+      child = self.get_item_by_id(id)
+      # Visit children that were completions created for this node
+      if not child.is_doc_segment():
+        self.get_ordered_items_visit_node(child, result)
+        
+  def get_ordered_items(self):
+    """
+    Return the segments and completions in a logical order
+    for display.
+    """
+    result = []
+    completion = self.get_item_by_id(self.result_id)
+    if completion is not None:
+      self.get_ordered_items_visit_node(completion, result)
+        
+    # add the segments
+    for segment in self.doc_segments:
+      result.append(segment)
+            
+    return result
+
+  def comp_family_visit_node(self, depth, completion, result):
+    """
+    Helper function for get_completion_family.
+    Recursively visit all children of the completion, building
+    result list and returning the max_depth.
+    """
+    result.append((depth, completion))
+    max = depth
+    
+    for id in completion.input_ids:
+      child = self.get_item_by_id(id)
+      # Visit children that were completions created for this node
+      count = 0
+      if child.is_doc_segment():
+        result.append((depth + 1, child))
+        count = depth + 1
+      else:
+        count = self.comp_family_visit_node(depth + 1, child, result)
+      if count > max:
+        max = count
+    return max
+  
+  def get_completion_family(self, id):
+    """
+    Return ordered list of for completion tree, with depth for
+    every node, and the max depth of the tree.
+    
+    return: (max, list[])  - list entry: (depth, completion)
+    """
+    if id == None:
+      id = self.result_id
+      
+    max_depth = 0
+    result = []
+    completion = self.get_item_by_id(id)
+    if completion is None or completion.is_doc_segment():
+      return (0, [])
+    max_depth = self.comp_family_visit_node(1, completion, result)
+    return (max_depth, result)
   
 class Document:
   """
@@ -339,112 +419,89 @@ class Document:
     return len(self.run_list)
   
 
-  # TODO: convert  
-  def get_gen_items(self):
+  def get_gen_items(self, run_id):
     """
     Return list of items associated with a gen run in an
     appropriate order for display.
     """
-    # TODO: handle multi-level generation
+    run_record = self.get_run_record(run_id)
+    if run_record != None:
+      return run_record.get_gen_items()
+    return None
 
-    source_items = self.status.source_items.copy()
-    result = []
-    for id in self.status.completed_run:
-      if id != self.status.result_id:
-        completion = self.get_item_by_id(id)
-        for source_id in completion.input_ids:
-          source_item = self.get_item_by_id(source_id)
-          if source_id in source_items:
-            source_items.remove(source_id)
-            result.append(source_item)            
-        result.append(completion)
-    for source_id in source_items:
-      result.append(self.get_item_by_id(source_id))
-      
-    return result
-
-  # TODO: convert  
-  def get_ordered_items_visit_node(self, node, result):
-    result.append(node)
-    # TODO - make a BFS(?)
-    for id in node.input_ids:
-      child = self.get_item_by_id(id)
-      # Visit children that were completions created for this node
-      if not child.is_doc_segment() and not child.is_final_result():
-        self.get_ordered_items_visit_node(child, result)
-        
-  # TODO: convert      
-  def get_ordered_items(self):
+  def get_ordered_items(self, run_id):
     """
-    Return the segments and completions is a logical order
+    Return the segments and completions in a logical order
     for display.
     """
-    result = []
+    run_record = self.get_run_record(run_id)
+    if run_record != None:
+      return run_record.get_ordered_items()
+    return []
 
-    # list completions
-    for completion in self.completions:
-      if completion.is_final_result():
-        self.get_ordered_items_visit_node(completion, result)
-        
-    # add the segments
-    for segment in self.doc_segments:
-      result.append(segment)
-            
-    return result
-
-  # TODO: convert    
-  def comp_family_visit_node(self, depth, completion, result):
-    """
-    Helper function for get_completion_family.
-    Recursively visit all children of the completion, building
-    result list and returning the max_depth.
-    """
-    result.append((depth, completion))
-    max = depth
-    
-    for id in completion.input_ids:
-      child = self.get_item_by_id(id)
-      # Visit children that were completions created for this node
-      count = 0
-      if child.is_doc_segment():
-        result.append((depth + 1, child))
-        count = depth + 1
-      elif not child.is_final_result():
-        count = self.comp_family_visit_node(depth + 1, child, result)
-      if count > max:
-        max = count
-    return max
-  
-
-  # TODO: convert    
-  def get_completion_family(self, id):
+  def get_completion_family(self, run_id, id=None):
     """
     Return ordered list of for completion tree, with depth for
     every node, and the max depth of the tree.
     
     return: (max, list[])  - list entry: (depth, completion)
     """
-    max_depth = 0
-    result = []
-    completion = self.get_item_by_id(id)
-    if completion is None or completion.is_doc_segment():
-      return (0, [])
-    max_depth = self.comp_family_visit_node(1, completion, result)
-    return (max_depth, result)
+    run_record = self.get_run_record(run_id)
+    if run_record != None:
+      return run_record.get_completion_family(id)
+    return None
+    
+  def get_completion_list(self, run_id):
+    """
+    Return a simple list of completions for the run.
+    """
+    run_record = self.get_run_record(run_id)
+    if run_record != None:
+      return run_record.completions
+    return None
 
-  # TODO: convert    
-  def get_completion_family_list(self, id):
-    """
-    Return a simple list of completions in the family of the
-    the specified completion.
-    """
-    result = []
-    (max, list) = self.get_completion_family(id)
-    for (depth, item) in list:
-      if not item.is_doc_segment():
-        result.append(item)
-    return result
-      
+  def doc_tokens(self):
+    # TODO: return token count for doc
+    total = 0
+    return total
+
+  def gen_tokens(self):
+    total = 0
+    for run_record in self.run_list:
+      for completion in run_record.completions:
+        total += completion.token_count()
+    return total
+
+  def gen_cost_tokens(self):
+    total = 0
+    for run_record in self.run_list:
+      for completion in run_record.completions:
+        total += completion.token_cost
+    return total
+
+  def segment_count(self, run_id):
+    run_record = self.get_run_record(run_id)
+    if run_record != None:
+      return len(run_record.doc_segments)
+    return 0
+    
+  def final_completion_count(self):
+    count = 0
+    # TODO: see if this is correct
+    for run_record in self.run_list:
+      if run_record.result_id != 0:
+        count += 1
+    return count
+
+  def new_run_record(self, prompt_id):
+    run_record = RunRecord(self.next_run_id, prompt_id)
+    self.next_run_id += 1
+    self.run_list.append(run_record)
+    return run_record
+
+  #
+  # Doc Gen Control and Status Functions
+  #
 
   def is_running(self, run_id=None):
     # Time limit on how long a task can be considered running.
@@ -456,6 +513,7 @@ class Document:
                run_record.start_time).total_seconds() < 60 * 60)
     return False
 
+  # TODO: fix status
   def complete_run(self):
     run_record = self.get_run_record()
     if run_record is not None:
@@ -475,9 +533,10 @@ class Document:
   def prompt(self, run_id=None):
     run_record = self.get_run_record(run_id)
     if run_record is not None:
-      return self.get_prompt_by_id(run_record.prompt_id)
+      return self.prompts.get_prompt_str_by_id(run_record.prompt_id)
     return None
 
+  # TODO: fix - put in status????
   def completed_steps(self, run_id=None):
     run_record = self.get_run_record(run_id)
     if run_record is not None:
@@ -489,75 +548,24 @@ class Document:
     if run_record is not None:
       run_record.complete_steps += 1
     self.status.note_step_complete(result_id)
-
-  def combine_results(self):
-    # combine the results of all items on the complete run list
-    # and make it the final result
-    item_id_list = []
-    text_list = []
-    while self.status.next_item():
-      id = self.status.pop_item()
-      item_id_list.append(id)
-      completion = self.get_item_by_id(id)
-      text_list.append(completion.text() + '\n')
-
-    prompt = self.status.prompt
-    prompt_id = self.get_prompt_id(prompt)
-    text = '\n'.join(text_list)
-    tokenizer = tiktoken.encoding_for_model(section_util.AI_MODEL)    
-    text_tokens = len(tokenizer.encode(text))
     
-    completion = self.add_new_completion(
-      prompt_id,
-      item_id_list,
-      '\n'.join(text_list), text_tokens, 0)
-    self.note_step_complete(completion.id())
-
   def run_exists(self, run_id):
     """
     Return true if the run exists.
     """
     return self.get_run_record(run_id) is not None
 
-  # TODO: convert
-  def doc_tokens(self):
-    total = 0
-    for segment in self.doc_segments:
-      total += segment.token_count()
-    return total
+  def run_date_time(self, run_record):
+    # Return the time without microseconds.
+    dt = datetime.datetime(run_record.start_time.year,
+                           run_record.start_time.month,
+                           run_record.start_time.day,
+                           run_record.start_time.hour,
+                           run_record.start_time.minute,
+                           run_record.start_time.second)
+    return dt.isoformat(sep=' ')
 
-  # TODO: convert  
-  def gen_tokens(self):
-    total = 0
-    for completion in self.completions:
-      total += completion.token_count()
-    return total
-
-  # TODO: convert  
-  def gen_cost_tokens(self):
-    total = 0
-    for completion in self.completions:
-      total += completion.token_cost
-    return total
-
-  # TODO: convert  
-  def segment_count(self):
-    return len(self.doc_segments)
-
-  # TODO: convert  
-  def final_completion_count(self):
-    count = 0
-    for completion in self.completions:
-      if completion.is_final_result():
-        count += 1
-    return count
-
-  def new_run_record(self, prompt_id):
-    run_record = RunRecord(self.next_run_id, prompt_id)
-    self.next_run_id += 1
-    self.run_list.append(run_record)
-    return run_record
-                    
+  # TODO: fix status
   def start_run(self, prompt, item_ids):
     prompt_id = self.get_prompt_id(prompt)                        
     run_record = self.new_run_record(prompt_id)
@@ -567,13 +575,22 @@ class Document:
     self.status.run_id = run_record.run_id
     self.status.start_run(prompt, item_ids)
 
-
+  # TODO: fix status
   def cancel_run(self, message):
     self.set_status_message(message)
     self.complete_run()
     self.status.to_run = []
-    
 
+  def set_final_result(self, completion):
+    completion.set_final_result()
+    if len(self.run_list) > 0:
+      self.run_list[-1].result_id = completion.id()
+
+  #
+  # State / Status display functions
+  #
+  
+  # TODO: fix status
   def run_input_tokens(self):
     """
     Return the total number of tokens in the input
@@ -585,26 +602,12 @@ class Document:
         count += item.token_count()
     return count
   
-  def run_date_time(self, run_record):
-    # Return the time without microseconds.
-    dt = datetime.datetime(run_record.start_time.year,
-                           run_record.start_time.month,
-                           run_record.start_time.day,
-                           run_record.start_time.hour,
-                           run_record.start_time.minute,
-                           run_record.start_time.second)
-    return dt.isoformat(sep=' ')
-  
   def run_record_prompt(self, run_record):
-    prompt = self.get_prompt_by_id(run_record.prompt_id)
+    prompt = self.prompts.get_prompt_str_by_id(run_record.prompt_id)
     if prompt is not None:
       return prompt
     return ""
-
-  def set_final_result(self, completion):
-    completion.set_final_result()
-    if len(self.run_list) > 0:
-      self.run_list[-1].result_id = completion.id()
+      
 
   def load_doc(self, name, file, md5_digest):
     self.name = name
