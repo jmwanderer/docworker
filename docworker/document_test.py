@@ -1,6 +1,7 @@
 from . import document
 import unittest
-
+import tempfile
+import os
 
 class BasicDocumentTestCase(unittest.TestCase):
 
@@ -15,8 +16,10 @@ class BasicDocumentTestCase(unittest.TestCase):
     self.id3 = run_record.add_new_completion([self.id1, self.id2],
                                              "completion text", 5, 20).id()
     run_record.result_id = self.id3
+    self.user_dir = tempfile.TemporaryDirectory()    
   
   def tearDown(self):
+    self.user_dir.cleanup()    
     pass
   
   def testInit(self):
@@ -129,6 +132,45 @@ class BasicDocumentTestCase(unittest.TestCase):
     datetime_str = self.document.run_date_time(run_record)
     self.assertIsNotNone(datetime_str)
     
+
+  def testReadFile(self):
+    filename = 'PA utility.docx'
+    path = os.path.join(os.path.dirname(__file__),
+                        'samples/', filename)
+    self.document = document.Document()
+    with open(path, 'rb') as f:
+      self.document.read_file(filename, f, b'')
+
+    self.assertIsNotNone(self.document.get_doc_text())
+    self.assertIsNotNone(self.document.name)
+
+    doc_file = os.path.join(self.user_dir.name, filename + '.daf')
+    document.save_document(doc_file, self.document)
+    self.document = document.load_document(doc_file)
+
+    
+  def testFindOrCreate(self):
+    filename = 'PA utility.docx'
+    path = os.path.join(os.path.dirname(__file__),
+                        'samples/', filename)
+    f = open(path, 'rb')
+    filename1 = document.find_or_create_doc(self.user_dir.name, path, f)
+    f.close()
+    self.assertIsNotNone(filename1)
+
+    f = open(path, 'rb')
+    filename2 = document.find_or_create_doc(self.user_dir.name, path, f)    
+    f.close()
+    self.assertEqual(filename1, filename2)
+    
+    filename = 'PA Agenda.docx'
+    path = os.path.join(os.path.dirname(__file__),
+                        'samples/', filename)
+    f = open(path, 'rb')
+    filename3 = document.find_or_create_doc(self.user_dir.name, path, f)
+    f.close()
+    self.assertNotEqual(filename1, filename3)
+
     
 
     

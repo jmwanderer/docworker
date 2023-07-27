@@ -313,7 +313,9 @@ class Document:
     self.next_run_id = 1
     self.run_list = []     # List of RunRecord instances
     self.name = None
+    self.doc_text = None
     self.prompts = prompts.Prompts()
+
 
   def get_prompt_set(self):
     return self.prompts.get_prompt_set()
@@ -594,60 +596,25 @@ class Document:
     if prompt is not None:
       return prompt
     return ""
-      
+
+  def get_doc_text(self):
+    return self.doc_text
+  
   def read_file(self, name, file, md5_digest):
-    self.name = name
-    chunks = doc_convert.doc_to_chunks(name, file)
-    for chunk in chunks:
-      self.add_new_segment(chunk.get_text(), chunk.size)
+    self.name = os.path.basename(name)      
+    self.doc_text = doc_convert.read_file(name, file)
     self.md5_digest = md5_digest
 
-    
 def load_document(file_name):
   f = open(file_name, 'rb')
   document = pickle.load(f)
-  document.fixup_prompts()
-  document.name = os.path.basename(document.name)  
-  # Fix up new attributes
-  if not hasattr(document, 'next_run_id'):
-    document.next_run_id = 1
-  if not hasattr(document, 'status'):
-    document.status = RunState()
-  if not hasattr(document.status, 'result_id'):
-    document.status.result_id = 0 
-  if not hasattr(document.status, 'run_id'):
-    document.status.run_id = 0
-  if not hasattr(document, 'run_list'):
-    document.run_list = []
-    # Add run records
-    for completion in document.completions:
-      if completion.is_final_result():
-        run_record = RunRecord(document.next_run_id)
-        run_record.result_id = completion.id()
-        document.next_run_id += 1
-        document.run_list.append(run_record)
-  # Check prompt_id fields on run_record
-  for run_record in document.run_list:
-    if not hasattr(run_record, "prompt_id"):
-      run_record.prompt_id = 0
-      item = document.get_item_by_id(run_record.result_id)
-      if item is not None:
-        run_record.prompt_id = item.prompt_id
-    if not hasattr(run_record, "complete_steps"):
-      run_record.complete_steps = 0
-    if not hasattr(run_record, "status_message"):
-      run_record.status_message = ""
-    if not hasattr(run_record, "stop_time"):
-      run_record.stop_time = None
-        
-  if not hasattr(document, 'md5_digest'):
-    document.md5_digest = b''
-    
+  document.prompts.fixup_prompts()
+  f.close()
   return document
   
 def save_document(file_name, document):
   # Write and rename to avoid a read of a partial write.
-  # TODO: write lock what open for writing
+  # TODO: use tmp file to avoid corruptiojn of two writes
   f = open(file_name + '.tmp', 'wb')
   pickle.dump(document, f)
   f.close()
@@ -664,6 +631,7 @@ def find_or_create_doc(user_dir, filename, file):
   May throw exception on failure.
   """
   # Read in file to a tmp file
+  # TODO: don't need a tempfile
   tmp_file = tempfile.TemporaryFile()
   tmp_file.write(file.read())
   tmp_file.seek(0, 0)
@@ -692,15 +660,8 @@ def find_or_create_doc(user_dir, filename, file):
       # File does not exist, create it
       done = True
       document = Document()    
-      document.load_doc(target_file, tmp_file, md5_digest)
+      document.read_file(target_file, tmp_file, md5_digest)
       save_document(file_path, document)
-  return target_file
-      
-      
 
-  # TODO: use hash and equality
-    
-  
   tmp_file.close()
-  return filename
-
+  return target_file
