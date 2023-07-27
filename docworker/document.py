@@ -305,10 +305,6 @@ class Document:
   """
 
   def __init__(self):
-    # Opaque run state for a doc gen. Included here for serialization
-    # in the file. Not used by the Document class, only gen_doc.
-    self.run_state = None
-    
     self.md5_digest = b''
     self.next_run_id = 1
     self.run_list = []     # List of RunRecord instances
@@ -512,7 +508,14 @@ class Document:
     run_record = RunRecord(self.next_run_id, prompt_id)
     self.next_run_id += 1
     self.run_list.append(run_record)
+
+    # Populate source items
+    chunks = doc_convert.chunk_text(self.doc_text)
+    for chunk in chunks:
+      run_record.add_new_segment(chunk.get_text(), chunk.size)
+      
     return run_record
+  
 
   #
   # Doc Gen Process User Visibile Information
@@ -528,7 +531,7 @@ class Document:
                run_record.start_time).total_seconds() < 60 * 60)
     return False
 
-  def mark_start_run(self, prompt, item_ids):
+  def mark_start_run(self, prompt):
     prompt_id = self.prompts.get_prompt_id(prompt)                        
     run_record = self.new_run_record(prompt_id)
     run_record.status_message = "Running..."

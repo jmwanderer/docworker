@@ -115,7 +115,7 @@ class BasicDocumentTestCase(unittest.TestCase):
     self.assertTrue(self.document.run_exists(self.run_id))
     self.assertFalse(self.document.run_exists(0))
     
-    self.document.mark_start_run(self.prompt, [self.id1, self.id2])
+    self.document.mark_start_run(self.prompt)
     self.assertTrue(self.document.is_running())
     self.document.mark_cancel_run("Canceled")
     self.assertFalse(self.document.is_running())
@@ -172,7 +172,15 @@ class BasicDocumentTestCase(unittest.TestCase):
     self.assertNotEqual(filename1, filename3)
 
     
-
-    
+  def testRunWithData(self):
+    filename = 'PA utility.docx'
+    path = os.path.join(os.path.dirname(__file__),
+                        'samples/', filename)
+    self.document = document.Document()
+    with open(path, 'rb') as f:
+      self.document.read_file(filename, f, b'')
+    self.document.mark_start_run("This is a prompt")
+    self.document.mark_complete_run()
+    self.assertTrue(len(self.document.run_list[0].doc_segments) > 0)
     
                     

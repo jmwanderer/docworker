@@ -20,7 +20,6 @@ def read_file(filename: str, file: io.BytesIO) -> str:
   Throws exception on failure.
   """
   (type, encoding)  = mimetypes.guess_type(filename)
-  tokenizer = tiktoken.encoding_for_model(section_util.AI_MODEL)  
 
   if type is None:
     raise DocError("Unknown file type")
@@ -54,8 +53,13 @@ def read_file(filename: str, file: io.BytesIO) -> str:
     raise DocError("Unsupported file format: %s" % type)    
 
 
-def chunk_text(test: str):
-  result = []    
+def chunk_text(text: str):
+  result = []
+  if text is None:
+    return result
+  
+  tokenizer = tiktoken.encoding_for_model(section_util.AI_MODEL)  
+  
   for chunk  in chunks(text, 
                        section_util.TEXT_EMBEDDING_CHUNK_SIZE,
                        tokenizer):
