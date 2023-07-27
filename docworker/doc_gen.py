@@ -270,6 +270,18 @@ def start_docgen(file_path, doc, prompt, item_ids=None, transOp=False):
   return run_state
 
 
+def run_input_tokens(doc, run_state):
+  """
+  Return the total number of tokens in the input
+  """
+  count = 0
+  for item_id in run_state.to_run:
+    item = doc.get_item_by_id(run_state.run_id, item_id)
+    if item is not None:
+      count += item.token_count()
+  return count
+
+
 def run_next_docgen(file_path, doc, run_state):
   """
   Called by run_all_docgen to make one completion.
@@ -437,23 +449,5 @@ def run_all_docgen(file_path, doc, run_state):
   
       
 
-    
-
-  def run_input_tokens(self):
-    """
-    Return the total number of tokens in the input
-    """
-    count = 0
-    for item_id in self.status.to_run:
-      item = self.get_item_by_id(item_id)
-      if item is not None:
-        count += item.token_count()
-    return count
   
-    self.status = RunState()
-    self.status.run_id = run_record.run_id
-    self.status.start_run(prompt, item_ids)
-  
-    cancel_run
-    self.status.to_run = []
     

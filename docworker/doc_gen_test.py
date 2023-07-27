@@ -5,7 +5,7 @@ import tempfile
 import os
 
 
-class RunstateTestCase(unittest.TestCase):
+class RunStateTestCase(unittest.TestCase):
 
   def setUp(self):
     self.run_state = doc_gen.RunState()
@@ -25,6 +25,8 @@ class RunstateTestCase(unittest.TestCase):
     self.run_state.note_step_completed(4)
     self.assertFalse(self.run_state.next_result_set())
     self.assertFalse(self.run_state.in_additions(4))
+
+    
 
 
 class MiscCoverageTestCase(unittest.TestCase):
@@ -97,6 +99,10 @@ class BasicDocGenTestCase(unittest.TestCase):
     run_state = doc_gen.start_docgen(self.doc_path,
                                      self.document,
                                      "A prompt")
+    count = doc_gen.run_input_tokens(self.document, run_state)
+    self.assertTrue(count > 0)
+    self.assertTrue(count < 100000)
+    
     doc_gen.run_all_docgen(self.doc_path, self.document, run_state)
     # TODO: Consider how we want to get results from the document
     run_record = self.document.get_current_run_record()
