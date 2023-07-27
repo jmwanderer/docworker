@@ -348,7 +348,6 @@ class Document:
       return self.run_list[-1]
     return None
   
-
   def get_run_record(self, run_id=None):
     """
     Return the matching run_record, or the curret one
@@ -535,6 +534,7 @@ class Document:
     prompt_id = self.prompts.get_prompt_id(prompt)                        
     run_record = self.new_run_record(prompt_id)
     run_record.status_message = "Running..."
+    return run_record.run_id
 
   def mark_complete_run(self):
     run_record = self.get_current_run_record()
@@ -545,10 +545,19 @@ class Document:
     self.set_status_message(message)
     self.mark_complete_run()
 
+  def add_new_completion(self, item_id_list, text, comp_tokens, token_cost):
+    run_record = self.get_current_run_record()
+    if run_record is not None:
+      run_record.completed_steps += 1      
+      return run_record.add_new_completion(item_id_list, text,
+                                           comp_tokens, token_cost)
+    return None
+
   def set_final_result(self, completion):
-    completion.set_final_result()
-    if len(self.run_list) > 0:
-      self.run_list[-1].result_id = completion.id()
+    run_record = self.get_current_run_record()
+    if run_record is not None:
+      completion.set_final_result()
+      run_record.result_id = completion.id()
   
   def get_status_message(self, run_id=None):
     run_record = self.get_run_record(run_id)
@@ -572,12 +581,7 @@ class Document:
     if run_record is not None:
       return run_record.completed_steps
     return 0
-    
-  def mark_step_complete(self, result_id=None):
-    run_record = self.get_run_record()
-    if run_record is not None:
-      run_record.completed_steps += 1
-    
+
   def run_exists(self, run_id):
     """
     Return true if the run exists.

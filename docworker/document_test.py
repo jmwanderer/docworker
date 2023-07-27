@@ -110,8 +110,6 @@ class BasicDocumentTestCase(unittest.TestCase):
 
     self.assertEqual(self.document.get_completed_steps(), 0)
     
-    self.document.mark_step_complete()
-
     self.assertTrue(self.document.run_exists(self.run_id))
     self.assertFalse(self.document.run_exists(0))
     
@@ -120,7 +118,7 @@ class BasicDocumentTestCase(unittest.TestCase):
     self.document.mark_cancel_run("Canceled")
     self.assertFalse(self.document.is_running())
 
-    completion = self.document.get_item_by_id(self.run_id, self.id3)
+    completion = self.document.add_new_completion([1, 2], "completion", 10, 20)
     self.document.set_final_result(completion)
 
     run_record = self.document.get_run_record(self.run_id)
@@ -154,12 +152,12 @@ class BasicDocumentTestCase(unittest.TestCase):
     path = os.path.join(os.path.dirname(__file__),
                         'samples/', filename)
     f = open(path, 'rb')
-    filename1 = document.find_or_create_doc(self.user_dir.name, path, f)
+    filename1 = document.find_or_create_doc(self.user_dir.name, filename, f)
     f.close()
     self.assertIsNotNone(filename1)
 
     f = open(path, 'rb')
-    filename2 = document.find_or_create_doc(self.user_dir.name, path, f)    
+    filename2 = document.find_or_create_doc(self.user_dir.name, filename, f)    
     f.close()
     self.assertEqual(filename1, filename2)
     
@@ -167,7 +165,7 @@ class BasicDocumentTestCase(unittest.TestCase):
     path = os.path.join(os.path.dirname(__file__),
                         'samples/', filename)
     f = open(path, 'rb')
-    filename3 = document.find_or_create_doc(self.user_dir.name, path, f)
+    filename3 = document.find_or_create_doc(self.user_dir.name, filename, f)
     f.close()
     self.assertNotEqual(filename1, filename3)
 
