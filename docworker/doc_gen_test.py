@@ -60,7 +60,6 @@ class BasicDocGenTestCase(unittest.TestCase):
   
   def tearDown(self):
     self.user_dir.cleanup()    
-    pass
 
   def get_doc_file_path(self, doc_name):
     file_name = doc_name + '.daf'
