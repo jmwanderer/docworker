@@ -168,7 +168,6 @@ def get_document(doc_name):
   file_path = get_doc_file_path(doc_name)
   if not os.path.exists(file_path):
     return None
-  
   doc = document.load_document(file_path)
   return doc
 
@@ -272,15 +271,15 @@ def main():
       # Check if there are clearly not  enough tokens to run the generation
       if (doc_gen.run_input_tokens(doc, run_state) >
           users.token_count(get_db(), g.user)):
-          doc.cancel_run("Insufficient tokens")
-          doc.save_document(file_path, doc)
+          doc.mark_cancel_run("Insufficient tokens")
+          document.save_document(file_path, doc)
       else:
         t = Thread(target=background_docgen,
                    args=[current_app.config['DATABASE'], g.user,
                          file_path, doc, run_state])
         t.start()
         
-      return redirect(url_for('analysis.main', doc=doc.id(), run_id=run_id))
+      return redirect(url_for('analysis.main', doc=doc.id(), run_id=run_state.run_id))
 
     else:
       return redirect(url_for('analysis.main', doc=doc.id()))
@@ -349,7 +348,7 @@ def docview():
 def segview():
   doc_id = request.args.get('doc')
   doc = get_document(doc_id)  
-  if document is None:
+  if doc is None:
     return redirect(url_for('analysis.main'))
 
   run_id = request.args.get('run_id')
@@ -365,8 +364,6 @@ def segview():
     item_list.pop(0)
 
   # Generate next and prev items
-  top_name = request.args.get("top")
-  print("top name %s" % top_name)
   next_item = None
   prev_item = None
   ordered_list = []
@@ -528,10 +525,11 @@ def export():
   run_id = request.form.get('run_id')    
   doc = get_document(doc_id)
   item_names = request.form.getlist('items')
+  if doc is None:
+    return redirect(url_for('analysis.main'))
     
   out_file = io.BytesIO()
   for name in item_names:
-    print("export item %s:%s" % (run_id, name))
     out_file.write(doc.get_item_by_name(run_id, name).text().encode('utf-8'))
     out_file.write('\n\n'.encode('utf-8'))      
   out_file.seek(0, 0)

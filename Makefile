@@ -5,7 +5,6 @@
 test:
 	PYTHONPATH=. pytest
 
-
 build:
 	python3 -m build  --wheel
 

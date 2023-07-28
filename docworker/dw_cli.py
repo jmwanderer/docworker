@@ -7,7 +7,7 @@ import argparse
 import os
 import openai
 import logging
-
+import werkzeug.utils
 
 def run_dw_cli():
   parser = argparse.ArgumentParser(description='Document processing.')
@@ -87,6 +87,7 @@ def run_dw_cli():
 
 def import_document(user_dir, path):
   filename = os.path.basename(path)
+  filename = werkzeug.utils.secure_filename(filename)  
   f = open(path, 'rb')
   doc_name = document.find_or_create_doc(user_dir, filename, f)
   f.close()
