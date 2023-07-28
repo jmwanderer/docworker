@@ -4,7 +4,6 @@
 
 test:
 	PYTHONPATH=. pytest
-	python3 -m unittest docworker/docx_util_test.py
 
 
 build:
@@ -14,4 +13,8 @@ build:
 unittest:
 	python3 -m unittest docworker/users_test.py
 	python3 -m unittest docworker/prompts_test.py
+	python3 -m unittest docworker/doc_gen_test.py
+	python3 -m unittest docworker/dw_cli_test.py
+	python3 -m unittest docworker/document_test.py
+	python3 -m unittest docworker/doc_convert_test.py
 

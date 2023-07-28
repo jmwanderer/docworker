@@ -6,7 +6,7 @@ from . import doc_gen
 import argparse
 import os
 import openai
-
+import logging
 
 
 def run_dw_cli():
@@ -28,9 +28,9 @@ def run_dw_cli():
   parser.add_argument('--fakeai', action='store_true')
   parser.add_argument('data_directory')
 
-  # TODO:
-  # - add show details of a completion - ordered list etc
-
+  logging.basicConfig(level=logging.INFO)  
+  logging.info("Dockworker CLI")
+  
   args = parser.parse_args()
 
   # Data directory is required
