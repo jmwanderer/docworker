@@ -73,7 +73,13 @@ flask --app "analysis_app:create_app(debug=True,fakeai=True)" run --debug
 Update sample docs:
 rm docworker/samples/*.daf
 
-python3 -m docworker.docx_summary --new docworker/samples/PA\ utility.docx docworker/samples/PA_utility.docx.daf 
+python3 -m docworker.dw_cli docworker/samples --import_doc 'docworker/samples/PA utility.docx'
+python3 -m docworker.dw_cli docworker/samples --import_doc 'docworker/samples/PA Agenda.docx'
+python3 -m docworker.dw_cli docworker/samples --import_doc docworker/samples/creative-llc.docx
+python3 -m docworker.dw_cli docworker/samples --import_doc docworker/samples/creative-llc.pdf
+python3 -m docworker.dw_cli docworker/samples --import_doc docworker/samples/groff-dejoy.pdf
+
+
 python3 -m docworker.docx_summary --new docworker/samples/PA\ Agenda.docx docworker/samples/PA_Agenda.docx.daf
 python3 -m docworker.docx_summary --new docworker/samples/'DRAFT SCAP Key Actions and Work Plan (February 2023).docx' docworker/samples/DRAFT_SCAP_Key_Actions_and_Work_Plan_February_2023.docx.daf
 python3 -m docworker.docx_summary --new docworker/samples/creative-llc-v-elenis.docx docworker/samples/creative-llc-v-elenis.docx.daf

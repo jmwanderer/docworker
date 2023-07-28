@@ -1,8 +1,12 @@
 .PHONY: test
+.PHONY: systest
 .PHONY: unittest
 .PHONY: build
 
-test:
+
+test: systest unittest
+
+systest:
 	PYTHONPATH=. pytest
 
 build:
