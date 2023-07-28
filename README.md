@@ -54,10 +54,6 @@ Run System and Unit tests
 ### System test
 `make systest`
 
-### Unit test
-`make unittest`
-
-
 ## Run Production Server
 
 Dockworker can be built into a module and installed on a production server,
