@@ -45,7 +45,7 @@ Single pane application page.
 	<td>
 	  Load a document:
 	</td>
-	{% if doc is none or run_id is none %}
+	{% if not doc is none and run_id is none %}
 	<td>
 	  Select a prompt:
 	</td>
@@ -112,7 +112,7 @@ Single pane application page.
 	    {% endif %}	    
 	  </div>
 	</td>
-	{% if doc is none or run_id is none %} 
+	{% if not doc is none and run_id is none %} 
 	<td style="vertical-align:top;">
 	  <form action="{{ url_for('analysis.main')}}"
 		method="post" id="form">
@@ -126,7 +126,7 @@ Single pane application page.
 	    <textarea id="prompt" name="prompt" rows="3" cols="70"></textarea>
 	    <input id="run" name="run" type="submit" value="Run Prompt"
 		   style="vertical-align:top;"/>
-	    <input type="hidden" id="doc" name="doc" value="{{ doc }}"/>     
+	    <input type="hidden" id="doc" name="doc" value="{{ doc.id() }}"/>     
 	  </form>
 	</td>
 	{% endif %}

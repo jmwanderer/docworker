@@ -226,10 +226,9 @@ def main():
     if doc is not None:
       # If a run is in progress, show that run
       if run_id is None and doc.is_running():
-        run_id = doc.status.run_id
+        run_id = doc.get_current_run_record().run_id
       prompts_set = doc.prompts.get_prompt_set()
 
-    # TODO: fix prompts
     return render_template("main.html",
                            doc=doc,
                            username=g.user,
@@ -278,13 +277,13 @@ def main():
       else:
         t = Thread(target=background_docgen,
                    args=[current_app.config['DATABASE'], g.user,
-                         file_path, dsession, run_state])
+                         file_path, doc, run_state])
         t.start()
         
-      return redirect(url_for('analysis.main', doc=doc, run_id=run_id))
+      return redirect(url_for('analysis.main', doc=doc.id(), run_id=run_id))
 
     else:
-      return redirect(url_for('analysis.main', doc=doc))
+      return redirect(url_for('analysis.main', doc=doc.id()))
   
 def background_docgen(db_config, username, file_path, doc, run_state):
   """
@@ -297,7 +296,7 @@ def background_docgen(db_config, username, file_path, doc, run_state):
 
   id = doc_gen.run_all_docgen(file_path, doc, run_state)
   if id is not None:
-    family = session.get_completion_family_list(id)
+    family = doc.get_completion_list(run_state.run_id)
     tokens = sum(item.token_cost for item in family)
     users.increment_tokens(db, username, tokens)
     logging.info("updated cost for %s of %d tokens", username, tokens)
@@ -325,7 +324,7 @@ def doclist():
 def runlist():
   doc_id = request.args.get('doc')  
   doc = get_document(doc_id)
-  if session is None:
+  if doc is None:
     return redirect(url_for('analysis.main'))
   return render_template("runlist.html", doc=doc)
 
@@ -333,9 +332,9 @@ def runlist():
 @bp.route("/docview", methods=("GET",))
 @login_required
 def docview():
-  doc = request.args.get('doc')  
-  session = get_session(doc)
-  if session is None:
+  doc_id = request.args.get('doc')  
+  doc = get_doc(doc_id)
+  if doc is None:
     return redirect(url_for('analysis.main'))
   
   item_names = request.args.getlist("items")
