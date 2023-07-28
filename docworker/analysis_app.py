@@ -333,7 +333,7 @@ def runlist():
 @login_required
 def docview():
   doc_id = request.args.get('doc')  
-  doc = get_doc(doc_id)
+  doc = get_document(doc_id)
   if doc is None:
     return redirect(url_for('analysis.main'))
   
@@ -347,20 +347,19 @@ def docview():
 @bp.route("/segview", methods=("GET",))
 @login_required
 def segview():
-  doc = request.args.get('doc')
-  session = get_session(doc)  
-  if session is None:
+  doc_id = request.args.get('doc')
+  doc = get_document(doc_id)  
+  if document is None:
     return redirect(url_for('analysis.main'))
 
+  run_id = request.args.get('run_id')
   item_name = request.args.get("item")
-  if item_name is None:
-    return redirect(url_for('analysis.docview', doc=doc))
-  item = session.get_item_by_name(item_name)
-  if item is None:
-    return redirect(url_for('analysis.docview', doc=doc))
+  item = doc.get_item_by_name(run_id, item_name)  
+  if run_id is None or item is None:
+    return redirect(url_for('analysis.main', doc=doc_id))
   
   # Source items for a completion (returns empty for docseg)
-  (depth, item_list) = session.get_completion_family(item.id())
+  (depth, item_list) = doc.get_completion_family(run_id, item.id())
   # Remove first item
   if (len(item_list) > 0):
     item_list.pop(0)
@@ -372,13 +371,8 @@ def segview():
   prev_item = None
   ordered_list = []
   
-  if top_name is not None:
-    top_item = session.get_item_by_name(top_name)
-    if top_item is not None:
-      (x, list) = session.get_completion_family(top_item.id())
-      ordered_items = [ x[1] for x in list ]
-  elif item.is_doc_segment():
-    ordered_items = session.doc_segments
+  (x, list) = doc.get_completion_family(run_id)
+  ordered_items = [ x[1] for x in list ]
       
   if item in ordered_items:
     item_index = ordered_items.index(item)
@@ -389,11 +383,10 @@ def segview():
   
   return render_template("segview.html",
                          doc=doc,
+                         run_id=run_id,
                          depth=depth,
                          source_list=item_list,
-                         top=top_name,
-                         item=item, prev_item=prev_item, next_item=next_item,
-                         session=session)
+                         item=item, prev_item=prev_item, next_item=next_item)
 
 
 @bp.route("/docgen", methods=("GET","POST"))
@@ -480,7 +473,7 @@ def generate():
         session.is_running()):
       return redirect(url_for('analysis.generate', doc=doc, items=item_names))
         
-    prompt_id = session.get_prompt_id(prompt)
+    prompt_id = doc.get_prompt_id(prompt)
   
     run_id = docx_util.start_docgen(file_path, session, prompt, id_list)
     # Check if there are clearly not  enough tokens to run the generation

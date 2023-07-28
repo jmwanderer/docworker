@@ -80,12 +80,6 @@ class Completion:
   def token_count(self):
     return self.text_record.token_count
 
-  def prompt_name(self, session):
-    return session.get_prompt_name_by_id(self.prompt_id)
-
-  def prompt(self, session):
-    return session.get_prompt_by_id(self.prompt_id)
-
   def match_segment_id(self, id):
     """
     True if completion generated from the doc_segment identified by
@@ -321,6 +315,15 @@ class Document:
   
   def get_prompt_set(self):
     return self.prompts.get_prompt_set()
+
+  def prompt_name(self, item):
+    if not item.is_doc_segment():
+      return self.prompts.get_prompt_name_by_id(item.prompt_id)
+    return ""
+
+  def prompt_str(self, item):
+    if not item.is_doc_segment():    
+      return self.prompts.get_prompt_str_by_id(item.prompt_id)
     
   def item_color(self, item):
     if item.is_doc_segment():
