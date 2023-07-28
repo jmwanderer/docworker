@@ -44,10 +44,18 @@ Open: http://localhost:5000/?authkey=<access_key>
 
 ## Test
 
-### Unit test
-`python3 -m unittest docworker/docx_util_test.py`
+Run System and Unit tests
 
-(more to do here)
+`make test`
+
+### Unit test
+`make unittest`
+
+### System test
+`make systest`
+
+### Unit test
+`make unittest`
 
 
 ## Run Production Server
