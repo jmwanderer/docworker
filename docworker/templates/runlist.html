@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block backlink %}
-<a href="{{ url_for('analysis.main', doc=doc) }}">Main View</a>
+<a href="{{ url_for('analysis.main', doc=doc.id()) }}">Main View</a>
 {% endblock %}
 {% block body%}
   
@@ -11,12 +11,12 @@
 <h2>Run History:</h2>
 <div style="border-witdh:1px;border-style:solid;border-color:black;"> 
   <ul>
-    {% for run_record in session.run_list %}
+    {% for run_record in doc.get_run_list() %}
     <li>
-      <a href="{{ url_for('analysis.main', doc=doc, run_id=run_record.run_id) }}">
-	{{ session.run_date_time(run_record) }}
+      <a href="{{ url_for('analysis.main', doc=doc.id(), run_id=run_record.run_id) }}">
+	{{ doc.run_date_time(run_record) }}
       </a>
-	&nbsp; {{ session.run_record_prompt(run_record) }}
+	&nbsp; {{ doc.run_record_prompt(run_record) }}
     </li>
     {% endfor %}
   </ul>

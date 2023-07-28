@@ -15,9 +15,10 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 import werkzeug.utils
 from logging.config import dictConfig
 import logging
-from . import docx_summary
 from . import doc_convert
-from . import docx_util
+from . import prompts
+from . import document
+from . import doc_gen
 from . import analysis_util
 from . import users
 import openai
@@ -60,7 +61,7 @@ def create_app(test_config=None,
   else:
     logging.basicConfig(level=logging.INFO)
   
-  docx_util.FAKE_AI_COMPLETION=fakeai
+  doc_gen.FAKE_AI_COMPLETION=fakeai
 
   # If so configured, setup for running behind a reverse proxy.
   if app.config.get('PROXY_CONFIG'):
@@ -146,13 +147,19 @@ def list_command():
   """List the users in the DB."""
   users.list_users(get_db())
 
+  
 def get_doc_file_path(doc_name):
+  """
+  Given a document name, return the path to the pickle doc 
+  on the local storage.
+  """
   file_name = doc_name + '.daf'
   return os.path.join(current_app.instance_path, g.user, file_name)
   
-def get_session(doc_name):
+
+def get_document(doc_name):
   """
-  Load a session for the given doc name.
+  Load a document for the given doc name.
   If the name is None, or the session can not be loaded, return None
   """
   if doc_name is None:
@@ -161,9 +168,8 @@ def get_session(doc_name):
   file_path = get_doc_file_path(doc_name)
   if not os.path.exists(file_path):
     return None
-  
-  session = docx_util.load_session(file_path)
-  return session
+  doc = document.load_document(file_path)
+  return doc
 
     
 @bp.before_app_request
@@ -214,19 +220,19 @@ def main():
     run_id = request.args.get('run_id')
     if run_id != None:
       run_id = int(run_id)
-    dsession = get_session(doc_id)
-    if dsession is not None:
-      doc = doc_id
+    doc  = get_document(doc_id)
+    prompts_set = prompts.Prompts.get_initial_prompt_set()
+    if doc is not None:
       # If a run is in progress, show that run
-      if run_id is None and dsession.is_running():
-        run_id = dsession.status.run_id
-                    
+      if run_id is None and doc.is_running():
+        run_id = doc.get_current_run_record().run_id
+      prompts_set = doc.prompts.get_prompt_set()
+
     return render_template("main.html",
                            doc=doc,
                            username=g.user,
                            run_id=run_id,
-                           prompts=docx_util.INITIAL_PROMPTS,
-                           session=dsession)
+                           prompts=prompts_set)
 
   else:
     doc_id = request.form.get('doc')
@@ -243,40 +249,42 @@ def main():
       filename = werkzeug.utils.secure_filename(file.filename)
       user_dir = os.path.join(current_app.instance_path, g.user)
 
-      doc = None
+      doc_id = None
       try:    
-        doc = docx_util.find_or_create_doc(user_dir, filename, file)
+        doc_id = document.find_or_create_doc(user_dir, filename, file)
       except doc_convert.DocError as err:
         flask.flash("Error loading file: %s" % str(err))
 
-      return redirect(url_for('analysis.main', doc=doc, run_id=run_id))
+      return redirect(url_for('analysis.main', doc=doc_id, run_id=run_id))
 
     elif request.form.get('run'):
       prompt = request.form['prompt'].strip()      
-      dsession = get_session(doc_id)
-      if (dsession is None or dsession.is_running() or
+      doc = get_document(doc_id)
+      if (doc is None or doc.is_running() or
           prompt is None or len(prompt) == 0):
         return redirect(url_for('analysis.main'))
       
-      print("start run prompt")
+      logging.info("Start doc run")
       file_path = get_doc_file_path(doc_id)
-      run_id = docx_util.start_docgen(file_path, dsession, prompt)
+      run_state = doc_gen.start_docgen(file_path, doc, prompt)
+      
       # Check if there are clearly not  enough tokens to run the generation
-      if dsession.run_input_tokens() > users.token_count(get_db(), g.user):
-        dsession.cancel_run("Insufficient tokens")
-        docx_util.save_session(file_path, dsession)
+      if (doc_gen.run_input_tokens(doc, run_state) >
+          users.token_count(get_db(), g.user)):
+          doc.mark_cancel_run("Insufficient tokens")
+          document.save_document(file_path, doc)
       else:
         t = Thread(target=background_docgen,
                    args=[current_app.config['DATABASE'], g.user,
-                         file_path, dsession])
+                         file_path, doc, run_state])
         t.start()
         
-      return redirect(url_for('analysis.main', doc=doc_id, run_id=run_id))
+      return redirect(url_for('analysis.main', doc=doc.id(), run_id=run_state.run_id))
 
     else:
-      return redirect(url_for('analysis.main', doc=doc_id))
+      return redirect(url_for('analysis.main', doc=doc.id()))
   
-def background_docgen(db_config, name, file_path, session):
+def background_docgen(db_config, username, file_path, doc, run_state):
   """
   Runs from a background thread to process the document and 
   update the consumed token accouting.
@@ -285,17 +293,15 @@ def background_docgen(db_config, name, file_path, session):
   db = sqlite3.connect(db_config, detect_types=sqlite3.PARSE_DECLTYPES)
   db.row_factory = sqlite3.Row
 
-  id = docx_util.run_all_docgen(file_path, session)
+  id = doc_gen.run_all_docgen(file_path, doc, run_state)
   if id is not None:
-    family = session.get_completion_family_list(id)
+    family = doc.get_completion_list(run_state.run_id)
     tokens = sum(item.token_cost for item in family)
-    users.increment_tokens(db, name, tokens)
-    logging.info("updated cost for %s of %d tokens", name, tokens)
+    users.increment_tokens(db, username, tokens)
+    logging.info("updated cost for %s of %d tokens", username, tokens)
   
   # Close database
   db.close()
-
-  
 
 
 @bp.route("/doclist", methods=("GET",))
@@ -313,63 +319,40 @@ def doclist():
 @bp.route("/runlist", methods=("GET",))
 @login_required
 def runlist():
-  doc = request.args.get('doc')  
-  session = get_session(doc)
-  if session is None:
+  doc_id = request.args.get('doc')  
+  doc = get_document(doc_id)
+  if doc is None:
     return redirect(url_for('analysis.main'))
-  return render_template("runlist.html", doc=doc, session=session)
+  return render_template("runlist.html", doc=doc)
 
     
-@bp.route("/docview", methods=("GET",))
-@login_required
-def docview():
-  doc = request.args.get('doc')  
-  session = get_session(doc)
-  if session is None:
-    return redirect(url_for('analysis.main'))
-  
-  item_names = request.args.getlist("items")
-  focus_item = request.args.get("focus")    
-
-  return render_template("docview.html",
-                         doc=doc,
-                         session=session)
-
 @bp.route("/segview", methods=("GET",))
 @login_required
 def segview():
-  doc = request.args.get('doc')
-  session = get_session(doc)  
-  if session is None:
+  doc_id = request.args.get('doc')
+  doc = get_document(doc_id)  
+  if doc is None:
     return redirect(url_for('analysis.main'))
 
+  run_id = request.args.get('run_id')
   item_name = request.args.get("item")
-  if item_name is None:
-    return redirect(url_for('analysis.docview', doc=doc))
-  item = session.get_item_by_name(item_name)
-  if item is None:
-    return redirect(url_for('analysis.docview', doc=doc))
+  item = doc.get_item_by_name(run_id, item_name)  
+  if run_id is None or item is None:
+    return redirect(url_for('analysis.main', doc=doc_id))
   
   # Source items for a completion (returns empty for docseg)
-  (depth, item_list) = session.get_completion_family(item.id())
+  (depth, item_list) = doc.get_completion_family(run_id, item.id())
   # Remove first item
   if (len(item_list) > 0):
     item_list.pop(0)
 
   # Generate next and prev items
-  top_name = request.args.get("top")
-  print("top name %s" % top_name)
   next_item = None
   prev_item = None
   ordered_list = []
   
-  if top_name is not None:
-    top_item = session.get_item_by_name(top_name)
-    if top_item is not None:
-      (x, list) = session.get_completion_family(top_item.id())
-      ordered_items = [ x[1] for x in list ]
-  elif item.is_doc_segment():
-    ordered_items = session.doc_segments
+  (x, list) = doc.get_completion_family(run_id)
+  ordered_items = [ x[1] for x in list ]
       
   if item in ordered_items:
     item_index = ordered_items.index(item)
@@ -380,252 +363,35 @@ def segview():
   
   return render_template("segview.html",
                          doc=doc,
+                         run_id=run_id,
                          depth=depth,
                          source_list=item_list,
-                         top=top_name,
-                         item=item, prev_item=prev_item, next_item=next_item,
-                         session=session)
+                         item=item, prev_item=prev_item, next_item=next_item)
 
 
-@bp.route("/docgen", methods=("GET","POST"))
-@login_required
-def docgen():
-  if request.method == "GET":
-    doc = request.args.get('doc')  
-    session = get_session(doc)      
-    if session is None:
-      return redirect(url_for('analysis.main'))
-
-    if session.is_running():
-      # Go to in progress run
-      return redirect(url_for('analysis.genresult', doc=doc))          
-      
-    return render_template("docgen.html",
-                           doc=doc,
-                           session=session)
-  else:
-    doc = request.form.get('doc')
-    session = get_session(doc)          
-    if session is None:
-      return redirect(url_for('analysis.main'))
-    file_path = get_doc_file_path(doc)    
-    
-    prompt = request.form['prompt'].strip()
-    if (prompt is None or len(prompt) == 0 or
-        session.is_running()):
-      return redirect(url_for('analysis.docgen', doc=doc))
-
-    run_id = docx_util.start_docgen(file_path, session, prompt)
-    # Check if there are clearly not  enough tokens to run the generation
-    if session.run_input_tokens() > users.token_count(get_db(), g.user):
-      session.cancel_run("Insufficient tokens")
-      docx_util.save_session(file_path, session)
-    else:
-      t = Thread(target=background_docgen,
-                 args=[current_app.config['DATABASE'], g.user,
-                       file_path, session])
-      t.start()
-
-    return redirect(url_for('analysis.genresult', doc=doc, run_id=run_id))    
-  
-
-@bp.route("/generate", methods=("GET","POST"))
-@login_required
-def generate():
-  if request.method == "GET":
-    doc = request.args.get('doc')
-    session = get_session(doc)              
-    if session is None:
-      return redirect(url_for('analysis.main'))
-
-    item_names = request.args.getlist("items")
-    items_state = analysis_util.ItemsState()
-    items_state.set_state(session, item_names)
-
-
-    return render_template("generate.html",
-                           doc=doc,
-                           items_state=items_state,
-                           session=session)
-  
-  else:
-    doc = request.form.get('doc')    
-    session = get_session(doc)                  
-    if session is None:
-      return redirect(url_for('analysis.main'))
-    file_path = get_doc_file_path(doc)    
-
-    item_names = request.form.getlist('items')
-    prompt = request.form['prompt'].strip()
-
-    items_state = analysis_util.ItemsState()    
-    items_state.set_state(session, item_names)
-  
-    id_list = []
-    for item_name in items_state.selected_names():
-      item = session.get_item_by_name(item_name)
-      if item is not None:
-        id_list.append(item.id())
-
-    if (prompt is None or len(prompt) == 0 or len(id_list) == 0 or
-        session.is_running()):
-      return redirect(url_for('analysis.generate', doc=doc, items=item_names))
-        
-    prompt_id = session.get_prompt_id(prompt)
-  
-    run_id = docx_util.start_docgen(file_path, session, prompt, id_list)
-    # Check if there are clearly not  enough tokens to run the generation
-    if session.run_input_tokens() > users.token_count(get_db(), g.user):
-      session.cancel_run("Insufficient tokens")
-      docx_util.save_session(file_path, session)
-    else:
-      t = Thread(target=background_docgen,
-                 args=[current_app.config['DATABASE'], g.user,
-                       file_path, session])
-      t.start()
-
-    return redirect(url_for('analysis.genresult', doc=doc, run_id=run_id))
-
-
-@bp.route("/genresult")
-@login_required
-def genresult():
-  doc = request.args.get('doc')
-  session = get_session(doc)              
-  if session is None:
-    return redirect(url_for('analysis.main'))
-
-  return render_template("genresult.html",
-                         doc=doc,
-                         session=session)
-  
-@bp.route("/dispatch")
-@login_required          
-def dispatch():
-    doc = request.args.get('doc')
-    item_names = request.args.getlist("items")
           
-    if request.args.get('ProcessDoc'):
-      return redirect(url_for('analysis.docgen',
-                              doc=doc, items=item_names))              
-
-    if request.args.get('ProcessBlocks'):
-      return redirect(url_for('analysis.sel_gen',
-                              doc=doc, items=item_names))              
-
-    if request.args.get('ExportBlocks'):
-      return redirect(url_for('analysis.sel_export', doc=doc))
-
-    return redirect(url_for('analysis.docview',
-                            doc=doc, items=item_names))              
-          
-@bp.route("/export", methods=("GET", "POST"))
+@bp.route("/export", methods=("POST",))
 @login_required          
 def export():
-  if request.method == "GET":    
-    doc = request.args.get('doc')
-    session = get_session(doc)                      
-    if session is None:
-      return redirect(url_for('analysis.main'))
-
-    item_names = request.args.getlist("items")
-    items_state = analysis_util.ItemsState()
-    items_state.set_state(session, item_names)
-
-    return render_template("export.html",
-                           doc=doc,
-                           items_state=items_state,
-                           session=session)
-  else:
-    doc = request.form.get('doc')
-    session = get_session(doc)
-    item_names = request.form.getlist('items')
+  doc_id = request.form.get('doc')
+  run_id = request.form.get('run_id')    
+  doc = get_document(doc_id)
+  item_names = request.form.getlist('items')
+  if doc is None:
+    return redirect(url_for('analysis.main'))
     
-    out_file = io.BytesIO()
-    for name in item_names:
-      out_file.write(session.get_item_by_name(name).text().encode('utf-8'))
-      out_file.write('\n\n'.encode('utf-8'))      
-    out_file.seek(0, 0)
-    return flask.send_file(out_file, mimetype='text/plain;charset=utf-8',
-                           as_attachment=True,
-                           download_name='%s.txt' %
-                           os.path.basename(session.name))
+  out_file = io.BytesIO()
+  for name in item_names:
+    out_file.write(doc.get_item_by_name(run_id, name).text().encode('utf-8'))
+    out_file.write('\n\n'.encode('utf-8'))      
+  out_file.seek(0, 0)
+  return flask.send_file(out_file, mimetype='text/plain;charset=utf-8',
+                         as_attachment=True,
+                         download_name='%s.txt' %
+                         os.path.basename(doc.name()))
 
-
-@bp.route("/sel_export", methods=("GET", "POST"))
-@login_required          
-def sel_export():
-  if request.method == "GET":    
-    doc = request.args.get('doc')
-    session = get_session(doc)
-    if session is None:
-      return redirect(url_for('analysis.main'))
-
-    item_id = request.args.get("item")    
-    item_names = request.args.getlist("items")
-    items_state = analysis_util.ItemsState()
-    items_state.set_state(session, item_names)
-
-    depth = 0
-    item_list = None
-    if item_id is not None:
-      (depth, item_list) = session.get_completion_family(int(item_id))
-
-    action="Select items for export."
-    return render_template("select.html",
-                           doc=doc,
-                           action=action,
-                           depth=depth,
-                           item_list=item_list,
-                           items_state=items_state,                           
-                           page='analysis.sel_export',
-                           session=session)
-  else:
-    doc = request.form.get('doc')
-    item_names = request.form.getlist('items')
-    if request.form.get('donebutton'):        
-      return redirect(url_for('analysis.export', doc=doc, items=item_names))
-    return redirect(url_for('analysis.docview', doc=doc))      
   
   
-@bp.route("/sel_gen", methods=("GET", "POST"))
-@login_required          
-def sel_gen():
-  if request.method == "GET":    
-    doc = request.args.get('doc')
-    session = get_session(doc)
-    if session is None:
-      return redirect(url_for('analysis.main'))
-
-    if session.is_running():
-      # Go to in progress run
-      return redirect(url_for('analysis.genresult', doc=doc))          
-    
-    item_id = request.args.get("item")    
-    item_names = request.args.getlist("items")
-    items_state = analysis_util.ItemsState()
-    items_state.set_state(session, item_names)
-
-    depth = 0
-    item_list = None
-    if item_id is not None:
-      (depth, item_list) = session.get_completion_family(int(item_id))
-
-    action="Select individual items for GPT processing."    
-    return render_template("select.html",
-                           doc=doc,
-                           action=action,
-                           depth=depth,
-                           item_list=item_list,
-                           items_state=items_state,
-                           page='analysis.sel_gen',
-                           session=session)
-  else:
-    doc = request.form.get('doc')
-    item_names = request.form.getlist('items')
-    if request.form.get('donebutton'):    
-      return redirect(url_for('analysis.generate', doc=doc, items=item_names))
-    return redirect(url_for('analysis.docview', doc=doc))      
 
 EMAIL_TEXT = """
 Hello %s,

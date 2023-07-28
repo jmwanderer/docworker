@@ -1,17 +1,36 @@
 General Notes
+-------------
+
+Run in debug mode:
+export OPENAI_API_KEY=<key>
+export SMTP_USER = <user>
+export SMTP_PASSWORD = <password>
+export SMTP_SERVER = <server>
+export SMTP_FROM = <from address>
+
+flask --app "analysis_app:create_app(debug=True)" run --debug
+
+To run tests without making OpenAI Completion calls:
+  flask --app "analysis_app:create_app(debug=True,fakeai=True)" run --debug
+
+
 
 Production Notes:
 
 Build and Install docworker package:
 
 git pull
-python3 -m build  --wheel
+make build
+
 result: dist/docworker-0.1.0-py3-none-any.whl
+
 pip uninstall docworker
 pip install docworker-0.1.0-py3-none-any.whl
 
 Initial Configuration:
-cp config.py ~/.local/var/docworker.analysis_app-instance/
+
+For a user local non venv install:
+  cp config.py ~/.local/var/docworker.analysis_app-instance/
 
 config.py:
 OPENAI_API_KEY = 'xx'
@@ -23,7 +42,9 @@ SMTP_USER='xx'
 SMTP_PASSWORD='xx'
 SMPT_FROM='xx'
 
+
 Using venv:
+
 mkdir project
 cd project
 python3 -m venv venv
@@ -47,8 +68,9 @@ use --url-prefix instead of:
 sudo service apache2 restart
 
 
+Configure as a system service:
 
-Configure as a system service
+Edit docworker.service to set the install path.
 
 cp docworker.service /lib/systemd/system
 sudo systemctl enable docworker
@@ -60,23 +82,18 @@ sudo service docworker restart
 Command line:
 
 python3 -m docworker.add_user
-python3 -m unittest docworker/docx_util_test.py
-python3 -m docworker.docx_summary
-
-
-Run in debug mode
-flask --app "analysis_app:create_app(debug=True)" run --debug
-or
-flask --app "analysis_app:create_app(debug=True,fakeai=True)" run --debug
+python3 -m docworker.dw_cli <user data directory> <command>
 
 
 Update sample docs:
 rm docworker/samples/*.daf
 
-python3 -m docworker.docx_summary --new docworker/samples/PA\ utility.docx docworker/samples/PA_utility.docx.daf 
-python3 -m docworker.docx_summary --new docworker/samples/PA\ Agenda.docx docworker/samples/PA_Agenda.docx.daf
-python3 -m docworker.docx_summary --new docworker/samples/'DRAFT SCAP Key Actions and Work Plan (February 2023).docx' docworker/samples/DRAFT_SCAP_Key_Actions_and_Work_Plan_February_2023.docx.daf
-python3 -m docworker.docx_summary --new docworker/samples/creative-llc-v-elenis.docx docworker/samples/creative-llc-v-elenis.docx.daf
+python3 -m docworker.dw_cli docworker/samples --import_doc 'docworker/samples/PA utility.docx'
+python3 -m docworker.dw_cli docworker/samples --import_doc 'docworker/samples/PA Agenda.docx'
+python3 -m docworker.dw_cli docworker/samples --import_doc docworker/samples/creative-llc.docx
+python3 -m docworker.dw_cli docworker/samples --import_doc docworker/samples/creative-llc.pdf
+python3 -m docworker.dw_cli docworker/samples --import_doc docworker/samples/groff-dejoy.pdf
+
 
 # Load and debug a session in Python: 
 from docworker import docx_util

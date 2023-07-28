@@ -5,13 +5,13 @@ import time
 
 
 def test_start_run(app, client, auth, mocker):
-  mocker.patch('docworker.docx_util', 'FAKE_AI_SLEEP', 0)
+  mocker.patch('docworker.doc_gen', 'FAKE_AI_SLEEP', 0)
   auth.login('test1')
 
   with app.app_context():
     analysis_app.set_logged_in_user('test1')    
-    session = analysis_app.get_session('PA_utility.docx')
-    assert session.get_run_record(1) is None
+    doc= analysis_app.get_document('PA_utility.docx')
+    assert doc.get_run_record(1) is None
 
   response = client.post('/',
                          data={'run': 'run',
@@ -26,9 +26,9 @@ def test_start_run(app, client, auth, mocker):
 
   with app.app_context():
     analysis_app.set_logged_in_user('test1')    
-    session = analysis_app.get_session('PA_utility.docx')
-    assert not session.is_running()
-    assert session.get_run_record(1) is not None    
+    doc = analysis_app.get_document('PA_utility.docx')
+    assert not doc.is_running()
+    assert doc.get_run_record(1) is not None    
   
   
 

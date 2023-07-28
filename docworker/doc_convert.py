@@ -12,21 +12,29 @@ import logging
 import pdfplumber
 
 
-def doc_to_chunks(filename: str, file: io.BytesIO) -> [section_util.Chunk]:
+def read_file(filename: str, file: io.BytesIO) -> str:
   """
-  Main function to process a file.
+  Reads a Text, DOCX, or PDF.
   Uses filename to detect the file type.
 
   Throws exception on failure.
   """
   (type, encoding)  = mimetypes.guess_type(filename)
-  tokenizer = tiktoken.encoding_for_model(section_util.AI_MODEL)  
 
   if type is None:
     raise DocError("Unknown file type")
 
   elif type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
-    return docx_to_chunks(file)
+
+    docx_extract = extract_docx.DocXExtract()
+    try:
+      docx_extract.load_doc(file)
+    except Exception as e:
+      raise DocError("Not a valid DOCX file")
+      in_file = docx_extract.get_result()
+    in_file = docx_extract.get_result()
+    text = in_file.read()
+    return text
 
   elif type == 'application/pdf':
     pages = []
@@ -34,34 +42,33 @@ def doc_to_chunks(filename: str, file: io.BytesIO) -> [section_util.Chunk]:
     for page in pdf.pages:
       pages.append(page.extract_text_simple())
     text = '\n'.join(pages)
-    result = []    
-    for chunk  in chunks(text, 
-                         section_util.TEXT_EMBEDDING_CHUNK_SIZE,
-                         tokenizer):
-      entry = section_util.Chunk()
-      chunk_text = tokenizer.decode(chunk).strip()
-      if len(chunk_text) > 0:
-        entry.append(chunk_text, len(chunk))
-        result.append(entry)
-    return result
+    return text
 
   elif type == 'text/plain':
     infile = io.TextIOWrapper(file, encoding='utf-8')
     text = infile.read()
-    result = []    
-    for chunk  in chunks(text, 
-                         section_util.TEXT_EMBEDDING_CHUNK_SIZE,
-                         tokenizer):
-      entry = section_util.Chunk()
-      chunk_text = tokenizer.decode(chunk).strip()
-      if len(chunk_text) > 0:
-        entry.append(chunk_text, len(chunk))
-        result.append(entry)
-    return result
+    return text
 
   else:
     raise DocError("Unsupported file format: %s" % type)    
 
+
+def chunk_text(text: str):
+  result = []
+  if text is None:
+    return result
+  
+  tokenizer = tiktoken.encoding_for_model(section_util.AI_MODEL)  
+  
+  for chunk  in chunks(text, 
+                       section_util.TEXT_EMBEDDING_CHUNK_SIZE,
+                       tokenizer):
+    entry = section_util.Chunk()
+    chunk_text = tokenizer.decode(chunk).strip()
+    if len(chunk_text) > 0:
+      entry.append(chunk_text, len(chunk))
+      result.append(entry)
+  return result
   
 def docx_to_chunks(file: io.BytesIO) -> [section_util.Chunk]:
     docx_extract = extract_docx.DocXExtract()

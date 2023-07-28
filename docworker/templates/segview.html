@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block backlink %}
-<a href="{{ url_for('analysis.main', doc=doc) }}">Main View</a>
+<a href="{{ url_for('analysis.main', doc=doc.id(), run_id=run_id) }}">
+  Main View
+</a>
 {% endblock %}
 {% block body%}
   <h1>Text View</h1>
@@ -11,10 +13,11 @@
   <hr>
 
   <div style="width: 100%;">
+    {# TODO: add a parent link #} 
     <div style="width: 50%;float:left;">
       {% if not prev_item is none %}
       <a
-	href="{{ url_for('analysis.segview', doc=doc, top=top, item=prev_item.name()) }}">
+	href="{{ url_for('analysis.segview', doc=doc.id(), run_id=run_id, item=prev_item.name()) }}">
 	{{ prev_item.name() }}
       </a>
       {% endif %}
@@ -23,7 +26,7 @@
     <div style="width: 50%;float:right;text-align:right;">
       {% if not next_item is none %}
       <a
-	href="{{ url_for('analysis.segview', doc=doc, top=top, item=next_item.name()) }}">
+	href="{{ url_for('analysis.segview', doc=doc.id(), run_id=run_id, item=next_item.name()) }}">
 	{{ next_item.name() }}
       </a>
       {% endif %}
@@ -40,16 +43,16 @@
     {{ item.name() }}:
     {% if not item.is_doc_segment() %}
     [
-    {{ item.prompt(session) }}
+    {{ doc.prompt_name(item) }}
     ]
     {% endif %}
     </b>
   </p>
   
   {% if item.is_doc_segment() %}
-  <pre style="line-height:1.5;background:{{ session.item_color(item) }};white-space:pre-wrap;overflow-x:auto;padding:1em;margin:0;font-family:PT Mono;">{{ item.text() | e }}</pre>
+  <pre style="line-height:1.5;background:{{ doc.item_color(item) }};white-space:pre-wrap;overflow-x:auto;padding:1em;margin:0;font-family:PT Mono;">{{ item.text() | e }}</pre>
   {% else %}
-  <pre style="line-height:1.5;background:{{ session.item_color(item) }};white-space:pre-wrap;overflow-x:auto;padding:1em;margin:0;font-family:PT Mono;">{{ item.text() | e }}</pre>
+  <pre style="line-height:1.5;background:{{ doc.item_color(item) }};white-space:pre-wrap;overflow-x:auto;padding:1em;margin:0;font-family:PT Mono;">{{ item.text() | e }}</pre>
   {% endif %}
 
   {% if not item.is_doc_segment() %}
@@ -71,19 +74,19 @@
 	{% if item.is_doc_segment() %}
 	Section
 	{% endif %}
-	<a href="{{ url_for('analysis.segview', doc=doc, top=top, item=item.name()) }}">
+	<a href="{{ url_for('analysis.segview', doc=doc.id(), run_id=run_id, item=item.name()) }}">
 	  {{ item.name() }}:	    
 	</a>
 	  
 	{% if not item.is_doc_segment() %}
 	[
-	{{ item.prompt(session) }}
+	{{ doc.prompt_str(item) }}
 	]
 	{% endif %}
 	</div>
 	
-	<div style="background:{{ session.item_color(item) }};padding:2px;">
-	  {{ session.snippet_text(item.text()) | e }}
+	<div style="background:{{ doc.item_color(item) }};padding:2px;">
+	  {{ doc.snippet_text(item.text()) | e }}
 	</div>
       </td>
     </tr>
@@ -95,7 +98,7 @@
     <div style="width: 50%;float:left;">
       {% if not prev_item is none %}
       <a
-	href="{{ url_for('analysis.segview', doc=doc, top=top, item=prev_item.name()) }}">
+	href="{{ url_for('analysis.segview', doc=doc.id(), run_id=run_id, item=prev_item.name()) }}">
 	{{ prev_item.name() }}
       </a>
       {% endif %}
@@ -104,7 +107,7 @@
     <div style="width: 50%;float:right;text-align:right;">
       {% if not next_item is none %}
       <a
-	href="{{ url_for('analysis.segview', doc=doc, top=top, item=next_item.name()) }}">
+	href="{{ url_for('analysis.segview', doc=doc.id(), run_id=run_id, item=next_item.name()) }}">
 	{{ next_item.name() }}
       </a>
       {% endif %}
