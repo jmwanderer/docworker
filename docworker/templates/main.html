@@ -3,8 +3,8 @@
 Single pane application page.
 #}
 {%block head %}
-{% if not session is none and session.is_running(run_id) %}
-<meta http-equiv="refresh" content="5;URL={{ url_for('analysis.main', doc=doc, run_id=run_id) }}">
+{% if not doc is none and doc.is_running(run_id) %}
+<meta http-equiv="refresh" content="5;URL={{ url_for('analysis.main', doc=doc.id(), run_id=run_id) }}">
 {% endif %}
 {% endblock %}
 
@@ -45,7 +45,7 @@ Single pane application page.
 	<td>
 	  Load a document:
 	</td>
-	{% if session is none or run_id is none %}
+	{% if doc is none or run_id is none %}
 	<td>
 	  Select a prompt:
 	</td>
@@ -66,8 +66,8 @@ Single pane application page.
 		   </img>
 	    </div>
 	    <div style="text-align:center;">	      
-	      <a  href="{{ url_for('analysis.docview', doc=doc) }}">
-		{{ session.name }}
+	      <a  href="{{ url_for('analysis.docview', doc=doc.id()) }}">
+		{{ doc.name() }}
 	      </a>
 	    </div>
 	    {% endif %}
@@ -77,7 +77,7 @@ Single pane application page.
 	    <form action="{{ url_for('analysis.main')}}"
 		  enctype="multipart/form-data" method="post" id="form">
 	      <div>
-		{% if session is none or not session.is_running(run_id) %}
+		{% if doc is none or not doc.is_running(run_id) %}
 		<input type="file" id="file" name="file" class="inputfile"/>
 		<input type="submit" name="upload" id="upload" value="Upload"/>
 		{% else %}
@@ -93,17 +93,17 @@ Single pane application page.
 	    <div>
 	      <a href="{{ url_for("analysis.doclist")}}">File list</a>
 	    </div>
-	    {% if not doc is none and session.run_record_count() > 0  %}
+	    {% if not doc is none and doc.run_record_count() > 0  %}
 	    <div>
-	      <a href="{{ url_for('analysis.runlist', doc=doc) }}">
+	      <a href="{{ url_for('analysis.runlist', doc=doc.id()) }}">
 		Run history
 	      </a>
 	    </div>
 	    {# Show new prompt if a result is up and we are not running #}
 	    {% if not run_id is none %}
-	    {% if not session is none and not session.is_running(run_id) %}
+	    {% if not doc is none and not doc.is_running(run_id) %}
 	    <div>
-	      <a href="{{ url_for('analysis.main', doc=doc) }}">
+	      <a href="{{ url_for('analysis.main', doc=doc.id()) }}">
 		New prompt
 	      </a>
 	    </div>
@@ -112,7 +112,7 @@ Single pane application page.
 	    {% endif %}	    
 	  </div>
 	</td>
-	{% if session is none or run_id is none %} 
+	{% if doc is none or run_id is none %} 
 	<td style="vertical-align:top;">
 	  <form action="{{ url_for('analysis.main')}}"
 		method="post" id="form">
@@ -120,7 +120,7 @@ Single pane application page.
 		    style="vertical-align:top;" onchange="prompt_change()">
 	      <option value=""></option>	
 	      {% for prompt in prompts %}
-	      <option value="{{ prompt[1] }}">{{ prompt[0] }}</option>
+	      <option value="{{ prompt[2] }}">{{ prompt[1] }}</option>
 	      {% endfor %}
 	    </select>
 	    <textarea id="prompt" name="prompt" rows="3" cols="70"></textarea>
@@ -133,32 +133,32 @@ Single pane application page.
       </tr>
     </table>
     <p></p>
-    {% if not session is none %}
+    {% if not doc is none %}
     {% if not run_id is none %}    
     <div style="border-width:1px;border-style:solid;border-color:grey;padding:1em;">
-      Prompt: {{ session.prompt(run_id) }}
+      Prompt: {{ doc.get_run_prompt(run_id) }}
       <p>State:
-	{% if session.is_running(run_id) %}
+	{% if doc.is_running(run_id) %}
 	<b>Process Running....</b>
 	{% else %}
 	<b>Complete</b>
 	{% endif %}
       </p>
-      <p>Steps: {{ session.completed_steps(run_id) }} completions run.	
+      <p>Steps: {{ doc.get_completed_steps(run_id) }} completions run.	
       </p>
-      {{ session.status_message(run_id) }}
+      {{ doc.get_status_message(run_id) }}
     </div>
     {% endif %}
     {% endif %}    
 
-    {% if not session is none %}
-    {% if not run_id is none and session.get_result_item(run_id) %}        
+    {% if not doc is none %}
+    {% if not run_id is none and doc.get_result_item(run_id) %}        
     <h2>Result:</h2>
     <table style="width:100%">
       <tr>
 	<td>
     <div style="border-width:1px;border-style:solid;border-color:grey;">
-      <pre id="result" style="line-height:1.5;background:{{ session.item_color(session.get_result_item(run_id)) }};white-space:pre-wrap;overflow-x:auto;padding:1em;margin:0;font-family:PT Mono;">{{ session.get_result_item(run_id).text() | e }}</pre>
+      <pre id="result" style="line-height:1.5;background:{{ doc.item_color(doc.get_result_item(run_id)) }};white-space:pre-wrap;overflow-x:auto;padding:1em;margin:0;font-family:PT Mono;">{{ doc.get_result_item(run_id).text() | e }}</pre>
     </div>
 	</td>
 	<td style="vertical-align:top;">
@@ -168,19 +168,20 @@ Single pane application page.
 	  <div>
 	    <form action="{{ url_for('analysis.export')}}" method="post">
 	      <input type="submit" value="Download"/>
-	      <input type="hidden" id="doc" name="doc" value="{{ doc }}"/>
+	      <input type="hidden" id="doc" name="doc" value="{{ doc.id() }}"/>
+	      <input type="hidden" id="run_id" name="run_id" value="{{ run_id }}"/>
 	      <input type="hidden" id="items" name="items"
-		     value="{{ session.get_result_item(run_id).name() }}">
+		     value="{{ doc.get_result_item(run_id).name() }}">
 	    </form>
 	  </div>
 	  <div>
 	    <form action="{{ url_for('analysis.segview')}}" method="get">
 	      <input type="submit" value="Details"/>
-	      <input type="hidden" id="doc" name="doc" value="{{ doc }}"/>
+	      <input type="hidden" id="doc" name="doc" value="{{ doc.id() }}"/>
 	      <input type="hidden" id="item" name="item"
-		     value="{{ session.get_result_item(run_id).name() }}">
+		     value="{{ doc.get_result_item(run_id).name() }}">
 	      <input type="hidden" id="top" name="top"
-		     value="{{ session.get_result_item(run_id).name() }}">
+		     value="{{ doc.get_result_item(run_id).name() }}">
 	    </form>
 	  </div>
 	</td>

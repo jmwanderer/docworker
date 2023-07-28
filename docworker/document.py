@@ -308,11 +308,17 @@ class Document:
     self.md5_digest = b''
     self.next_run_id = 1
     self.run_list = []     # List of RunRecord instances
-    self.name = None
+    self.doc_name = None
     self.doc_text = None
     self.prompts = prompts.Prompts()
 
 
+  def name(self):
+    return self.doc_name
+  
+  def id(self):
+    return self.doc_name
+  
   def get_prompt_set(self):
     return self.prompts.get_prompt_set()
     
@@ -347,6 +353,9 @@ class Document:
     if len(self.run_list) > 0:
       return self.run_list[-1]
     return None
+
+  def get_run_list(self):
+    return self.run_list
   
   def get_run_record(self, run_id=None):
     """
@@ -355,6 +364,14 @@ class Document:
     """
     if run_id is None:
       return self.get_current_run_record()
+
+    # Support str arguments
+    if isinstance(run_id, str):
+      try:
+        run_id = int(run_id)
+      except:
+        run_id = None
+        
     # Look for matching run_id
     for run_record in self.run_list:
       if run_record.run_id == run_id:
@@ -608,7 +625,7 @@ class Document:
     return self.doc_text
   
   def read_file(self, name, file, md5_digest):
-    self.name = os.path.basename(name)      
+    self.doc_name = os.path.basename(name)      
     self.doc_text = doc_convert.read_file(name, file)
     self.md5_digest = md5_digest
 

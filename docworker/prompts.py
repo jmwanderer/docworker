@@ -40,6 +40,12 @@ class Prompts:
   def get_prompt_set(self):
     return self.prompts
 
+  def get_initial_prompt_set():
+    """
+    Static function for prompts with no document
+    """
+    return [ (1, x[0], x[1]) for x in INITIAL_PROMPTS ]
+
   def get_prompt_id_by_name(self, name):
     # Return the ID matching the name, None if not found
     for prompt in self.prompts:

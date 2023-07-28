@@ -15,9 +15,10 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 import werkzeug.utils
 from logging.config import dictConfig
 import logging
-from . import docx_summary
 from . import doc_convert
-from . import docx_util
+from . import prompts
+from . import document
+from . import doc_gen
 from . import analysis_util
 from . import users
 import openai
@@ -60,7 +61,7 @@ def create_app(test_config=None,
   else:
     logging.basicConfig(level=logging.INFO)
   
-  docx_util.FAKE_AI_COMPLETION=fakeai
+  doc_gen.FAKE_AI_COMPLETION=fakeai
 
   # If so configured, setup for running behind a reverse proxy.
   if app.config.get('PROXY_CONFIG'):
@@ -146,13 +147,19 @@ def list_command():
   """List the users in the DB."""
   users.list_users(get_db())
 
+  
 def get_doc_file_path(doc_name):
+  """
+  Given a document name, return the path to the pickle doc 
+  on the local storage.
+  """
   file_name = doc_name + '.daf'
   return os.path.join(current_app.instance_path, g.user, file_name)
   
-def get_session(doc_name):
+
+def get_document(doc_name):
   """
-  Load a session for the given doc name.
+  Load a document for the given doc name.
   If the name is None, or the session can not be loaded, return None
   """
   if doc_name is None:
@@ -162,8 +169,8 @@ def get_session(doc_name):
   if not os.path.exists(file_path):
     return None
   
-  session = docx_util.load_session(file_path)
-  return session
+  doc = document.load_document(file_path)
+  return doc
 
     
 @bp.before_app_request
@@ -214,19 +221,20 @@ def main():
     run_id = request.args.get('run_id')
     if run_id != None:
       run_id = int(run_id)
-    dsession = get_session(doc_id)
-    if dsession is not None:
-      doc = doc_id
+    doc  = get_document(doc_id)
+    prompts_set = prompts.Prompts.get_initial_prompt_set()
+    if doc is not None:
       # If a run is in progress, show that run
-      if run_id is None and dsession.is_running():
-        run_id = dsession.status.run_id
-                    
+      if run_id is None and doc.is_running():
+        run_id = doc.status.run_id
+      prompts_set = doc.prompts.get_prompt_set()
+
+    # TODO: fix prompts
     return render_template("main.html",
                            doc=doc,
                            username=g.user,
                            run_id=run_id,
-                           prompts=docx_util.INITIAL_PROMPTS,
-                           session=dsession)
+                           prompts=prompts_set)
 
   else:
     doc_id = request.form.get('doc')
@@ -243,40 +251,42 @@ def main():
       filename = werkzeug.utils.secure_filename(file.filename)
       user_dir = os.path.join(current_app.instance_path, g.user)
 
-      doc = None
+      doc_id = None
       try:    
-        doc = docx_util.find_or_create_doc(user_dir, filename, file)
+        doc_id = document.find_or_create_doc(user_dir, filename, file)
       except doc_convert.DocError as err:
         flask.flash("Error loading file: %s" % str(err))
 
-      return redirect(url_for('analysis.main', doc=doc, run_id=run_id))
+      return redirect(url_for('analysis.main', doc=doc_id, run_id=run_id))
 
     elif request.form.get('run'):
       prompt = request.form['prompt'].strip()      
-      dsession = get_session(doc_id)
-      if (dsession is None or dsession.is_running() or
+      doc = get_document(doc_id)
+      if (doc is None or doc.is_running() or
           prompt is None or len(prompt) == 0):
         return redirect(url_for('analysis.main'))
       
-      print("start run prompt")
+      logging.info("Start doc run")
       file_path = get_doc_file_path(doc_id)
-      run_id = docx_util.start_docgen(file_path, dsession, prompt)
+      run_state = doc_gen.start_docgen(file_path, doc, prompt)
+      
       # Check if there are clearly not  enough tokens to run the generation
-      if dsession.run_input_tokens() > users.token_count(get_db(), g.user):
-        dsession.cancel_run("Insufficient tokens")
-        docx_util.save_session(file_path, dsession)
+      if (doc_gen.run_input_tokens(doc, run_state) >
+          users.token_count(get_db(), g.user)):
+          doc.cancel_run("Insufficient tokens")
+          doc.save_document(file_path, doc)
       else:
         t = Thread(target=background_docgen,
                    args=[current_app.config['DATABASE'], g.user,
-                         file_path, dsession])
+                         file_path, dsession, run_state])
         t.start()
         
-      return redirect(url_for('analysis.main', doc=doc_id, run_id=run_id))
+      return redirect(url_for('analysis.main', doc=doc, run_id=run_id))
 
     else:
-      return redirect(url_for('analysis.main', doc=doc_id))
+      return redirect(url_for('analysis.main', doc=doc))
   
-def background_docgen(db_config, name, file_path, session):
+def background_docgen(db_config, username, file_path, doc, run_state):
   """
   Runs from a background thread to process the document and 
   update the consumed token accouting.
@@ -285,12 +295,12 @@ def background_docgen(db_config, name, file_path, session):
   db = sqlite3.connect(db_config, detect_types=sqlite3.PARSE_DECLTYPES)
   db.row_factory = sqlite3.Row
 
-  id = docx_util.run_all_docgen(file_path, session)
+  id = doc_gen.run_all_docgen(file_path, doc, run_state)
   if id is not None:
     family = session.get_completion_family_list(id)
     tokens = sum(item.token_cost for item in family)
-    users.increment_tokens(db, name, tokens)
-    logging.info("updated cost for %s of %d tokens", name, tokens)
+    users.increment_tokens(db, username, tokens)
+    logging.info("updated cost for %s of %d tokens", username, tokens)
   
   # Close database
   db.close()
@@ -313,11 +323,11 @@ def doclist():
 @bp.route("/runlist", methods=("GET",))
 @login_required
 def runlist():
-  doc = request.args.get('doc')  
-  session = get_session(doc)
+  doc_id = request.args.get('doc')  
+  doc = get_document(doc_id)
   if session is None:
     return redirect(url_for('analysis.main'))
-  return render_template("runlist.html", doc=doc, session=session)
+  return render_template("runlist.html", doc=doc)
 
     
 @bp.route("/docview", methods=("GET",))
@@ -519,37 +529,24 @@ def dispatch():
     return redirect(url_for('analysis.docview',
                             doc=doc, items=item_names))              
           
-@bp.route("/export", methods=("GET", "POST"))
+@bp.route("/export", methods=("POST",))
 @login_required          
 def export():
-  if request.method == "GET":    
-    doc = request.args.get('doc')
-    session = get_session(doc)                      
-    if session is None:
-      return redirect(url_for('analysis.main'))
-
-    item_names = request.args.getlist("items")
-    items_state = analysis_util.ItemsState()
-    items_state.set_state(session, item_names)
-
-    return render_template("export.html",
-                           doc=doc,
-                           items_state=items_state,
-                           session=session)
-  else:
-    doc = request.form.get('doc')
-    session = get_session(doc)
-    item_names = request.form.getlist('items')
+  doc_id = request.form.get('doc')
+  run_id = request.form.get('run_id')    
+  doc = get_document(doc_id)
+  item_names = request.form.getlist('items')
     
-    out_file = io.BytesIO()
-    for name in item_names:
-      out_file.write(session.get_item_by_name(name).text().encode('utf-8'))
-      out_file.write('\n\n'.encode('utf-8'))      
-    out_file.seek(0, 0)
-    return flask.send_file(out_file, mimetype='text/plain;charset=utf-8',
-                           as_attachment=True,
-                           download_name='%s.txt' %
-                           os.path.basename(session.name))
+  out_file = io.BytesIO()
+  for name in item_names:
+    print("export item %s:%s" % (run_id, name))
+    out_file.write(doc.get_item_by_name(run_id, name).text().encode('utf-8'))
+    out_file.write('\n\n'.encode('utf-8'))      
+  out_file.seek(0, 0)
+  return flask.send_file(out_file, mimetype='text/plain;charset=utf-8',
+                         as_attachment=True,
+                         download_name='%s.txt' %
+                         os.path.basename(doc.name()))
 
 
 @bp.route("/sel_export", methods=("GET", "POST"))
