@@ -19,6 +19,10 @@ def run_dw_cli():
   group.add_argument('--show', action='store_true')  
   group.add_argument('--run_docgen', action='store_true')    
   group.add_argument('--show_result', metavar='id', nargs=1)
+  group.add_argument('--show_result_details', metavar='id', nargs=1)
+  group.add_argument('--show_gen_items', metavar='id', nargs=1)
+  group.add_argument('--show_ordered_items', metavar='id', nargs=1)
+  group.add_argument('--show_completion_items', metavar='id', nargs=1)        
   parser.add_argument('--prompt')
   parser.add_argument('--doc')
   parser.add_argument('--fakeai', action='store_true')
@@ -59,6 +63,18 @@ def run_dw_cli():
 
   if args.show_result:
     show_result(doc, int(args.show_result[0]))
+
+  if args.show_result_details:
+    show_result_details(doc, int(args.show_result_details[0]))
+
+  if args.show_gen_items:
+    show_gen_items(doc, int(args.show_gen_items[0]))
+    
+  if args.show_ordered_items:
+    show_ordered_items(doc, int(args.show_ordered_items[0]))
+    
+  if args.show_completion_items:
+    show_completion_list(doc, int(args.show_completion_items[0]))
     
   if args.run_docgen:
     # Run a standard docgen
@@ -117,15 +133,41 @@ def show_result(doc, run_id):
     print("Run %d not found" % run_id)
     return
   
-  if completion is None:
-    print("Result for run %d does not exist" % run_id)
 
   prompt = doc.prompts.get_prompt_str_by_id(run_record.prompt_id)
   print("Prompt:%s" %  prompt)
   print("Date / time: %s" % run_record.start_time.isoformat(sep=' '))
-  print("Result:")
-  print(completion.text())
+  if completion is None:
+    print("Result for run %d does not exist" % run_id)
+  else:
+    print("Result:")
+    print(completion.text())
 
+
+def show_result_details(doc, run_id):
+  (max_depth, entries) = doc.get_completion_family(run_id)
+  for (depth, item) in entries:
+    print("%s %s" % ('   ' * depth,
+                     doc.snippet_text(item.text())))
+
+
+def show_gen_items(doc, run_id):
+  items = doc.get_gen_items(run_id)
+  for item in items:
+    print("%s" % doc.snippet_text(item.text()))
+
+  
+def show_ordered_items(doc, run_id):
+  items = doc.get_ordered_items(run_id)
+  for item in items:
+    print("%s" % doc.snippet_text(item.text()))
+
+
+def show_completion_list(doc, run_id):
+  items = doc.get_completion_list(run_id)
+  for item in items:
+    print("%s" % doc.snippet_text(item.text()))
+    
 
 def run_doc_gen(path, doc, prompt):
   run_state = doc_gen.start_docgen(path, doc, prompt)

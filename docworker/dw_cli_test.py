@@ -46,11 +46,15 @@ class DwCLITestCase(unittest.TestCase):
     path = dw_cli.doc_path(self.user_dir.name, filename)
     dw_cli.run_doc_gen(path, doc, "Dummy prompt")
 
-  def testShowResult(self):
+  def testShowFunctions(self):
     filename = self.create_doc()
     doc = dw_cli.load_document(self.user_dir.name, filename)
     path = dw_cli.doc_path(self.user_dir.name, filename)
     dw_cli.run_doc_gen(path, doc, "Dummy prompt")
     dw_cli.show_result(doc, 1)
-    
-    
+    dw_cli.show_result_details(doc, 1)
+
+    dw_cli.show_gen_items(doc, 1)
+    dw_cli.show_ordered_items(doc, 1)
+    dw_cli.show_completion_list(doc, 1)        
+
