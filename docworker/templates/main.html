@@ -45,7 +45,7 @@ Single pane application page.
 	<td>
 	  Load a document:
 	</td>
-	{% if not doc is none and run_id is none %}
+	{% if not doc is none and not doc.is_running() %}
 	<td>
 	  Select a prompt:
 	</td>
@@ -65,8 +65,14 @@ Single pane application page.
 		   width="64" height="64">
 		   </img>
 	    </div>
-	    <div style="text-align:center;">	      
+	    <div style="text-align:center;">
+	      {% if not run_id is none %}
+	      <a href="{{ url_for('analysis.main', doc=doc.id()) }}">
 		{{ doc.name() }}
+	      </a>
+	      {% else %}
+	      {{ doc.name() }}
+	      {% endif %}
 	    </div>
 	    {% endif %}
 	      
@@ -97,20 +103,10 @@ Single pane application page.
 		Run history
 	      </a>
 	    </div>
-	    {# Show new prompt if a result is up and we are not running #}
-	    {% if not run_id is none %}
-	    {% if not doc is none and not doc.is_running(run_id) %}
-	    <div>
-	      <a href="{{ url_for('analysis.main', doc=doc.id()) }}">
-		New prompt
-	      </a>
-	    </div>
-	    {% endif %}
-	    {% endif %}
 	    {% endif %}	    
 	  </div>
 	</td>
-	{% if not doc is none and run_id is none %} 
+	{% if not doc is none and not doc.is_running()  %} 
 	<td style="vertical-align:top;">
 	  <form action="{{ url_for('analysis.main')}}"
 		method="post" id="form">
@@ -150,6 +146,7 @@ Single pane application page.
     {% endif %}    
 
     {% if not doc is none %}
+
     {% if not run_id is none and doc.get_result_item(run_id) %}        
     <h2>Result:</h2>
     <table style="width:100%">
@@ -161,7 +158,7 @@ Single pane application page.
 	</td>
 	<td style="vertical-align:top;">
 	  <div>
-	    <button onclick="copyResults()">Copy Text</button>
+	    <button onclick="copyResults()">Copy All Text</button>
 	  </div>
 	  <div>
 	    <form action="{{ url_for('analysis.export')}}" method="post">
@@ -186,6 +183,29 @@ Single pane application page.
 	</td>
       </tr>
     </table>
+    {% else %}
+
+    <table style="width:100%">
+      <tr>
+	<td>
+    <div style="border-width:1px;border-style:solid;border-color:grey;">
+      <pre id="result" style="line-height:1.5;white-space:pre-wrap;overflow-x:auto;padding:1em;margin:0;font-family:PT Mono;">{{ doc.get_doc_text() | e }}</pre>
+    </div>
+	</td>
+	<td style="vertical-align:top;">
+	  <div>
+	    <button onclick="copyResults()">Copy Text</button>
+	  </div>
+	  <div>
+	    <form action="{{ url_for('analysis.export')}}" method="post">
+	      <input type="submit" value="Download"/>
+	      <input type="hidden" id="doc" name="doc" value="{{ doc.id() }}"/>
+	    </form>
+	  </div>
+	</td>
+      </tr>
+    </table>
+    
     {% endif %}
     {% endif %}        
     <a href="https://www.flaticon.com/free-icons/paper" title="paper icons" target="_blank" rel="noopener noreferrer">Paper icons created by smalllikeart - Flaticon</a>

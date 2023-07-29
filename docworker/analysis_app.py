@@ -195,8 +195,11 @@ def set_logged_in_user(user_name):
   # For testing
   g.user = user_name
 
-@bp.route("/", methods=("GET","POST"))
-def main():
+def handle_login(request):
+  """
+  Process login steps.
+  Return None to proceed, a redirect otherwise.
+  """
   # Handle initial authorization
   auth_key = request.args.get("authkey")
   if auth_key is not None:
@@ -212,9 +215,17 @@ def main():
   load_logged_in_user()
   if g.user is None:
     return redirect(url_for('analysis.login'))    
+  return None
+
+
+@bp.route("/", methods=("GET","POST"))
+def main():
+  # Check and process login if needed
+  login_redirect = handle_login(request)
+  if login_redirect is not None:
+    return login_redirect
   
   doc = None
-
   if request.method == "GET":  
     doc_id = request.args.get('doc')
     run_id = request.args.get('run_id')
@@ -236,9 +247,6 @@ def main():
 
   else:
     doc_id = request.form.get('doc')
-    run_id = request.form.get('run_id')    
-    if run_id != None:
-      run_id = int(run_id)
     
     if request.form.get('upload'):
       if ('file' not in request.files or
@@ -255,7 +263,7 @@ def main():
       except doc_convert.DocError as err:
         flask.flash("Error loading file: %s" % str(err))
 
-      return redirect(url_for('analysis.main', doc=doc_id, run_id=run_id))
+      return redirect(url_for('analysis.main', doc=doc_id))
 
     elif request.form.get('run'):
       prompt = request.form['prompt'].strip()      
@@ -381,10 +389,16 @@ def export():
     return redirect(url_for('analysis.main'))
     
   out_file = io.BytesIO()
-  for name in item_names:
-    out_file.write(doc.get_item_by_name(run_id, name).text().encode('utf-8'))
-    out_file.write('\n\n'.encode('utf-8'))      
-  out_file.seek(0, 0)
+  if run_id is None:
+    # Export document test
+    out_file.write(doc.get_doc_text().encode('utf-8'))
+  else:
+    # Export items from run_id record
+    for name in item_names:
+      out_file.write(doc.get_item_by_name(run_id, name).text().encode('utf-8'))
+      out_file.write('\n\n'.encode('utf-8'))      
+
+  out_file.seek(0, 0)    
   return flask.send_file(out_file, mimetype='text/plain;charset=utf-8',
                          as_attachment=True,
                          download_name='%s.txt' %
