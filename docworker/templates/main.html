@@ -26,7 +26,7 @@ Single pane application page.
     </p>
     <p>
       Use this page to load a file and run
-      analysis functions over the document. Note that you can also open a previously
+      analysis functions over the text. Note that you can also open a previously
       uploaded file and see any previous analysis runs.
     </p>
     
@@ -151,7 +151,6 @@ Single pane application page.
     {% if not doc is none %}
 
     {% if not run_id is none and doc.get_result_item(run_id) %}        
-    <h2>Result:</h2>
     <table style="width:100%">
       <tr>
 	<td>
