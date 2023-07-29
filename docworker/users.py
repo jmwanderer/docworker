@@ -9,7 +9,7 @@ import uuid
 import logging
 
 MAX_ACCOUNTS = 100
-DEFAULT_TOKEN_COUNT = 10000
+DEFAULT_TOKEN_COUNT = 100000
 
 def count_users(db):
   """

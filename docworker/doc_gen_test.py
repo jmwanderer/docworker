@@ -110,7 +110,21 @@ class BasicDocGenTestCase(unittest.TestCase):
     self.assertIsNotNone(completion)
     self.assertTrue(len(completion.text()) < 1000)
     self.assertFalse(self.document.is_running())
-                     
+
+    # Test Run on a previous run
+    run_state = doc_gen.start_docgen(self.doc_path,
+                                     self.document,
+                                     "A prompt", run_record.run_id)
+    count = doc_gen.run_input_tokens(self.document, run_state)
+    
+    doc_gen.run_all_docgen(self.doc_path, self.document, run_state)
+    # TODO: Consider how we want to get results from the document
+    run_record = self.document.get_current_run_record()
+    completion = self.document.get_item_by_id(run_record.run_id,
+                                              run_record.result_id)
+    self.assertIsNotNone(completion)
+    self.assertTrue(len(completion.text()) < 1000)
+    self.assertFalse(self.document.is_running())
 
   def testFullTransOpRun(self):
     run_state = doc_gen.start_docgen(self.doc_path,

@@ -251,19 +251,17 @@ def post_process_completion(response_record):
     response_record.text = response_record.text[0:last_cr + 1]
 
     
-def start_docgen(file_path, doc, prompt, item_ids=None, transOp=False):
+def start_docgen(file_path, doc, prompt, src_run_id=None, transOp=False):
   """
   Setup state for a docgen run.
   Returns a run_state to use in further calls.
   """
   run_state = RunState()
-  run_id = doc.mark_start_run(prompt)
-  if not item_ids:
-    # Run on all doc segments by default.
-    item_ids = []
-    for item in doc.get_ordered_items(run_id):
-      if item.is_doc_segment():
-        item_ids.append(item.id())
+  run_id = doc.mark_start_run(prompt, src_run_id)
+  # Run on all doc segments by default.
+  item_ids = []
+  for item in doc.get_ordered_items(run_id):
+    item_ids.append(item.id())
         
   run_state.start_run(prompt, item_ids, run_id, transOp)
   document.save_document(file_path, doc)

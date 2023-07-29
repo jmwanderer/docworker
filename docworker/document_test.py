@@ -11,10 +11,12 @@ class BasicDocumentTestCase(unittest.TestCase):
 
   def setUp(self):
     self.doc = document.Document()
+    self.doc.doc_text = "Document test"
     self.prompt = "This is a new prompt"
     prompt_id = self.doc.prompts.get_prompt_id(self.prompt)
     run_record = self.doc.new_run_record(prompt_id)
     self.run_id = run_record.run_id
+    # Add more segments for testing
     self.id1 = run_record.add_new_segment("segment text", 4).id()
     self.id2 = run_record.add_new_segment("more segment text", 6).id()
     self.id3 = run_record.add_new_completion([self.id1, self.id2],
@@ -82,14 +84,14 @@ class BasicDocumentTestCase(unittest.TestCase):
   def testViewLists(self):
     items = self.doc.get_gen_items(self.run_id)
     self.assertTrue(len(items), 2)
-    self.assertEqual(items[0].id(), self.id1)
-    self.assertEqual(items[1].id(), self.id2)
+    self.assertEqual(items[1].id(), self.id1)
+    self.assertEqual(items[2].id(), self.id2)
 
     items = self.doc.get_ordered_items(self.run_id)
     self.assertTrue(len(items), 3)
     self.assertEqual(items[0].id(), self.id3)
-    self.assertEqual(items[1].id(), self.id1)
-    self.assertEqual(items[2].id(), self.id2)
+    self.assertEqual(items[2].id(), self.id1)
+    self.assertEqual(items[3].id(), self.id2)
 
     items = self.doc.get_completion_list(self.run_id)
     self.assertTrue(len(items), 1)
@@ -110,8 +112,12 @@ class BasicDocumentTestCase(unittest.TestCase):
     self.assertEqual(self.doc.gen_cost_tokens(), 20)
     # TODO: fix
     self.assertEqual(self.doc.doc_tokens(), 0)
-    self.assertEqual(self.doc.segment_count(self.run_id), 2)
+    self.assertEqual(self.doc.segment_count(self.run_id), 3)
     self.assertEqual(self.doc.final_completion_count(), 1)
+
+  def testSourceText(self):
+    self.assertIsNotNone(self.doc.get_src_text())
+    self.assertIsNotNone(self.doc.get_src_text(self.run_id))    
     
   def testRunState(self):
     self.assertTrue(self.doc.is_running(self.run_id))

@@ -31,8 +31,6 @@ def send_email(config, to_list, subject, text):
   finally:
     server.quit()
 
-
-
 class ItemsState:
   """
   Helper class to manage the selected sets of 

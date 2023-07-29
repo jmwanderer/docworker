@@ -247,6 +247,7 @@ def main():
 
   else:
     doc_id = request.form.get('doc')
+    run_id = request.form.get('run_id')    
     
     if request.form.get('upload'):
       if ('file' not in request.files or
@@ -272,9 +273,10 @@ def main():
           prompt is None or len(prompt) == 0):
         return redirect(url_for('analysis.main'))
       
-      logging.info("Start doc run")
+      logging.info("Start doc run. doc_id = %s, run_id = %s" %
+                   (doc_id, run_id))
       file_path = get_doc_file_path(doc_id)
-      run_state = doc_gen.start_docgen(file_path, doc, prompt)
+      run_state = doc_gen.start_docgen(file_path, doc, prompt, run_id)
       
       # Check if there are clearly not  enough tokens to run the generation
       if (doc_gen.run_input_tokens(doc, run_state) >

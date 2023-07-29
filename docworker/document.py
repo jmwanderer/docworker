@@ -292,6 +292,15 @@ class RunRecord:
       return (0, [])
     max_depth = self.comp_family_visit_node(1, completion, result)
     return (max_depth, result)
+
+  def get_src_text(self):
+    """
+    Return the text that was the source of the completion.
+    """
+    segments = []
+    for item in self.doc_segments:
+      segments.append(item.text())
+    return ''.join(segments)
   
 class Document:
   """
@@ -368,18 +377,24 @@ class Document:
     if run_id is None:
       return self.get_current_run_record()
 
-    # Support str arguments
+    # Support str arguments    
     if isinstance(run_id, str):
       try:
         run_id = int(run_id)
       except:
         run_id = None
-        
+
     # Look for matching run_id
     for run_record in self.run_list:
       if run_record.run_id == run_id:
         return run_record
     return None
+
+  def get_src_text(self, run_id=None):
+    record = self.get_run_record(run_id)    
+    if run_id is None or record is None:
+      return self.doc_text
+    return record.get_src_text()
 
   def get_item_by_name(self, run_id, name):
     record = self.get_run_record(run_id)
@@ -523,13 +538,23 @@ class Document:
         count += 1
     return count
 
-  def new_run_record(self, prompt_id):
+  def new_run_record(self, prompt_id, src_run_id=None):
     run_record = RunRecord(self.next_run_id, prompt_id)
     self.next_run_id += 1
     self.run_list.append(run_record)
 
-    # Populate source items
-    chunks = doc_convert.chunk_text(self.doc_text)
+    # By default, we process the doc text
+    if src_run_id is None:    
+      text = self.doc_text
+    else:
+      # But may process a previous result
+      text = ""
+      item = self.get_result_item(src_run_id)
+      if item is not None:
+        text = item.text()
+        
+    # Populate source items    
+    chunks = doc_convert.chunk_text(text)
     for chunk in chunks:
       run_record.add_new_segment(chunk.get_text(), chunk.size)
       
@@ -550,9 +575,9 @@ class Document:
                run_record.start_time).total_seconds() < 60 * 60)
     return False
 
-  def mark_start_run(self, prompt):
+  def mark_start_run(self, prompt, src_run_id=None):
     prompt_id = self.prompts.get_prompt_id(prompt)                        
-    run_record = self.new_run_record(prompt_id)
+    run_record = self.new_run_record(prompt_id, src_run_id)
     run_record.status_message = "Running..."
     return run_record.run_id
 
