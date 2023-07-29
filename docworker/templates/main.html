@@ -43,11 +43,10 @@ Single pane application page.
     <table>
       <tr>
 	<td>
-	  Load a document:
 	</td>
 	{% if not doc is none and not doc.is_running() %}
 	<td>
-	  Select a prompt:
+	  Select a prompt to run on the text below:
 	</td>
 	{% endif %}
       </tr>
@@ -59,7 +58,7 @@ Single pane application page.
 	      No file loaded.
 	    </p>
 	    {% else %}
-	    <div>
+	    <div style="padding-left:4em;padding-right:4em;padding-top:1em;">
 	      <img class="center"
 		   src="{{ url_for('static', filename='document.png') }}"
 		   width="64" height="64">
@@ -76,34 +75,19 @@ Single pane application page.
 	    </div>
 	    {% endif %}
 	      
-	    <hr>
-	    {# Browse and upload does not work well when page is refreshed #}
-	    <form action="{{ url_for('analysis.main')}}"
-		  enctype="multipart/form-data" method="post" id="form">
-	      <div>
-		{% if doc is none or not doc.is_running(run_id) %}
-		<input type="file" id="file" name="file" class="inputfile"/>
-		<input type="submit" name="upload" id="upload" value="Upload"/>
-		{% else %}
-		<input type="file" id="file" name="file"
-		       class="inputfile" disabled/>
-		<input type="submit" name="upload" id="upload"
-		       value="Upload" disabled/>
-		{% endif %}		
-	      </div>
-	    </form>
-	    <hr>
-
-	    <div>
-	      <a href="{{ url_for("analysis.doclist")}}">Uploaded Files</a>
-	    </div>
 	    {% if not doc is none and doc.run_record_count() > 0  %}
+	    <hr>	    
 	    <div>
 	      <a href="{{ url_for('analysis.runlist', doc=doc.id()) }}">
-		Previous Results
+		Run History
 	      </a>
 	    </div>
 	    {% endif %}	    
+
+	    <hr>
+	    <div>
+	      <a href="{{ url_for("analysis.doclist")}}">Load Files</a>
+	    </div>
 	  </div>
 	</td>
 	{% if not doc is none and not doc.is_running()  %} 

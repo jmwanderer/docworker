@@ -248,52 +248,33 @@ def main():
   else:
     doc_id = request.form.get('doc')
     run_id = request.form.get('run_id')    
-    
-    if request.form.get('upload'):
-      if ('file' not in request.files or
-          request.files['file'].filename == ''):
-        return redirect(url_for('analysis.main'))
 
-      file = request.files['file']
-      filename = werkzeug.utils.secure_filename(file.filename)
-      user_dir = os.path.join(current_app.instance_path, g.user)
-
-      doc_id = None
-      try:    
-        doc_id = document.find_or_create_doc(user_dir, filename, file)
-      except doc_convert.DocError as err:
-        flask.flash("Error loading file: %s" % str(err))
-
-      return redirect(url_for('analysis.main', doc=doc_id))
-
-    elif request.form.get('run'):
-      prompt = request.form['prompt'].strip()      
-      doc = get_document(doc_id)
-      if (doc is None or doc.is_running() or
-          prompt is None or len(prompt) == 0):
-        return redirect(url_for('analysis.main'))
+    prompt = request.form['prompt'].strip()      
+    doc = get_document(doc_id)
+    if (doc is None or doc.is_running() or
+        prompt is None or len(prompt) == 0):
+      return redirect(url_for('analysis.main'))
       
-      logging.info("Start doc run. doc_id = %s, run_id = %s" %
-                   (doc_id, run_id))
-      file_path = get_doc_file_path(doc_id)
-      run_state = doc_gen.start_docgen(file_path, doc, prompt, run_id)
+    logging.info("Start doc run. doc_id = %s, run_id = %s" %
+                 (doc_id, run_id))
+    file_path = get_doc_file_path(doc_id)
+    run_state = doc_gen.start_docgen(file_path, doc, prompt, run_id)
       
-      # Check if there are clearly not  enough tokens to run the generation
-      if (doc_gen.run_input_tokens(doc, run_state) >
-          users.token_count(get_db(), g.user)):
-          doc.mark_cancel_run("Insufficient tokens")
-          document.save_document(file_path, doc)
-      else:
-        t = Thread(target=background_docgen,
-                   args=[current_app.config['DATABASE'], g.user,
-                         file_path, doc, run_state])
-        t.start()
-        
-      return redirect(url_for('analysis.main', doc=doc.id(), run_id=run_state.run_id))
-
+    # Check if there are clearly not  enough tokens to run the generation
+    if (doc_gen.run_input_tokens(doc, run_state) >
+        users.token_count(get_db(), g.user)):
+      doc.mark_cancel_run("Insufficient tokens")
+      document.save_document(file_path, doc)
     else:
-      return redirect(url_for('analysis.main', doc=doc.id()))
-  
+      t = Thread(target=background_docgen,
+                 args=[current_app.config['DATABASE'], g.user,
+                       file_path, doc, run_state])
+      t.start()
+        
+    return redirect(url_for('analysis.main',
+                            doc=doc.id(), run_id=run_state.run_id))
+
+    
 def background_docgen(db_config, username, file_path, doc, run_state):
   """
   Runs from a background thread to process the document and 
@@ -314,16 +295,37 @@ def background_docgen(db_config, username, file_path, doc, run_state):
   db.close()
 
 
-@bp.route("/doclist", methods=("GET",))
+@bp.route("/doclist", methods=("GET","POST"))
 @login_required
 def doclist():
-  user_dir = os.path.join(current_app.instance_path, g.user)  
-  file_list = []
-  for filename in os.listdir(user_dir):
-    if filename.endswith('.daf'):
-      file_list.append(filename[:-4]) 
-  return render_template("doclist.html", files=file_list)
-  
+  if request.method == "GET":    
+    user_dir = os.path.join(current_app.instance_path, g.user)  
+    file_list = []
+    for filename in os.listdir(user_dir):
+      if filename.endswith('.daf'):
+        file_list.append(filename[:-4]) 
+    return render_template("doclist.html", files=file_list)
+
+  else:
+    if request.form.get('upload'):
+      if ('file' not in request.files or
+          request.files['file'].filename == ''):
+        return redirect(url_for('analysis.doclist'))
+
+      file = request.files['file']
+      filename = werkzeug.utils.secure_filename(file.filename)
+      user_dir = os.path.join(current_app.instance_path, g.user)
+
+      doc_id = None
+      try:    
+        doc_id = document.find_or_create_doc(user_dir, filename, file)
+      except doc_convert.DocError as err:
+        flask.flash("Error loading file: %s" % str(err))
+
+      if doc_id is not None:
+        return redirect(url_for('analysis.main', doc=doc_id))
+    return redirect(url_for('analysis.doclist'))      
+      
 
 
 @bp.route("/runlist", methods=("GET",))

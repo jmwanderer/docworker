@@ -7,18 +7,64 @@
 <h1>DocWorker</h1>
 <i>A tool for applying GPT to documents.</i>
 
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<ul class=flashes>
+  {% for message in messages %}
+  <li>{{ message }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}  
+
+
 <h2>Available Files:</h2>
-<div style="border-witdh:1px;border-style:solid;border-color:black;"> 
-  <ul>
-    {% for file in files %}
-    <li>
-      <a href="{{ url_for('analysis.main', doc=file) }}">
-	{{ file }}
-      </a>
-    </li>
-    {% endfor %}
-  </ul>
-</div>
+<ul>
+  {% for file in files %}
+  <li>
+    <a href="{{ url_for('analysis.main', doc=file) }}">
+      {{ file }}
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+
+<h2>Upload a File:</h2>
+<p>
+  Upload a file to DocWorker for analysis.
+</p>
+<p>
+  Upload PDF files, DOCX (MS Word) files, and TXT documents.  
+</p>
+<form action="{{ url_for('analysis.doclist')}}"
+      enctype="multipart/form-data" method="post" id="form">
+  <table>
+    <tr>
+      <td>
+	<div style="border-width:1px;border-style:solid;border-color:grey;padding:1em;">	  
+	  <table>
+	    <tr>
+	      <td>
+		<label for="file">Select a file to upload:</label>
+	      </td>
+	      <td>
+		<input type="file" id="file" name="file" class="inputfile"/>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td colspan="2" style="text-align:center;">
+		<p>
+		</p>
+		<input type="submit" name="upload" id="upload" value="Upload"/>
+	      </td>
+	    </tr>
+	  </table>
+	</div>
+      </td>
+    </tr>
+  </table>
+</form>
+
 {% endblock %}
 
 
