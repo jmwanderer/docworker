@@ -263,9 +263,10 @@ def main():
     # Check if there are clearly not  enough tokens to run the generation
     if (doc_gen.run_input_tokens(doc, run_state) >
         users.token_count(get_db(), g.user)):
-      doc.mark_cancel_run("Insufficient tokens")
+      doc.mark_cancel_run("Not enough OpenAI tokens available.")
       document.save_document(file_path, doc)
     else:
+      document.save_document(file_path, doc)      
       t = Thread(target=background_docgen,
                  args=[current_app.config['DATABASE'], g.user,
                        file_path, doc, run_state])
