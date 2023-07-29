@@ -22,10 +22,10 @@ Build and Install docworker package:
 git pull
 make build
 
-result: dist/docworker-0.1.0-py3-none-any.whl
+result: dist/docworker-0.2.0-py3-none-any.whl
 
 pip uninstall docworker
-pip install docworker-0.1.0-py3-none-any.whl
+pip install docworker-0.2.0-py3-none-any.whl
 
 Initial Configuration:
 
