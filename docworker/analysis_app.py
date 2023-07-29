@@ -255,10 +255,12 @@ def main():
         prompt is None or len(prompt) == 0):
       return redirect(url_for('analysis.main'))
       
-    logging.info("Start doc run. doc_id = %s, run_id = %s" %
-                 (doc_id, run_id))
     file_path = get_doc_file_path(doc_id)
     run_state = doc_gen.start_docgen(file_path, doc, prompt, run_id)
+    new_run_id = run_state.run_id
+    logging.info("Start doc run. doc_id = %s, run_id = %s, new_run_id = %s" %
+                 (doc_id, run_id, new_run_id))
+    document.save_document(file_path, doc)      
       
     # Check if there are clearly not  enough tokens to run the generation
     if (doc_gen.run_input_tokens(doc, run_state) >
@@ -266,14 +268,13 @@ def main():
       doc.mark_cancel_run("Not enough OpenAI tokens available.")
       document.save_document(file_path, doc)
     else:
-      document.save_document(file_path, doc)      
       t = Thread(target=background_docgen,
                  args=[current_app.config['DATABASE'], g.user,
                        file_path, doc, run_state])
       t.start()
         
     return redirect(url_for('analysis.main',
-                            doc=doc.id(), run_id=run_state.run_id))
+                            doc=doc_id, run_id=new_run_id))
 
     
 def background_docgen(db_config, username, file_path, doc, run_state):
