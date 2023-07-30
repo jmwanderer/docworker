@@ -392,7 +392,7 @@ def combine_results(doc, run_state):
     
   completion = doc.add_new_completion(
     item_id_list,
-    '\n'.join(text_list),
+    ''.join(text_list),
     text_tokens, 0)
   run_state.note_step_completed(completion.id())
 
@@ -426,13 +426,13 @@ def run_all_docgen(file_path, doc, run_state):
     # If this a tranform, we combine the results into a final
     # and we are done
     if run_state.op_type == document.OP_TYPE_TRANSFORM:
-      run_state.next_result_set()
-      combine_results(doc, run_state)
+      if run_state.next_result_set():
+        combine_results(doc, run_state)
 
     # Done with the to_run queue, check if we process the
     # set of generated results.
     if not run_state.next_result_set():
-      logging.debug("doc gen complete")      
+      logging.info("doc gen complete")      
       done = True
 
   # Complete - mark final result and save
@@ -441,11 +441,11 @@ def run_all_docgen(file_path, doc, run_state):
     # TODO: make these less redundent 
     doc.set_final_result(completion)
     completion.set_final_result()    
-
-    doc.set_status_message("")
-    doc.mark_complete_run()
     result_id = completion.id()
-    document.save_document(file_path, doc)
+
+  doc.set_status_message("")
+  doc.mark_complete_run()
+  document.save_document(file_path, doc)
   return result_id
   
       

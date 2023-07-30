@@ -307,7 +307,8 @@ class RunRecord:
     segments = []
     for item in self.doc_segments:
       segments.append(item.text())
-    return ''.join(segments)
+    result = ''.join(segments)
+    return result
   
 class Document:
   """

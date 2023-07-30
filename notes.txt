@@ -96,8 +96,9 @@ python3 -m docworker.dw_cli docworker/samples --import_doc docworker/samples/gro
 
 
 # Load and debug a session in Python: 
-from docworker import docx_util
-s = docx_util.load_session("instance/username/DRAFT_SCAP_Key_Actions_and_Work_Plan_February_2023.docx.daf")
+from docworker import document
+doc = document.load_document("instance/test1/creative-llc.pdf.txt.daf")
+
 
 
 
