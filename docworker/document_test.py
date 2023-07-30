@@ -14,7 +14,8 @@ class BasicDocumentTestCase(unittest.TestCase):
     self.doc.doc_text = "Document test"
     self.prompt = "This is a new prompt"
     prompt_id = self.doc.prompts.get_prompt_id(self.prompt)
-    run_record = self.doc.new_run_record(prompt_id)
+    run_record = self.doc.new_run_record(prompt_id,
+                                         document.OP_TYPE_CONSOLIDATE)
     self.run_id = run_record.run_id
     # Add more segments for testing
     self.id1 = run_record.add_new_segment("segment text", 4).id()

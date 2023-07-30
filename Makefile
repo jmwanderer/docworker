@@ -1,5 +1,5 @@
 .PHONY: test
-test: systest unittest
+test: unittest systest 
 
 .PHONY: systest
 systest:

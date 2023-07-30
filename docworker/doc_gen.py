@@ -150,10 +150,10 @@ class RunState:
     self.run_id = 0
 
     # True if this is a tranform instead of consolidate proces.
-    self.transform_op = False
+    self.op_type = document.OP_TYPE_CONSOLIDATE
 
     
-  def start_run(self, prompt, item_ids, run_id, transform_op=False):
+  def start_run(self, prompt, item_ids, run_id, op_type):
     """
     Setup to begin the run process.
     """
@@ -161,7 +161,7 @@ class RunState:
     self.prompt = prompt
     self.to_run = item_ids.copy()
     self.source_items = item_ids.copy()
-    self.transform_op = transform_op
+    self.op_type = op_type
 
   def next_item(self):
     """
@@ -251,19 +251,21 @@ def post_process_completion(response_record):
     response_record.text = response_record.text[0:last_cr + 1]
 
     
-def start_docgen(file_path, doc, prompt, src_run_id=None, transOp=False):
+def start_docgen(file_path, doc, prompt, src_run_id=None,
+                 op_type=document.OP_TYPE_CONSOLIDATE):
   """
   Setup state for a docgen run.
   Returns a run_state to use in further calls.
   """
   run_state = RunState()
-  run_id = doc.mark_start_run(prompt, src_run_id)
+    
+  run_id = doc.mark_start_run(prompt, src_run_id, op_type)
   # Run on all doc segments by default.
   item_ids = []
   for item in doc.get_ordered_items(run_id):
     item_ids.append(item.id())
         
-  run_state.start_run(prompt, item_ids, run_id, transOp)
+  run_state.start_run(prompt, item_ids, run_id, op_type)
   document.save_document(file_path, doc)
   return run_state
 
@@ -349,7 +351,8 @@ def run_next_docgen(file_path, doc, run_state):
   # Ensure response is less than 1/2 the size of a request
   # to make progress on consolidation. Except on the last completion.
   max_tokens = int(section_util.TEXT_EMBEDDING_CHUNK_SIZE / 2) - 1
-  if run_state.is_last_completion() or run_state.transform_op:
+  if (run_state.is_last_completion() or
+      run_state.op_type == document.OP_TYPE_TRANSFORM):
     max_tokens = -1
 
   response_record = run_completion(prompt, '\n'.join(text_list),
@@ -422,7 +425,7 @@ def run_all_docgen(file_path, doc, run_state):
 
     # If this a tranform, we combine the results into a final
     # and we are done
-    if run_state.transform_op:
+    if run_state.op_type == document.OP_TYPE_TRANSFORM:
       run_state.next_result_set()
       combine_results(doc, run_state)
 

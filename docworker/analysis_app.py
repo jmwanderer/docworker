@@ -247,7 +247,12 @@ def main():
 
   else:
     doc_id = request.form.get('doc')
-    run_id = request.form.get('run_id')    
+    run_id = request.form.get('run_id')
+    op_value = request.form.get('op_type')
+
+    op_type = document.OP_TYPE_CONSOLIDATE    
+    if op_value == "transform":
+      op_type = document.OP_TYPE_TRANSFORM
 
     prompt = request.form['prompt'].strip()      
     doc = get_document(doc_id)
@@ -256,7 +261,7 @@ def main():
       return redirect(url_for('analysis.main'))
       
     file_path = get_doc_file_path(doc_id)
-    run_state = doc_gen.start_docgen(file_path, doc, prompt, run_id)
+    run_state = doc_gen.start_docgen(file_path, doc, prompt, run_id, op_type)
     new_run_id = run_state.run_id
     logging.info("Start doc run. doc_id = %s, run_id = %s, new_run_id = %s" %
                  (doc_id, run_id, new_run_id))

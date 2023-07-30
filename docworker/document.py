@@ -14,6 +14,12 @@ import hashlib
 import os
 
 
+# Types of operations supported
+# default is consolidate
+OP_TYPE_CONSOLIDATE=1
+OP_TYPE_TRANSFORM=2
+
+
 class TextRecord:
   """
   A unit of text, either a chunk from a document or generated
@@ -117,9 +123,10 @@ class RunRecord:
   All state used in running a completion is contained in the gen_doc.RunState
   object.
   """
-  def __init__(self, run_id, prompt_id, start_time=None):
+  def __init__(self, run_id, prompt_id, op_type, start_time=None):
     self.run_id = run_id
     self.start_time = start_time
+    self.op_type = op_type
     self.stop_time = None
     if self.start_time is None:
       self.start_time = datetime.datetime.now()
@@ -538,8 +545,8 @@ class Document:
         count += 1
     return count
 
-  def new_run_record(self, prompt_id, src_run_id=None):
-    run_record = RunRecord(self.next_run_id, prompt_id)
+  def new_run_record(self, prompt_id, op_type, src_run_id=None):
+    run_record = RunRecord(self.next_run_id, prompt_id, op_type)
     self.next_run_id += 1
     self.run_list.append(run_record)
 
@@ -553,8 +560,14 @@ class Document:
       if item is not None:
         text = item.text()
         
-    # Populate source items    
-    chunks = doc_convert.chunk_text(text)
+    # Populate source items
+
+    if op_type == OP_TYPE_CONSOLIDATE:
+      chunk_size = int(section_util.AI_MODEL_SIZE * 0.75)
+    else:
+      chunk_size = int(section_util.AI_MODEL_SIZE * 0.45)
+      
+    chunks = doc_convert.chunk_text(text, chunk_size)
     for chunk in chunks:
       run_record.add_new_segment(chunk.get_text(), chunk.size)
       
@@ -575,9 +588,10 @@ class Document:
                run_record.start_time).total_seconds() < 60 * 60)
     return False
 
-  def mark_start_run(self, prompt, src_run_id=None):
+  def mark_start_run(self, prompt, src_run_id=None,
+                     op_type=OP_TYPE_CONSOLIDATE):                     
     prompt_id = self.prompts.get_prompt_id(prompt)                        
-    run_record = self.new_run_record(prompt_id, src_run_id)
+    run_record = self.new_run_record(prompt_id, op_type, src_run_id)
     run_record.status_message = "Running..."
     return run_record.run_id
 

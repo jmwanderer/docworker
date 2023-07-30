@@ -11,7 +11,8 @@ class RunStateTestCase(unittest.TestCase):
     self.run_state = doc_gen.RunState()
 
   def testSteps(self):
-    self.run_state.start_run("a prompt", [ 1, 2, 3], 1)
+    self.run_state.start_run("a prompt", [ 1, 2, 3], 1,
+                             document.OP_TYPE_CONSOLIDATE)
     self.assertEqual(len(self.run_state.to_run), 3)
     self.assertTrue(self.run_state.next_item())
     self.run_state.pop_item()
@@ -130,7 +131,7 @@ class BasicDocGenTestCase(unittest.TestCase):
     run_state = doc_gen.start_docgen(self.doc_path,
                                      self.document,
                                      "A prompt",
-                                     transOp=True)
+                                     op_type=document.OP_TYPE_TRANSFORM)
     doc_gen.run_all_docgen(self.doc_path, self.document, run_state)
     # TODO: Consider how we want to get results from the document
     run_record = self.document.get_current_run_record()

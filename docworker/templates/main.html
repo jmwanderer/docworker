@@ -105,6 +105,13 @@ Single pane application page.
 	    <input id="run" name="run" type="submit" value="Run Prompt"
 		   style="vertical-align:top;"/>
 	    <input type="hidden" id="doc" name="doc" value="{{ doc.id() }}"/>
+	    <br>
+	    <input type="radio" id="consolidate" name="op_type"
+		   value="consolidate" checked="checked">
+	    <label for="consolidate">Consolidate</label><br>
+	    <input type="radio" id="transform" name="op_type"
+		   value="transform">
+	    <label for="transform">Transform</label>
 	    {% if not run_id is none %}
 	    <input type="hidden" id="run_id" name="run_id" value="{{ run_id }}"/>
 	    {% endif %}
