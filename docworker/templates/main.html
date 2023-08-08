@@ -118,35 +118,37 @@ Single pane application page.
 	</td>
 	{% endif %}
       </tr>
-    </table>
-    {% if not doc is none %}
-    {% if not run_id is none %}
-    <br>
-    Run Details:
-    <div style="border-width:1px;border-style:solid;border-color:grey;padding:1em;">
-      Run: {{ doc.run_id_date_time(run_id) }}
-      <br>
-      Prompt: {{ doc.get_run_prompt(run_id) }}
-      <br>
-      {% if doc.run_type_consolidate(run_id)  %}
-      Type: Consolidate
-      {% else %}
-      Type: Transform
+      {% if not doc is none and not run_id is none %}
+      <tr>
+	<td colspan="2">
+	  <br>
+	  Run Details:
+	  <div style="border-width:1px;border-style:solid;border-color:grey;padding:1em;">
+	    Run: {{ doc.run_id_date_time(run_id) }}
+	    <br>
+	    Prompt: {{ doc.get_run_prompt(run_id) }}
+	    <br>
+	    {% if doc.run_type_consolidate(run_id)  %}
+	    Type: Consolidate
+	    {% else %}
+	    Type: Transform
+	    {% endif %}
+	    <br>      
+	    State:
+	    {% if doc.is_running(run_id) %}
+	    <b>Process Running....</b>
+	    {% else %}
+	    <b>Complete</b>
+	    {% endif %}
+	    <br>      
+	    Steps: {{ doc.get_completed_steps(run_id) }} completions run.	
+	    <br>      
+	    {{ doc.get_status_message(run_id) }}
+	  </div>
+	</td>
+      </tr>
       {% endif %}
-      <br>      
-      State:
-	{% if doc.is_running(run_id) %}
-	<b>Process Running....</b>
-	{% else %}
-	<b>Complete</b>
-	{% endif %}
-      <br>      
-      Steps: {{ doc.get_completed_steps(run_id) }} completions run.	
-      <br>      
-	{{ doc.get_status_message(run_id) }}
-    </div>
-    {% endif %}
-    {% endif %}    
+    </table>
 
     {% if not doc is none %}
 
