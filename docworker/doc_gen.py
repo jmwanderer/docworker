@@ -407,6 +407,7 @@ def run_all_docgen(file_path, doc, run_state):
   #
   done = False
   result_id = None
+  doc.set_status_message("Running...")
   while not done:
     logging.debug("loop to run a set of docgen ops")      
 

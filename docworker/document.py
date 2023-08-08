@@ -606,7 +606,6 @@ class Document:
                      op_type=OP_TYPE_CONSOLIDATE):                     
     prompt_id = self.prompts.get_prompt_id(prompt)                        
     run_record = self.new_run_record(prompt_id, op_type, src_run_id)
-    run_record.status_message = "Running..."
     return run_record.run_id
 
   def mark_complete_run(self):
