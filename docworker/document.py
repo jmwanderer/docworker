@@ -654,6 +654,12 @@ class Document:
       return run_record.completed_steps
     return 0
 
+  def get_src_block_count(self, run_id=None):
+    run_record = self.get_run_record(run_id)
+    if run_record is not None:
+      return len(run_record.doc_segments)
+    return 0
+
   def run_exists(self, run_id):
     """
     Return true if the run exists.

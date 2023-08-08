@@ -140,6 +140,9 @@ Single pane application page.
 	    {% else %}
 	    <b>Complete</b>
 	    {% endif %}
+	    <br>
+	    Number of source blocks:
+	    {{ doc.get_src_block_count(run_id=None) }}
 	    <br>      
 	    Steps: {{ doc.get_completed_steps(run_id) }} completions run.	
 	    <br>      
