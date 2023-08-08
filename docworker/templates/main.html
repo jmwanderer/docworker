@@ -43,15 +43,6 @@ Single pane application page.
     <table>
       <tr>
 	<td>
-	</td>
-	{% if not doc is none and not doc.is_running() %}
-	<td>
-	  Select or enter a prompt to run on the text below:
-	</td>
-	{% endif %}
-      </tr>
-      <tr>
-	<td>
 	  <div style="background:#d9e8f6;padding:5px;">
 	    {% if doc is none %}
 	    <p>
@@ -90,8 +81,11 @@ Single pane application page.
 	    </div>
 	  </div>
 	</td>
-	{% if not doc is none and not doc.is_running()  %} 
+	{% if not doc is none and not doc.is_running()  %}
 	<td style="vertical-align:top;">
+	  <div
+	    style="border-width:1px;border-style:solid;border-color:grey;padding:5px;">
+	  Select or enter a prompt to run on the text below:
 	  <form action="{{ url_for('analysis.main')}}"
 		method="post" id="form">
 	    <select name="prompt_manu" id="prompt_menu"
@@ -106,47 +100,66 @@ Single pane application page.
 		   style="vertical-align:top;"/>
 	    <input type="hidden" id="doc" name="doc" value="{{ doc.id() }}"/>
 	    <br>
-	    <p>Opereration Type</p>
+	    Operation Type:
+	    <br>
 	    <input type="radio" id="consolidate" name="op_type"
 		   value="consolidate" checked="checked">
-	    <label for="consolidate">Consolidate</label><br>
+	    <label for="consolidate">Consolidate</label>
+	    - reduce the document to a small amount of text<br>
 	    <input type="radio" id="transform" name="op_type"
 		   value="transform">
 	    <label for="transform">Transform</label>
+	    - rewrite the document to a similar size
 	    {% if not run_id is none %}
 	    <input type="hidden" id="run_id" name="run_id" value="{{ run_id }}"/>
 	    {% endif %}
 	  </form>
+	  </div>		  
 	</td>
 	{% endif %}
       </tr>
     </table>
-    <p></p>
     {% if not doc is none %}
-    {% if not run_id is none %}    
+    {% if not run_id is none %}
+    <br>
+    Run Details:
     <div style="border-width:1px;border-style:solid;border-color:grey;padding:1em;">
+      Run: {{ doc.run_id_date_time(run_id) }}
+      <br>
       Prompt: {{ doc.get_run_prompt(run_id) }}
-      <p>State:
+      <br>
+      {% if doc.run_type_consolidate(run_id)  %}
+      Type: Consolidate
+      {% else %}
+      Type: Transform
+      {% endif %}
+      <br>      
+      State:
 	{% if doc.is_running(run_id) %}
 	<b>Process Running....</b>
 	{% else %}
 	<b>Complete</b>
 	{% endif %}
-      </p>
-      <p>Steps: {{ doc.get_completed_steps(run_id) }} completions run.	
-      </p>
-      {{ doc.get_status_message(run_id) }}
+      <br>      
+      Steps: {{ doc.get_completed_steps(run_id) }} completions run.	
+      <br>      
+	{{ doc.get_status_message(run_id) }}
     </div>
     {% endif %}
     {% endif %}    
 
     {% if not doc is none %}
 
-    {% if not run_id is none and doc.get_result_item(run_id) %}        
+    {% if not run_id is none %}
+    {% if doc.get_result_item(run_id) %}    
+    <br>
+    Result Text:
     <table style="width:100%">
       <tr>
 	<td>
-    <div style="border-width:1px;border-style:solid;border-color:grey;">
+	  <div style="border-width:1px;border-style:solid;border-color:grey;">
+
+	    
       <pre id="result" style="line-height:1.5;background:{{ doc.item_color(doc.get_result_item(run_id)) }};white-space:pre-wrap;overflow-x:auto;padding:1em;margin:0;font-family:PT Mono;">{{ doc.get_result_item(run_id).text() | e }}</pre>
     </div>
 	</td>
@@ -177,8 +190,11 @@ Single pane application page.
 	</td>
       </tr>
     </table>
+    {% endif %}
     {% else %}
 
+    <br>
+    Document Text:
     <table style="width:100%">
       <tr>
 	<td>
@@ -201,8 +217,10 @@ Single pane application page.
     </table>
     
     {% endif %}
-    {% endif %}        
-    <a href="https://www.flaticon.com/free-icons/paper" title="paper icons" target="_blank" rel="noopener noreferrer">Paper icons created by smalllikeart - Flaticon</a>
+    {% endif %}
+    <p>
+      <a href="https://www.flaticon.com/free-icons/paper" title="paper icons" target="_blank" rel="noopener noreferrer">Paper icons created by smalllikeart - Flaticon</a>
+    </p>
     {% endblock %}
     
     {% block script %}

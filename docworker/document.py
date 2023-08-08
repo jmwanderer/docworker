@@ -309,6 +309,10 @@ class RunRecord:
       segments.append(item.text())
     result = ''.join(segments)
     return result
+
+  def run_type_consolidate(self):
+    return self.op_type == OP_TYPE_CONSOLIDATE
+  
   
 class Document:
   """
@@ -403,6 +407,15 @@ class Document:
     if run_id is None or record is None:
       return self.doc_text
     return record.get_src_text()
+
+  def run_type_consolidate(self, run_id=None):
+    """
+    Return true if the given runb is of a type consolidate
+    """
+    record = self.get_run_record(run_id)
+    if record is not None:
+      return record.run_type_consolidate()
+    return False
 
   def get_item_by_name(self, run_id, name):
     record = self.get_run_record(run_id)
@@ -648,6 +661,12 @@ class Document:
     """
     return self.get_run_record(run_id) is not None
 
+  def run_id_date_time(self, run_id):
+    record = self.get_run_record(run_id)
+    if record is not None:
+      return self.run_date_time(record)
+    return None
+  
   def run_date_time(self, run_record):
     # Return the time without microseconds.
     dt = datetime.datetime(run_record.start_time.year,
