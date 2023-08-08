@@ -42,7 +42,7 @@ Single pane application page.
 
     <table>
       <tr>
-	<td>
+	<td style="width:15em;">
 	  <div style="background:#d9e8f6;padding:5px;">
 	    {% if doc is none %}
 	    <p>
@@ -81,8 +81,8 @@ Single pane application page.
 	    </div>
 	  </div>
 	</td>
-	{% if not doc is none and not doc.is_running()  %}
 	<td style="vertical-align:top;">
+	  {% if not doc is none and not doc.is_running()  %}
 	  <div
 	    style="border-width:1px;border-style:solid;border-color:grey;padding:5px;">
 	  Select or enter a prompt to run on the text below:
@@ -114,9 +114,9 @@ Single pane application page.
 	    <input type="hidden" id="run_id" name="run_id" value="{{ run_id }}"/>
 	    {% endif %}
 	  </form>
-	  </div>		  
+	  </div>
+	  {% endif %}
 	</td>
-	{% endif %}
       </tr>
       {% if not doc is none and not run_id is none %}
       <tr>
