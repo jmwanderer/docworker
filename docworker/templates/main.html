@@ -77,7 +77,11 @@ Single pane application page.
 
 	    <hr>
 	    <div>
-	      <a href="{{ url_for("analysis.doclist")}}">Load Files</a>
+	      {% if doc is none %}
+	      <a href="{{ url_for('analysis.doclist') }}">Load Files</a>
+	      {% else %}
+	      <a href="{{ url_for('analysis.doclist', doc=doc.id()) }}">Load Files</a>	      
+	      {% endif %}
 	    </div>
 	  </div>
 	</td>

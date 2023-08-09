@@ -305,13 +305,15 @@ def background_docgen(db_config, username, file_path, doc, run_state):
 @bp.route("/doclist", methods=("GET","POST"))
 @login_required
 def doclist():
-  if request.method == "GET":    
+  if request.method == "GET":
+    doc_id = request.args.get('doc')
+    doc = get_document(doc_id)    
     user_dir = os.path.join(current_app.instance_path, g.user)  
     file_list = []
     for filename in os.listdir(user_dir):
       if filename.endswith('.daf'):
         file_list.append(filename[:-4]) 
-    return render_template("doclist.html", files=file_list)
+    return render_template("doclist.html", files=file_list, doc=doc)
 
   else:
     if request.form.get('upload'):
