@@ -96,7 +96,7 @@ Single pane application page.
 		    style="vertical-align:top;" onchange="prompt_change()">
 	      <option value=""></option>	
 	      {% for prompt in prompts %}
-	      <option value="{{ prompt[2] }}">{{ prompt[1] }}</option>
+	      <option value="{{ prompt[1] }}">{{ prompt[0] }}</option>
 	      {% endfor %}
 	    </select>
 	    <textarea id="prompt" name="prompt" rows="3" cols="70"></textarea>
@@ -236,20 +236,20 @@ Single pane application page.
     {% endblock %}
     
     {% block script %}
-    function submit() {
-      var button = document.getElementById('upload');
-      button.value = "Loading...";
-    }
-
     function prompt_change() {
       var menu = document.getElementById('prompt_menu');
       var text = document.getElementById('prompt');
-      var val = menu.options[menu.selectedIndex].value;
+      var encoded = menu.options[menu.selectedIndex].value;
+      var op = encoded.substr(encoded.length - 1, 1);
+      var val = encoded.substr(0, encoded.length -2);
       text.value = val;
+      if (op == 'C') {
+        document.getElementById('consolidate').checked = true
+      } else {
+        document.getElementById('transform').checked = true
+      }
     }
-    var form = document.getElementById("form");
-    form.onsubmit = submit
-
+    
     function copyResults() {
       var copyText = document.getElementById("result");
       navigator.clipboard.writeText(copyText.innerText);

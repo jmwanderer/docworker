@@ -335,6 +335,7 @@ def run_next_docgen(file_path, doc, run_state):
   # Setup to run a completion
   prompt = run_state.prompt
   prompt_id = doc.prompts.get_prompt_id(prompt)
+                                        
   logging.info("run completion with %d items" % len(item_id_list))
 
   # Update status with last item

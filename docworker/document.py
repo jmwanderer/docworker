@@ -603,8 +603,9 @@ class Document:
     return False
 
   def mark_start_run(self, prompt, src_run_id=None,
-                     op_type=OP_TYPE_CONSOLIDATE):                     
-    prompt_id = self.prompts.get_prompt_id(prompt)                        
+                     op_type=OP_TYPE_CONSOLIDATE):
+    op_flag = op_type == OP_TYPE_CONSOLIDATE
+    prompt_id = self.prompts.get_prompt_id(prompt, op_flag)  
     run_record = self.new_run_record(prompt_id, op_type, src_run_id)
     return run_record.run_id
 
@@ -698,7 +699,7 @@ class Document:
 
 def load_document(file_name):
   f = open(file_name, 'rb')
-  document = pickle.load(f)
+  document = pickle.load(f) 
   document.prompts.fixup_prompts()
   f.close()
   return document

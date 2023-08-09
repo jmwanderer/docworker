@@ -232,18 +232,27 @@ def main():
     if run_id != None:
       run_id = int(run_id)
     doc  = get_document(doc_id)
-    prompts_set = prompts.Prompts.get_initial_prompt_set()
+    prompt_set = prompts.Prompts.get_initial_prompt_set()
     if doc is not None:
       # If a run is in progress, show that run
       if run_id is None and doc.is_running():
         run_id = doc.get_current_run_record().run_id
-      prompts_set = doc.prompts.get_prompt_set()
+      prompt_set = doc.prompts.get_prompt_set()
+
+    # Encode op type into prompt string
+    encoded_prompt_set = []
+    for prompt in prompt_set:
+      if prompt[3]:
+        value = prompt[2] + ':C'
+      else:
+        value = prompt[2] + ':T'
+      encoded_prompt_set.append((prompt[1], value))
 
     return render_template("main.html",
                            doc=doc,
                            username=g.user,
                            run_id=run_id,
-                           prompts=prompts_set)
+                           prompts=encoded_prompt_set)
 
   else:
     doc_id = request.form.get('doc')
@@ -258,7 +267,7 @@ def main():
     doc = get_document(doc_id)
     if (doc is None or doc.is_running() or
         prompt is None or len(prompt) == 0):
-      return redirect(url_for('analysis.main'))
+      return redirect(url_for('analysis.main', doc=doc_id, run_id=run_id))
       
     file_path = get_doc_file_path(doc_id)
     run_state = doc_gen.start_docgen(file_path, doc, prompt, run_id, op_type)
