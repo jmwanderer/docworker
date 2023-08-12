@@ -230,8 +230,19 @@ Single pane application page.
     
     {% endif %}
     {% endif %}
-    <p>
-      <a href="https://www.flaticon.com/free-icons/paper" title="paper icons" target="_blank" rel="noopener noreferrer">Paper icons created by smalllikeart - Flaticon</a>
+    <p>    
+    <div style="width: 100%;">
+      <div style="width: 50%;float:left;">
+	{% if doc is none %}
+	<a href="{{ url_for('analysis.about')}}">About DocWorker</a>
+	{% else %}
+	<a href="{{ url_for('analysis.about', doc=doc.id()) }}">About DocWorker</a>
+	{% endif %}
+      </div>
+      <div style="width: 50%;float:right;text-align:right;">              
+	<a href="https://www.flaticon.com/free-icons/paper" title="paper icons" target="_blank" rel="noopener noreferrer">Paper icons created by smalllikeart - Flaticon</a>
+      </div>	 
+    </div>
     </p>
     {% endblock %}
     

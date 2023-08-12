@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block nav %}
+{% if doc is none %}
+<a href="{{ url_for('analysis.main') }}">Main View</a>
+{% else %}
+<a href="{{ url_for('analysis.main', doc=doc.id()) }}">Main View</a>
+{% endif %}
+{% endblock %}
+{% block body%}
+  
+<h1>About DocWorker</h1>
+
+<i>A tool for applying GPT to documents.</i>
+
+
+
+
+{% endblock %}
+
+
+  
+      

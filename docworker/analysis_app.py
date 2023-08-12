@@ -355,6 +355,11 @@ def runlist():
     return redirect(url_for('analysis.main'))
   return render_template("runlist.html", doc=doc)
 
+@bp.route("/about", methods=("GET",))
+def about():
+  doc_id = request.args.get('doc')  
+  doc = get_document(doc_id)
+  return render_template("about.html", doc=doc)
     
 @bp.route("/segview", methods=("GET",))
 @login_required
