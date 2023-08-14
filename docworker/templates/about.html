@@ -10,10 +10,34 @@
 {% block body%}
   
 <h1>About DocWorker</h1>
+<p>
+  DocWorker uses GPT AI models to summarize, analyze, and transform docouments.
+</p>
+<p>
+  ChatGPT and other GPT AI language models deliver amazing functionality
+  by taking text as input and generate text as output. These models
+  can chat with humans, write an email, and answer questions. Howver,
+  GPT AI language models are  are limited in the amount of
+  text that can be processed in a single operation. If we want to feed
+  the GPT a large document, the document needs to be broken up into sections
+  and each section processed individually.
+</p>
+<p>
+  This is what DocWorker does. DocWorker accepts PDF, DOCX, and TXT
+  documents, breaks them into sections, feeds individual
+  sections to the GPT AI model, and combines the results back into one
+  document.
+</p>
+<p>
+  For example, a person may want to extract the key concepts from the
+  Supreme Court decision XXX which is published as a PDF file.
+  
+Summarize vs Transform
 
-<i>A tool for applying GPT to documents.</i>
+  https://github.com/daveshap/RecursiveSummarizer
 
-
+  https://github.com/openai/openai-cookbook/blob/main/examples/book_translation/translate_latex_book.ipynb
+  
 
 
 {% endblock %}

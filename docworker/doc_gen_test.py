@@ -35,9 +35,9 @@ class MiscCoverageTestCase(unittest.TestCase):
     self.assertIsNotNone(doc_gen.build_prompt("A prompt"))
 
   def testPostProcess(self):
-    response_record = doc_gen.ResponseRecord("completion", 10, 10, False)
+    response_record = doc_gen.ResponseRecord("completion", 10, 10, 1, False)
     doc_gen.post_process_completion(response_record)
-    response_record = doc_gen.ResponseRecord("completion", 10, 10, True)
+    response_record = doc_gen.ResponseRecord("completion", 10, 10, 1, True)
     doc_gen.post_process_completion(response_record)    
     
     

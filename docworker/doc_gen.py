@@ -21,20 +21,25 @@ FAKE_AI_COMPLETION=False
 # Global value for sleep duration in a mock AI call
 FAKE_AI_SLEEP=1
 
+# Global value for base timeout in seconds
+AI_BASE_TIMEOUT=45
+
 
 class ResponseRecord:
   def __init__(self,
                text,
                prompt_tokens,
                completion_tokens,
-               truncated):
+               truncated,
+               timeout_value):
     self.text = text
     self.prompt_tokens = prompt_tokens
     self.completion_tokens = completion_tokens
     self.truncated = truncated
+    self.timeout_value = timeout_value
     
                
-def run_completion(prompt, text, max_tokens, status_cb=None):
+def run_completion(prompt, text, max_tokens, timeout_value, status_cb=None):
   """
   Run an AI completion with the given prompt and text.
 
@@ -49,6 +54,7 @@ def run_completion(prompt, text, max_tokens, status_cb=None):
   done = False
   max_try = 5
   count = 0
+  request_timeout = 0 
   wait = 5
   completion = None
   truncated = False
@@ -64,23 +70,27 @@ def run_completion(prompt, text, max_tokens, status_cb=None):
   if max_tokens == -1 or max_tokens > limit_tokens:
     max_tokens = limit_tokens
 
-  logging.info("prompt tokens: %d, text tokens: %d, max_tokens: %d" %
-               (prompt_tokens, text_tokens, max_tokens))
+  base_timeout = timeout_value
+  if base_timeout == 0:
+    base_timeout = AI_BASE_TIMEOUT    
 
+  logging.info("prompt tokens: %d, text tokens: %d, max_tokens: %d, timeout: %d" %
+               (prompt_tokens, text_tokens, max_tokens, base_timeout))
+  
   logging.info("Running completion: %s", prompt)  
   if FAKE_AI_COMPLETION:
     time.sleep(FAKE_AI_SLEEP)
     return ResponseRecord("Dummy completion, this is filler text.\n" * 20,
                           prompt_tokens = 150,
                           completion_tokens = 50,
-                          truncated=False)
+                          truncated=False,
+                          timeout_value = 0)
 
   # Loop with exponential retries
   while not done:
     try:
-      # TODO: set max_tokens to appropriate amount
       start_time = datetime.datetime.now()
-      request_timeout = 45 + 15 * count
+      request_timeout = base_timeout + (15 * count)
       response = openai.ChatCompletion.create(
         model=section_util.AI_MODEL,
         max_tokens = max_tokens,
@@ -118,7 +128,7 @@ def run_completion(prompt, text, max_tokens, status_cb=None):
       time.sleep(wait_time)
 
   return ResponseRecord(completion, prompt_tokens,
-                        completion_tokens, truncated)
+                        completion_tokens, truncated, request_timeout)
 
 
 class RunState:
@@ -151,6 +161,9 @@ class RunState:
 
     # True if this is a tranform instead of consolidate proces.
     self.op_type = document.OP_TYPE_CONSOLIDATE
+
+    # Last timeout theshold used where the call suceeded
+    self.timeout_value = 0
 
     
   def start_run(self, prompt, item_ids, run_id, op_type):
@@ -357,8 +370,11 @@ def run_next_docgen(file_path, doc, run_state):
     max_tokens = -1
 
   response_record = run_completion(prompt, '\n'.join(text_list),
-                                   max_tokens, status_cb)
+                                   max_tokens,
+                                   run_state.timeout_value,
+                                   status_cb)
 
+  run_state.timeout_value = response_record.timeout_value
   post_process_completion(response_record)
   
   if response_record.text is None:
