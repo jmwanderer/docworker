@@ -22,7 +22,7 @@ FAKE_AI_COMPLETION=False
 FAKE_AI_SLEEP=1
 
 # Global value for base timeout in seconds
-AI_BASE_TIMEOUT=45
+AI_BASE_TIMEOUT=60
 
 
 class ResponseRecord:

@@ -19,8 +19,8 @@
   can chat with humans, write an email, and answer questions. Howver,
   GPT AI language models are  are limited in the amount of
   text that can be processed in a single operation. If we want to feed
-  the GPT a large document, the document needs to be broken up into sections
-  and each section processed individually.
+  the GPT model a large document, the document needs to be broken
+  up into sections and each section processed individually.
 </p>
 <p>
   This is what DocWorker does. DocWorker accepts PDF, DOCX, and TXT
@@ -30,14 +30,73 @@
 </p>
 <p>
   For example, a person may want to extract the key concepts from the
-  Supreme Court decision XXX which is published as a PDF file.
-  
-Summarize vs Transform
+  Supreme Court decision GROFF v. DEJOY  which is published as a PDF file.
+  Using DocWorker, this is done in three steps:
+  <ul>
+    <li>Upload the groff-dejoy.pdf file
+    <li>Enter a prompt for the GPT operation, "Describe the key concepts"
+    <li>Run the operation and wait for the result
+  </ul>
+</p>
 
+<h2>Example Operations</h2>
+<p>
+  The GPT AI models can perform many types of operations, including:
+  <ul>
+    <li>Summarize a document
+    <li>Extract people, places, dates
+    <li>Extract key concepts
+    <li>Rewrite a document for clarity or directed to a target auidence
+    <li>Explain concepts contains in a document
+    <li>Translate a document
+  </ul>
+</p>
+  
+
+<h2>Consolidate vs Transform</h2>
+<p>
+  A typical document processing operation is one that consolidates
+  information from the entire document. For example, 'summarize' or
+  'explain the main points', starts with a large document and produces result
+  much shorter than the original document.
+</p>
+<p>
+  However some operations transform a document and produce a result of
+  similar size. Example operations are to translate or re-write. These are
+  considered to be transform operations that don't reduce or summarize
+  the original document.
+</p>
+<p>
+  DocWorker allows users to select either Consolidate (the default) or
+  Transform, depending on the desired result.
+</p>
+
+<h2>Document Query</h2>
+<p>
+  DocWorker processes documents to rewrite or summarize the contents. It is
+  not designed to answer specific questions using documents as a knowledge
+  base. A good option for this type of functionality is
+  <a href='www.chatpdf.com'>ChatPDF</a>
+</p>
+
+<h2>Prior Work</h2>
+<p>
+  This section lists a few other projects with similar functionality.
+</p>
+<p>
+  A project that recursivly summarizes a document to a short final result: 
+<a href='https://github.com/daveshap/RecursiveSummarizer'>
   https://github.com/daveshap/RecursiveSummarizer
+</a>
+</p>
 
+<p>
+  A project in the OpenAI Cookbook that translates a large technical
+  book to English:
+<a href=' https://github.com/openai/openai-cookbook/blob/main/examples/book_translation/translate_latex_book.ipynb'>
   https://github.com/openai/openai-cookbook/blob/main/examples/book_translation/translate_latex_book.ipynb
-  
+</a>
+</p>
 
 
 {% endblock %}
