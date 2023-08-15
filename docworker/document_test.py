@@ -94,6 +94,11 @@ class BasicDocumentTestCase(unittest.TestCase):
     self.assertEqual(items[2].id(), self.id1)
     self.assertEqual(items[3].id(), self.id2)
 
+    items = self.doc.get_recent_gen_item(self.run_id)
+    self.assertTrue(len(items), 2)
+    self.assertEqual(items[0].id(), self.id3)
+    self.assertEqual(items[1].id(), self.id1)    
+
     items = self.doc.get_completion_list(self.run_id)
     self.assertTrue(len(items), 1)
     self.assertEqual(items[0].id(), self.id3)

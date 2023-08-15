@@ -214,6 +214,17 @@ class RunRecord:
         count += 1
     return name_prefix + str(count+1)
 
+  def get_recent_gen_item(self):
+    """
+    Return the generated, source pair of items for the
+    most recent completion operation.
+    """
+    if len(self.completions) > 0:
+      completion = self.completions[-1]
+      source = self.get_item_by_id(completion.input_ids[0])
+      return (completion, source)
+    return None
+
   def get_gen_items(self):
     """
     Return list of items associated with a gen run in an
@@ -483,7 +494,16 @@ class Document:
     Return the number of runs.
     """
     return len(self.run_list)
-  
+
+  def get_recent_gen_item(self, run_id):
+    """
+    Return a pair of items, generated and source,
+    for the most recent generation operation.
+    """
+    run_record = self.get_run_record(run_id)
+    if run_record != None:
+      return run_record.get_recent_gen_item()
+    return None
 
   def get_gen_items(self, run_id):
     """

@@ -165,7 +165,7 @@ Single pane application page.
     {% if not run_id is none %}
     {% if doc.get_result_item(run_id) %}    
     <br>
-    Result Text:
+    <b>Result Text:</b>
     <table style="width:100%">
       <tr>
 	<td>
@@ -202,11 +202,31 @@ Single pane application page.
 	</td>
       </tr>
     </table>
+    {% else %}
+    {# Case: generation run is in progress. May display in progress work #}
+    {% if not doc.get_recent_gen_item(run_id) is none %}
+    <br>
+    <b>In Progress Work:</br>
+    <table>
+      <tr>
+	<th>Result</th>
+	<th>Source</th>
+      </tr>
+      <tr>
+	<td style="width:50%;vertical-align:top">
+	  <pre style="line-height:1.5;background:{{ doc.item_color(doc.get_recent_gen_item(run_id)[0]) }};white-space:pre-wrap;overflow-x:auto;padding:1em;margin:0;font-family:PT Mono;">{{ doc.get_recent_gen_item(run_id)[0].text() | e }}</pre>	  
+	</td>
+	<td style="width:50%;vertical-align:top">	  
+	  <pre style="line-height:1.5;background:{{ doc.item_color(doc.get_recent_gen_item(run_id)[1]) }};white-space:pre-wrap;overflow-x:auto;padding:1em;margin:0;font-family:PT Mono;">{{ doc.get_recent_gen_item(run_id)[1].text() | e }}</pre>	  
+	</td>
+      </tr>
+    </table>
+    {% endif %}
     {% endif %}
     {% else %}
-
+    {# Case: No run selected. Show source document #}
     <br>
-    Document Text:
+    <b>Document Text:</b>
     <table style="width:100%">
       <tr>
 	<td>
