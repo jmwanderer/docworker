@@ -265,10 +265,18 @@ def main():
 
     prompt = request.form['prompt'].strip()      
     doc = get_document(doc_id)
-    if (doc is None or doc.is_running() or
-        prompt is None or len(prompt) == 0):
+    # Catch case where there is no doc, or another process is running,
+    # or there is no prompt.
+    if doc is None or doc.is_running():
       return redirect(url_for('analysis.main', doc=doc_id, run_id=run_id))
-      
+
+    if prompt is None or len(prompt) == 0:
+        return redirect(url_for('analysis.main', doc=doc_id, run_id=run_id))
+
+    # Catch case where there is no content to process
+    if run_id is not None and doc.get_result_item(run_id) is None:
+      return redirect(url_for('analysis.main', doc=doc_id, run_id=run_id))
+
     file_path = get_doc_file_path(doc_id)
     run_state = doc_gen.start_docgen(file_path, doc, prompt, run_id, op_type)
     new_run_id = run_state.run_id
