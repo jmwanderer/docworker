@@ -48,8 +48,8 @@ Run with OpenAI calls mocked out:
 Open: http://localhost:5000/?authkey=<access_key>
 
 Note: The login by email feature requires additional effort for setup.
-To use the system in test mode, simply follow the above patters and
-include the test users access key to the URL for the initial connection
+To use the system in test mode, simply follow the above pattern and
+include the test user's access key to the URL for the initial connection
 with a web browser.
 
 ## Test
@@ -63,6 +63,8 @@ Run System and Unit tests
 
 ### System test
 `make systest`
+
+pytest needs to by installed for the system tests.
 
 ## Run Production Server
 
