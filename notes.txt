@@ -90,7 +90,6 @@ rm docworker/samples/*.daf
 
 python3 -m docworker.dw_cli docworker/samples --import_doc 'docworker/samples/PA utility.docx'
 python3 -m docworker.dw_cli docworker/samples --import_doc 'docworker/samples/PA Agenda.docx'
-python3 -m docworker.dw_cli docworker/samples --import_doc docworker/samples/creative-llc.docx
 python3 -m docworker.dw_cli docworker/samples --import_doc docworker/samples/creative-llc.pdf
 python3 -m docworker.dw_cli docworker/samples --import_doc docworker/samples/groff-dejoy.pdf
 
