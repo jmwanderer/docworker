@@ -10,7 +10,18 @@
 <h1>DocWorker</h1>
 <i>A tool for applying GPT to documents.</i>
 <h2>Get an Email link to access DocWorker:</h2>
-{% if status is none %}
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<ul class=flashes>
+  {% for message in messages %}
+  <li>{{ message }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}  
+
+{% if sent is none %}
 <form action="{{ url_for('analysis.login')}}"
       method="post" id="form">
   <label for="address">Email:</label>
@@ -22,10 +33,6 @@
 </p>
 <p>
   If you do not receive an email, please check your Spam folder.
-</p>
-{% else %}
-<p>
-  {{ status }}
 </p>
 {% endif %}
 <a href="{{ url_for('analysis.about')}}">About DocWorker</a>

@@ -271,10 +271,12 @@ def main():
       return redirect(url_for('analysis.main', doc=doc_id, run_id=run_id))
 
     if prompt is None or len(prompt) == 0:
+        flask.flash("Enter a prompt to run an operation.")
         return redirect(url_for('analysis.main', doc=doc_id, run_id=run_id))
 
     # Catch case where there is no content to process
     if run_id is not None and doc.get_result_item(run_id) is None:
+      flask.flash("No result text on which to run.")
       return redirect(url_for('analysis.main', doc=doc_id, run_id=run_id))
 
     file_path = get_doc_file_path(doc_id)
@@ -456,20 +458,20 @@ may have been entered by mistake. You can ingore and delete this email.
 @bp.route("/login", methods=("GET", "POST"))
 def login():
   if request.method == "GET":
-    status = request.args.get('status')
-    return render_template("login.html", status=status)
+    sent = request.args.get('sent')
+    return render_template("login.html", sent=sent)
   else:
     # TODO:
     # - track emails per time unit - rate limit
     # - track emails to target address - limit by time
     # - limit number of accounts
     address = escape(request.form.get('address'))
-    status = "unknown"
+    sent = None
     key = users.get_user_key(get_db(), address)
     if key is None:
       # User does not exist. Create if we are not at max
       if users.count_users(get_db()) >= users.MAX_ACCOUNTS:
-        status = "User limit hit. No more available at this time."
+        flask.flash("User limit hit. No more available at this time.")
       else:
         # Create the user entry.
         user_dir = os.path.join(current_app.instance_path, address)
@@ -487,17 +489,18 @@ def login():
         try:
           analysis_util.send_email(current_app.config, [address],
                                    "Access Link for DocWorker", email)
-          status = "Email sent to: %s" % address
+          flask.flash("Email sent to: %s" % address)
           users.note_email_send(get_db(), address)
+          sent = True
 
         except Exception as e:
           logging.info("Failed to send email %s", str(e))
-          status = "Email send failed"
+          flask.flash("Email send failed")
 
       else:
-        status = "Email already recently sent to %s" % address
+        flask.flash("Email already recently sent to %s" % address)
       
-    return redirect(url_for('analysis.login', status=status))      
+    return redirect(url_for('analysis.login', sent=sent))      
 
 if __name__ == "__main__":
   app = create_app()
