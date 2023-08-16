@@ -27,6 +27,8 @@ All commands should be run from the top level of the project directory.
 
 `flask --app docworker.analysis_app get-user <user-name>`
 
+Note the access key for later use.
+
 ## Run Debug Server
 
 `export OPENAI_API_KEY=<key>`
@@ -41,6 +43,9 @@ Run with OpenAI calls mocked out:
 
 
 Open: http://localhost:5000/?authkey=<access_key>
+
+Note: Login by email is more work to setup. To use the system in test mode,
+simply add the access key to the URL for the initial connection.
 
 ## Test
 
