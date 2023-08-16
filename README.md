@@ -2,7 +2,8 @@
 
 DocWorker is a Flask web application for running GPT operations over DOCX files.
 
-To run DocWorker, you need an API Key from OpenAI. (Mine came with a $5 credit), and to install various Python modules using pip. Using venv is a good practice.
+To run DocWorker, you need an API Key from OpenAI (mine came with a $5 credit), and to install various Python modules using pip. Using Python venv is good practice, but not required.  (If you do Python development or use Python modules
+installed with ppip, venv helps avoid pain with version conflicts.)
 
 All commands should be run from the top level of the project directory.
 
@@ -19,11 +20,13 @@ All commands should be run from the top level of the project directory.
 
 `flask --app docworker.analysis_app init-db`
 
-### Add a user
+### Add a test user
 
 `flask --app docworker.analysis_app set-user <user-name>`
 
-### Lookup access key
+Example user name: test
+
+### Lookup access key for the test user
 
 `flask --app docworker.analysis_app get-user <user-name>`
 
@@ -44,8 +47,10 @@ Run with OpenAI calls mocked out:
 
 Open: http://localhost:5000/?authkey=<access_key>
 
-Note: Login by email is more work to setup. To use the system in test mode,
-simply add the access key to the URL for the initial connection.
+Note: The login by email feature requires additional effort for setup.
+To use the system in test mode, simply follow the above patters and
+include the test users access key to the URL for the initial connection
+with a web browser.
 
 ## Test
 
