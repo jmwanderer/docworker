@@ -12,8 +12,9 @@ from docx.text.paragraph import Paragraph
 import io
 
 class DocXExtract:
-    def __init__(self):
+    def __init__(self, structured=False):
         self.result = io.StringIO()
+        self.structured = structured
 
     def load_doc(self, file):
         """
@@ -36,8 +37,9 @@ class DocXExtract:
                 if len(item.text.strip()) == 0:
                     continue
                 if (item._p.style is not None):
-                    if (item._p.style.startswith('Heading') or
-                        item._p.style.startswith('Title')):
+                    if ((item._p.style.startswith('Heading') or
+                        item._p.style.startswith('Title')) and 
+                        self.structured):
                         print('<%s>' % item._p.style, file=self.result)
                 print(item.text, file=self.result)
             print(file=self.result)
@@ -65,13 +67,15 @@ class DocXExtract:
         """
         Generate table contents as a smiple grid
         """
-        print('<table>', file=self.result)    
+        if self.stuctured:
+            print('<table>', file=self.result)    
         for row in table.rows:
             items = []
             for c in row.cells:
                 items.append(self.strip_text(c.text))
             print(' | '.join(items), file=self.result)
-        print('</table>', file=self.result)        
+        if self.stuctured:
+            print('</table>', file=self.result)        
 
     def strip_text(self, text):
         # combine multiple lines into one
@@ -99,10 +103,12 @@ class DocXExtract:
             return
 
         # Reformat table cells into records
-        print('<table>', file=self.result)
+        if self.stuctured:
+            print('<table>', file=self.result)
         for row in range(1, row_count):
             row_label = table.cell(row, 0)
-            print('<row>', file=self.result)
+            if self.stuctured:
+                print('<row>', file=self.result)
             for col in range(0, col_count):
                 cell_label = table.cell(0, col)
                 cell_contents = table.cell(row, col)
@@ -114,7 +120,8 @@ class DocXExtract:
                     print('%s: %s' % (self.strip_text(cell_label.text),
                                       self.strip_text(cell_contents.text)),
                           file=self.result)
-        print('</table>', file=self.result) 
+        if self.stuctured:
+            print('</table>', file=self.result) 
 
 
 def run_tests():
