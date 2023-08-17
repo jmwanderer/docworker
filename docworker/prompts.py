@@ -17,7 +17,7 @@ INITIAL_PROMPTS = [
   ('Restate for Clarity', 'Restate for clarity', False),
   ('Rewrite for 5th grader', 'Rewrite for a 5th grader', False),
   ('Translate to Spanish', 'Translate to Spanish', False),
-  ('Rewrite using emogies', 'Rewrite using emogies', False),
+  ('Rewrite using emojis', 'Rewrite using emojis', False),
   ]
 
 class Prompts:
