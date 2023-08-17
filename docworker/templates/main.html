@@ -147,6 +147,9 @@ Single pane application page.
 	    {% else %}
 	    <b>Complete</b>
 	    {% endif %}
+      <br>
+      Token Cost:
+      {{ doc.get_completion_cost(run_id) }}
 	    <br>
 	    Number of source blocks:
 	    {{ doc.get_src_block_count(run_id=None) }}
@@ -165,7 +168,7 @@ Single pane application page.
     {% if not run_id is none %}
     {% if doc.get_result_item(run_id) %}    
     <br>
-    <b>Result Text:</b>
+    <b>Result Text:</b> ( {{ doc.get_result_item(run_id).token_count() }} )
     <table style="width:100%">
       <tr>
 	<td>
@@ -226,7 +229,7 @@ Single pane application page.
     {% else %}
     {# Case: No run selected. Show source document #}
     <br>
-    <b>Document Text:</b>
+    <b>Document Text:</b> ( {{ doc.get_src_tokens(run_id) }} )
     <table style="width:100%">
       <tr>
 	<td>

@@ -52,6 +52,9 @@ def read_file(filename: str, file: io.BytesIO) -> str:
   else:
     raise DocError("Unsupported file format: %s" % type)    
 
+def token_count(text: str):
+  tokenizer = tiktoken.encoding_for_model(section_util.AI_MODEL)  
+  return len(tokenizer.encode(text))
 
 def chunk_text(text: str, chunk_size):
   result = []

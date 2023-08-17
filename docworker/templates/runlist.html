@@ -17,9 +17,11 @@
 	{{ doc.run_date_time(run_record) }}
       </a>
 	&nbsp; {{ doc.run_record_prompt(run_record) }}
+  ( {{ doc.get_completion_cost(run_record.run_id) }} )
     </li>
     {% endfor %}
   </ul>
+  Total Cost: {{ doc.gen_cost_tokens() }}
 </div>
 {% endblock %}
 

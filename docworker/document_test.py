@@ -116,14 +116,16 @@ class BasicDocumentTestCase(unittest.TestCase):
   def testCounts(self):
     self.assertEqual(self.doc.gen_tokens(), 5)
     self.assertEqual(self.doc.gen_cost_tokens(), 20)
-    # TODO: fix
-    self.assertEqual(self.doc.doc_tokens(), 0)
+    self.assertEqual(self.doc.get_completion_cost(), 20)
+    self.assertEqual(self.doc.get_completion_cost(self.run_id), 20)
+    self.assertEqual(self.doc.get_doc_token_count(), 0)
     self.assertEqual(self.doc.segment_count(self.run_id), 3)
     self.assertEqual(self.doc.final_completion_count(), 1)
 
   def testSourceText(self):
     self.assertIsNotNone(self.doc.get_src_text())
     self.assertIsNotNone(self.doc.get_src_text(self.run_id))    
+
     
   def testRunState(self):
     self.assertTrue(self.doc.is_running(self.run_id))

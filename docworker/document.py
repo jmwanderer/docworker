@@ -321,8 +321,24 @@ class RunRecord:
     result = ''.join(segments)
     return result
 
+  def get_src_tokens(self):
+    count = 0
+    for item in self.doc_segments:
+      count += item.token_count()
+    return count
+
   def run_type_consolidate(self):
     return self.op_type == OP_TYPE_CONSOLIDATE
+
+  def get_completion_cost(self):
+    """
+    Return the total number of prompt and completion tokens
+    processed during this run.
+    """
+    count = 0
+    for completion in self.completions:
+        count += completion.token_cost
+    return count
   
   
 class Document:
@@ -336,6 +352,7 @@ class Document:
     self.run_list = []     # List of RunRecord instances
     self.doc_name = None
     self.doc_text = None
+    self.doc_tokens = 0
     self.prompts = prompts.Prompts()
 
 
@@ -419,6 +436,12 @@ class Document:
       return self.doc_text
     return record.get_src_text()
 
+  def get_src_tokens(self, run_id=None):
+    record = self.get_run_record(run_id)
+    if run_id is None or record is None:
+        return self.get_doc_token_count()
+    return record.get_src_tokens()
+
   def run_type_consolidate(self, run_id=None):
     """
     Return true if the given runb is of a type consolidate
@@ -427,6 +450,15 @@ class Document:
     if record is not None:
       return record.run_type_consolidate()
     return False
+
+  def get_completion_cost(self, run_id=None):
+    """
+    Return the total number of tokens processed for a run.
+    """
+    record = self.get_run_record(run_id)
+    if record is not None:
+      return record.get_completion_cost()
+    return 0
 
   def get_item_by_name(self, run_id, name):
     record = self.get_run_record(run_id)
@@ -546,10 +578,10 @@ class Document:
       return run_record.completions
     return None
 
-  def doc_tokens(self):
-    # TODO: return token count for doc
-    total = 0
-    return total
+  def get_doc_token_count(self):
+    if not hasattr(self, 'doc_tokens'):
+      self.doc_tokens = doc_convert.token_count(self.doc_text)
+    return self.doc_tokens
 
   def gen_tokens(self):
     total = 0
@@ -715,6 +747,7 @@ class Document:
   def read_file(self, name, file, md5_digest):
     self.doc_name = os.path.basename(name)      
     self.doc_text = doc_convert.read_file(name, file)
+    self.doc_tokens = doc_convert.token_count(self.doc_text)
     self.md5_digest = md5_digest
 
 def load_document(file_name):
