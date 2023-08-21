@@ -58,4 +58,8 @@ class UsersDBTestCase(unittest.TestCase):
     users.increment_tokens(self.db, USER_NAME, 100)
     self.assertFalse(users.check_available_tokens(self.db, USER_NAME))    
 
+    # Verify delete user
+    users.delete_user(self.db, USER_NAME, self.user_dir.name)
+    self.assertEqual(users.count_users(self.db), 0)
+
 

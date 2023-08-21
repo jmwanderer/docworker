@@ -135,6 +135,14 @@ def add_or_update_user(db, user_dir, name, limit):
   db.commit()
 
 
+def delete_user(db, name, user_dir):
+  db.execute("DELETE FROM user where username = ?", (name,))
+  if user_dir is not None and os.path.exists(user_dir):
+    for filename in os.listdir(user_dir):
+      os.remove(os.path.join(user_dir, filename))
+    os.rmdir(user_dir)
+  db.commit()
+
 def populate_samples(user_dir):
   """
   Copy sample docs into user dir.

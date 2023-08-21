@@ -47,6 +47,7 @@ def create_app(test_config=None,
     SMTP_PASSWORD = os.getenv('SMTP_PASSWORD'),        
     SMTP_SERVER = os.getenv('SMTP_SERVER'),
     SMTP_FROM = os.getenv('SMTP_FROM'),        
+    AUTO_CREATE_USER = False,
   )
   if test_config is None:
     app.config.from_pyfile('config.py', silent=True)
@@ -141,6 +142,16 @@ def set_user_command(name, key):
 def get_user_command(name):
   """Dump details of given user."""
   users.report_user(get_db(), name)
+
+@bp.cli.command('delete-user')
+@click.argument('name')
+def delete_user_command(name):
+  """Delete a user."""
+  user_dir = None
+  if name is not None and len(name) > 0:
+    user_dir = os.path.join(current_app.instance_path, name)
+  users.delete_user(get_db(), name, user_dir)
+  click.echo('Deleted user %s.' % name)
 
 @bp.cli.command('list-users')
 def list_command():
@@ -466,14 +477,19 @@ def login():
     # - track emails to target address - limit by time
     # - limit number of accounts
     address = escape(request.form.get('address'))
+    if address is None:
+        return redirect(url_for('analysis.login'))      
+
     sent = None
     key = users.get_user_key(get_db(), address)
     if key is None:
-      # User does not exist. Create if we are not at max
-      if users.count_users(get_db()) >= users.MAX_ACCOUNTS:
+      # User does not exist. Create if we are configured and not at max
+      if not current_app.config.get('AUTO_CREATE_USERS'):
+        flask.flash("User %s does not exist." % address)
+      elif users.count_users(get_db()) >= users.MAX_ACCOUNTS:
         flask.flash("User limit hit. No more available at this time.")
       else:
-        # Create the user entry.
+        # Create or get the user entry.
         user_dir = os.path.join(current_app.instance_path, address)
         users.add_or_update_user(get_db(), user_dir,
                                  address, users.DEFAULT_TOKEN_COUNT)

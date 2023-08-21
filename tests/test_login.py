@@ -7,8 +7,10 @@ def test_login_get(client):
   assert response.status_code == 200
 
 
-def test_login_post(app, client, mocker):
+def test_login_post_auto_create(app, client, mocker):
   mocker.patch('docworker.analysis_app.analysis_util.send_email')
+  # Set up auto create
+  app.config['AUTO_CREATE_USERS'] = True
 
   with app.app_context():
     db = get_db()
@@ -30,6 +32,27 @@ def test_login_post(app, client, mocker):
                          data={'address': 'test3'}
                          )
   assert response.status_code == 302
+
+
+def test_login_post(app, client, mocker):
+  mocker.patch('docworker.analysis_app.analysis_util.send_email')
+  # Default config - no auyto create users
+
+  with app.app_context():
+    db = get_db()
+    key = users.get_user_key(db, 'test3')
+    assert key is  None
+  
+  response = client.post('/login',
+                         data={'address': 'test3'}
+                         )
+  assert response.status_code == 302
+
+  with app.app_context():
+    db = get_db()
+    key = users.get_user_key(db, 'test3')
+    assert key is None
+
 
 
 
