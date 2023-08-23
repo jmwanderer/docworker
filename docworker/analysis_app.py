@@ -47,7 +47,8 @@ def create_app(test_config=None,
     SMTP_PASSWORD = os.getenv('SMTP_PASSWORD'),        
     SMTP_SERVER = os.getenv('SMTP_SERVER'),
     SMTP_FROM = os.getenv('SMTP_FROM'),        
-    AUTO_CREATE_USER = False,
+    AUTO_CREATE_USERS = False,
+    NO_USER_LOGIN = False,
   )
   if test_config is None:
     app.config.from_pyfile('config.py', silent=True)
@@ -125,8 +126,7 @@ def init_db_command():
 @click.argument('limit', default=100000)
 def set_user_command(name, limit):
   """Create or update a user."""
-  user_dir = os.path.join(current_app.instance_path, name)
-  users.add_or_update_user(get_db(), user_dir, name, limit)
+  users.add_or_update_user(get_db(), current_app.instance_path, name, limit)
   click.echo('Configured user.')
 
 @bp.cli.command('set-user-key')
@@ -147,10 +147,7 @@ def get_user_command(name):
 @click.argument('name')
 def delete_user_command(name):
   """Delete a user."""
-  user_dir = None
-  if name is not None and len(name) > 0:
-    user_dir = os.path.join(current_app.instance_path, name)
-  users.delete_user(get_db(), name, user_dir)
+  users.delete_user(get_db(), name, current_app.instance_path)
   click.echo('Deleted user %s.' % name)
 
 @bp.cli.command('list-users')
@@ -259,9 +256,14 @@ def main():
         value = prompt[2] + ':T'
       encoded_prompt_set.append((prompt[1], value))
 
+    # Don't pass in username when configured for no login
+    username = None
+    if not current_app.config.get('NO_USER_LOGIN'):
+      username = g.user
+
     return render_template("main.html",
                            doc=doc,
-                           username=g.user,
+                           username=username,
                            run_id=run_id,
                            prompts=encoded_prompt_set)
 
@@ -465,14 +467,40 @@ may have been entered by mistake. You can ingore and delete this email.
 
 """
 
+def get_or_create_user():
+  """
+  Get the current user from the session, or if there isn't one,
+  try to create a new nameless user. Return None if unable to create.
+  """
+  user_key = session.get('user_key')
+  user_name = users.get_user_by_key(get_db(), user_key)
+  if user_name is not None:
+    return user_name
+  
+  # Try to create a nameless user
+  return users.add_or_update_user(get_db(), current_app.instance_path,
+                                  None, users.DEFAULT_TOKEN_COUNT)
+ 
   
 @bp.route("/login", methods=("GET", "POST"))
 def login():
   if request.method == "GET":
-    sent = request.args.get('sent')
-    return render_template("login.html", sent=sent)
+    if not current_app.config.get('NO_USER_LOGIN'):
+      # Supporting user login, show template
+      sent = request.args.get('sent')
+      return render_template("login.html", sent=sent)
+    else:
+      # If we are not requireing user logins, check key and
+      # potentially create a user.
+      user = get_or_create_user()
+      if user is None:
+        flask.flash("User limit hit. No more available at this time.")
+        return render_template("login.html", sent=True)
+      else:
+        key = users.get_user_key(get_db(), user)
+        return redirect(url_for('analysis.main', authkey=key))      
   else:
-    # TODO:
+   # TODO:
     # - track emails per time unit - rate limit
     # - track emails to target address - limit by time
     # - limit number of accounts
@@ -490,8 +518,7 @@ def login():
         flask.flash("User limit hit. No more available at this time.")
       else:
         # Create or get the user entry.
-        user_dir = os.path.join(current_app.instance_path, address)
-        users.add_or_update_user(get_db(), user_dir,
+        users.add_or_update_user(get_db(), current_app.instance_path,
                                  address, users.DEFAULT_TOKEN_COUNT)
         key = users.get_user_key(get_db(), address)
 

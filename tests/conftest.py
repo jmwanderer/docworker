@@ -17,11 +17,9 @@ def app():
   with app.app_context():
     init_db()
     name = 'test1'
-    user_dir = os.path.join(app.instance_path, name)
-    users.add_or_update_user(get_db(), user_dir, name, 10)
+    users.add_or_update_user(get_db(), app.instance_path, name, 10)
     name = 'test2'
-    user_dir = os.path.join(app.instance_path, name)
-    users.add_or_update_user(get_db(), user_dir, name, 10)
+    users.add_or_update_user(get_db(), app.instance_path, name, 10)
 
   yield app
 

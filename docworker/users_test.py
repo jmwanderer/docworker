@@ -19,20 +19,25 @@ class UsersDBTestCase(unittest.TestCase):
     with open(schema_file, 'rb') as f:
       self.db.executescript(f.read().decode('utf8'))
 
-    self.user_dir = tempfile.TemporaryDirectory()
+    self.storage_dir = tempfile.TemporaryDirectory()
 
   def tearDown(self):
     os.close(self.db_fd)
     os.unlink(self.db_path)
-    self.user_dir.cleanup()
+    self.storage_dir.cleanup()
   
   def testFunctions(self):
     # Add user
     self.assertEqual(users.count_users(self.db), 0)
-    users.add_or_update_user(self.db, self.user_dir.name, USER_NAME, 100)
+    users.add_or_update_user(self.db, self.storage_dir.name, USER_NAME, 100)
     self.assertEqual(users.count_users(self.db), 1)    
     users.note_user_access(self.db, USER_NAME)
-    users.add_or_update_user(self.db, self.user_dir.name, USER_NAME, 200)    
+    users.add_or_update_user(self.db, self.storage_dir.name, USER_NAME, 200)    
+
+    # Add nameless user
+    name = users.add_or_update_user(self.db, self.storage_dir.name, None, 100)
+    self.assertIsNotNone(name)
+    self.assertEqual(users.count_users(self.db), 2)    
 
     # Verify access key functions
     key = users.get_user_key(self.db, USER_NAME)
@@ -59,7 +64,9 @@ class UsersDBTestCase(unittest.TestCase):
     self.assertFalse(users.check_available_tokens(self.db, USER_NAME))    
 
     # Verify delete user
-    users.delete_user(self.db, USER_NAME, self.user_dir.name)
+    users.delete_user(self.db, USER_NAME, self.storage_dir.name)
+    self.assertEqual(users.count_users(self.db), 1)
+    users.delete_user(self.db, name, self.storage_dir.name)
     self.assertEqual(users.count_users(self.db), 0)
 
 

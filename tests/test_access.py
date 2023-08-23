@@ -51,7 +51,43 @@ def test_access(client, auth):
   response = client.get('/login')
   assert response.status_code == 200
 
+def test_no_login(app, client, auth):
+  app.config.update({'NO_USER_LOGIN': True})
+
+  # Validate user redirected to login
+  response = client.get('/')
+  assert response.status_code == 302
+  assert response.location == '/login'
+
+  # Try auto create of user
+  response = client.get('/login')
+  assert response.status_code == 302
+  response = client.get(response.location)
+  assert response.status_code == 302
+  assert response.location == '/'
+
+  response = client.get('/')
+  assert response.status_code == 200
+
+  response = client.get('/doclist')
+  assert response.status_code == 200
+
+  response = client.get('/runlist')
+  assert response.status_code == 302
+  assert response.location == '/'
+
+  response = client.get('/segview')
+  assert response.status_code == 302
+  assert response.location == '/'
+
+  response = client.post('/export')
+  assert response.status_code == 302
+  assert response.location == '/'
   
+  response = client.get('/login')
+  assert response.status_code == 302
+
+ 
 def test_access_with_doc(client, auth):
   auth.login('test1')
 

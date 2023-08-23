@@ -117,26 +117,42 @@ def check_available_tokens(db, name):
   
   return consumed < limit
 
-def add_or_update_user(db, user_dir, name, limit):
+def add_or_update_user(db, storage_dir, name, limit):
   """
   Add a user if it doesn't exist. Otherwise update the limit.
+  If name is None, make the name the same as the access key.
   """
-  (count,) = db.execute("SELECT COUNT(*) FROM user WHERE username = ?",
-                     (name,)).fetchone()
+  count = 0
+  if name is not None:
+    (count,) = db.execute("SELECT COUNT(*) FROM user WHERE username = ?",
+                          (name,)).fetchone()
+
   if count == 0:
+    # create user
+    key = uuid.uuid4().hex
+    if name is None:
+        name = key
+    user_dir = os.path.join(storage_dir, name)
+
     logging.info("add user %s", name)
     db.execute("INSERT INTO user (username, access_key, limit_tokens) VALUES (?,?,?)",
-               (name, uuid.uuid4().hex, limit))
+               (name, key, limit))
     populate_samples(user_dir)
   else:
     logging.info("update user %s", name)
     db.execute("UPDATE user SET limit_tokens = ? WHERE username = ?",
                (limit,name))
   db.commit()
+  return name
 
 
-def delete_user(db, name, user_dir):
+def delete_user(db, name, storage_dir):
   db.execute("DELETE FROM user where username = ?", (name,))
+  if storage_dir is not None and name is not None and len(name) > 0:
+    user_dir = os.path.join(storage_dir, name)
+  else:
+    user_dir = None
+
   if user_dir is not None and os.path.exists(user_dir):
     for filename in os.listdir(user_dir):
       os.remove(os.path.join(user_dir, filename))
