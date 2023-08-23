@@ -131,7 +131,7 @@ def add_or_update_user(db, storage_dir, name, limit):
     # create user
     key = uuid.uuid4().hex
     if name is None:
-        name = key
+      name = key
     user_dir = os.path.join(storage_dir, name)
 
     logging.info("add user %s", name)

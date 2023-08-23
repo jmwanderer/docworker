@@ -505,7 +505,7 @@ def login():
     # - track emails to target address - limit by time
     # - limit number of accounts
     address = escape(request.form.get('address'))
-    if address is None:
+    if address is None or len(address) < 1:
         return redirect(url_for('analysis.login'))      
 
     sent = None
