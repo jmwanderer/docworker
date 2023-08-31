@@ -48,7 +48,7 @@ def create_app(test_config=None,
     SMTP_SERVER = os.getenv('SMTP_SERVER'),
     SMTP_FROM = os.getenv('SMTP_FROM'),        
     AUTO_CREATE_USERS = False,
-    NO_USER_LOGIN = False,
+    NO_USER_LOGIN = True,
   )
   if test_config is None:
     app.config.from_pyfile('config.py', silent=True)
@@ -227,12 +227,8 @@ def handle_login(request):
 
 
 @bp.route("/", methods=("GET","POST"))
+@login_required
 def main():
-  # Check and process login if needed
-  login_redirect = handle_login(request)
-  if login_redirect is not None:
-    return login_redirect
-  
   doc = None
   if request.method == "GET":  
     doc_id = request.args.get('doc')
@@ -485,21 +481,39 @@ def get_or_create_user():
 @bp.route("/login", methods=("GET", "POST"))
 def login():
   if request.method == "GET":
-    if not current_app.config.get('NO_USER_LOGIN'):
-      # Supporting user login, show template
-      sent = request.args.get('sent')
-      return render_template("login.html", sent=sent)
-    else:
-      # If we are not requireing user logins, check key and
-      # potentially create a user.
-      user = get_or_create_user()
-      if user is None:
-        flask.flash("User limit hit. No more available at this time.")
-        return render_template("login.html", sent=True)
+    # Handle a login action
+    auth_key = request.args.get("authkey")
+    if auth_key is not None:
+      user_name = users.get_user_by_key(get_db(), auth_key)
+      if user_name is not None:
+        # set up cookie on client and go to the main view
+        session.permanent = True
+        session['user_key'] = auth_key
+        return redirect(url_for('analysis.main'))
       else:
-        key = users.get_user_key(get_db(), user)
-        return redirect(url_for('analysis.main', authkey=key))      
-  else:
+        # clear cookie session
+        session.permanent = False      
+        session['user_key'] = None
+
+    # If we sent an email, show the sent message.
+    if request.args.get('sent'):
+        return render_template("login.html", sent=True)
+
+    # If we are not configured for auto-login, display
+    # the request form
+    if not current_app.config.get('NO_USER_LOGIN'):
+      return render_template("login.html", sent=None)
+
+    # Support the auto-login, check key and
+    # potentially create a user.
+    user = get_or_create_user()
+    if user is None:
+      flask.flash("User limit hit. No more available at this time.")
+      return render_template("login.html", sent=True)
+    key = users.get_user_key(get_db(), user)
+    return redirect(url_for('analysis.login', authkey=key))      
+
+  else: # POST
    # TODO:
     # - track emails per time unit - rate limit
     # - track emails to target address - limit by time
@@ -524,7 +538,7 @@ def login():
 
     if key is not None:
       email = EMAIL_TEXT % (address,
-                            url_for('analysis.main', _external=True),
+                            url_for('analysis.login', _external=True),
                             key)
       logging.info("Login request for %s, result == %s", address, key)
 
