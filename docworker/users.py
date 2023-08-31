@@ -8,7 +8,7 @@ import docworker
 import uuid
 import logging
 
-MAX_ACCOUNTS = 100
+MAX_ACCOUNTS = 75
 DEFAULT_TOKEN_COUNT = 100000
 
 def count_users(db):
@@ -56,6 +56,11 @@ def check_allow_email_send(db, name):
   sent = datetime.datetime.fromtimestamp(result[0])
   return (now - sent).total_seconds() > (60 * 60 * 8)
   
+def is_initialized(db, name):
+   result = db.execute("SELECT initialized FROM user WHERE username = ?",
+                       (name,)).fetchone()
+   return result[0]
+ 
 
 def get_user_by_key(db, key):
   """
@@ -206,7 +211,7 @@ def report_user(db, name):
       
     
 def list_users(db):
-  q = db.execute("SELECT id, username, access_key, initialized, consumed_tokens, limit_tokens, last_access, last_email FROM user")
+  q = db.execute("SELECT id, username, access_key, initialized, consumed_tokens, limit_tokens, last_access, last_email FROM user ORDER BY last_access DESC")
   for (id, user, access_key, initialized, consumed, limit, last_access, last_email) in q.fetchall():
     access_dt = datetime.datetime.fromtimestamp(last_access)
     email_dt = datetime.datetime.fromtimestamp(last_email)    

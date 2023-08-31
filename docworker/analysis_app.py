@@ -184,15 +184,29 @@ def get_document(doc_name):
 def load_logged_in_user():
   user_key = session.get('user_key')
   g.user = None
+  g.user_init = False
   # Validate user_key
-  if user_key is not None and len(user_key) > 0:
-    user_name = users.get_user_by_key(get_db(), user_key)
-    if user_name is not None:
-      g.user = user_name
-      users.check_initialized_user(get_db(), 
-                                   current_app.instance_path,
-                                   user_name)
-      users.note_user_access(get_db(), user_name)
+  if user_key is None or len(user_key) < 1:
+      return
+
+  user_name = users.get_user_by_key(get_db(), user_key)
+  if user_name is None:
+    return
+
+  g.user = user_name
+  users.note_user_access(get_db(), user_name)
+
+  # Ensure initialized
+  if users.is_initialized(get_db(), user_name):
+    g.user_init = True
+    return
+
+  # Check number of users
+  if users.count_users(get_db()) < users.MAX_ACCOUNTS:
+    users.check_initialized_user(get_db(), 
+                                 current_app.instance_path,
+                                 user_name)
+    g.user_init = True
 
 
 def login_required(view):
@@ -200,6 +214,9 @@ def login_required(view):
   def wrapped_view(**kwargs):
     if g.user is None:
       return redirect(url_for('analysis.login'))
+    if not g.user_init:
+      flask.flash("User limit hit. No more available at this time.")
+      return redirect(url_for('analysis.login', sent=True))
     return view(**kwargs)
   return wrapped_view
 
@@ -476,28 +493,30 @@ def login():
         session.permanent = True
         session['user_key'] = auth_key
         return redirect(url_for('analysis.main'))
-      else:
-        # clear cookie session
-        session.permanent = False      
-        session['user_key'] = None
+
+      # clear cookie session
+      session.permanent = False      
+      session['user_key'] = None
+      flask.flash("Bad access key")
+      return render_template("login.html", sent=True)
 
     # If we sent an email, show the sent message.
     if request.args.get('sent'):
-        return render_template("login.html", sent=True)
+      return render_template("login.html", sent=True)
 
     # If we are not configured for auto-login, display
     # the request form
     if not current_app.config.get('NO_USER_LOGIN'):
       return render_template("login.html", sent=None)
 
-    # Support the auto-login, check key and
-    # potentially create a user.
-    user = get_or_create_user()
-    if user is None:
-      flask.flash("User limit hit. No more available at this time.")
-      return render_template("login.html", sent=True)
-    key = users.get_user_key(get_db(), user)
-    return redirect(url_for('analysis.login', authkey=key))      
+    # Auto-login enabled. Check if we already have a user.
+    if g.user is not None:
+      return redirect(url_for('analysis.main'))
+
+    # Support the auto-login by creating a user key.
+    name = users.add_or_update_user(get_db(), None,
+                                    users.DEFAULT_TOKEN_COUNT)
+    return redirect(url_for('analysis.login', authkey=name))      
 
   else: # POST
    # TODO:

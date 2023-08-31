@@ -31,7 +31,9 @@ class UsersDBTestCase(unittest.TestCase):
     # Add user
     self.assertEqual(users.count_users(self.db), 0)
     users.add_or_update_user(self.db, USER_NAME, 100)
+    self.assertFalse(users.is_initialized(self.db, USER_NAME))
     users.check_initialized_user(self.db, self.storage_dir.name, USER_NAME)
+    self.assertTrue(users.is_initialized(self.db, USER_NAME))
     self.assertEqual(users.count_users(self.db), 1)    
     users.note_user_access(self.db, USER_NAME)
     users.add_or_update_user(self.db, USER_NAME, 200)    
