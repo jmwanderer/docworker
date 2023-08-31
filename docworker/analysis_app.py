@@ -48,7 +48,7 @@ def create_app(test_config=None,
     SMTP_SERVER = os.getenv('SMTP_SERVER'),
     SMTP_FROM = os.getenv('SMTP_FROM'),        
     AUTO_CREATE_USERS = False,
-    NO_USER_LOGIN = True,
+    NO_USER_LOGIN = False,
   )
   if test_config is None:
     app.config.from_pyfile('config.py', silent=True)
@@ -202,29 +202,6 @@ def login_required(view):
 def set_logged_in_user(user_name):
   # For testing
   g.user = user_name
-
-def handle_login(request):
-  """
-  Process login steps.
-  Return None to proceed, a redirect otherwise.
-  """
-  # Handle initial authorization
-  auth_key = request.args.get("authkey")
-  if auth_key is not None:
-    user_name = users.get_user_by_key(get_db(), auth_key)
-    if user_name is not None:
-      session.permanent = True
-      session['user_key'] = auth_key
-    else:
-      session.permanent = False      
-      session['user_key'] = None
-    return redirect(url_for('analysis.main'))
-  
-  load_logged_in_user()
-  if g.user is None:
-    return redirect(url_for('analysis.login'))    
-  return None
-
 
 @bp.route("/", methods=("GET","POST"))
 @login_required

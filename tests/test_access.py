@@ -23,9 +23,8 @@ def test_no_access(client):
   response = client.get('/login')
   assert response.status_code == 200
   
-  response = client.get('/?authkey=fookey1')
-  assert response.status_code == 302
-  assert response.location == '/'
+  response = client.get('/login?authkey=fookey1')
+  assert response.status_code == 200
 
 
 def test_access(client, auth):
