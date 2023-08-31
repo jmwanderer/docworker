@@ -122,7 +122,7 @@ def check_available_tokens(db, name):
   
   return consumed < limit
 
-def add_or_update_user(db, name, limit):
+def add_or_update_user(db, name, limit, ip=None):
   """
   Add a user if it doesn't exist. Otherwise update the limit.
   If name is None, make the name the same as the access key.
@@ -139,8 +139,8 @@ def add_or_update_user(db, name, limit):
       name = key
 
     logging.info("add user %s", name)
-    db.execute("INSERT INTO user (username, access_key, limit_tokens) VALUES (?,?,?)",
-               (name, key, limit))
+    db.execute("INSERT INTO user (username, access_key, limit_tokens, remote_addr) VALUES (?,?,?,?)",
+               (name, key, limit, ip))
   else:
     logging.info("update user %s", name)
     db.execute("UPDATE user SET limit_tokens = ? WHERE username = ?",
@@ -211,11 +211,11 @@ def report_user(db, name):
       
     
 def list_users(db):
-  q = db.execute("SELECT id, username, access_key, initialized, consumed_tokens, limit_tokens, last_access, last_email FROM user ORDER BY last_access DESC")
-  for (id, user, access_key, initialized, consumed, limit, last_access, last_email) in q.fetchall():
+  q = db.execute("SELECT id, username, access_key, initialized, remote_addr, consumed_tokens, limit_tokens, last_access, last_email FROM user ORDER BY last_access DESC")
+  for (id, user, access_key, initialized, ip, consumed, limit, last_access, last_email) in q.fetchall():
     access_dt = datetime.datetime.fromtimestamp(last_access)
     email_dt = datetime.datetime.fromtimestamp(last_email)    
-    print("user: [%d] %s init:%s, (%s), limit: %d, consumed %d, last access: %s, last email: %s" %
-          (id, user, initialized, access_key, limit, consumed,
+    print("user: [%d] %s init:%s, ip:%s, (%s), limit: %d, consumed %d, last access: %s, last email: %s" %
+          (id, user, initialized, ip, access_key, limit, consumed,
            access_dt.isoformat(sep=' '),
            email_dt.isoformat(sep=' ')))          

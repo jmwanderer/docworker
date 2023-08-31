@@ -466,20 +466,6 @@ may have been entered by mistake. You can ingore and delete this email.
 
 """
 
-def get_or_create_user():
-  """
-  Get the current user from the session, or if there isn't one,
-  try to create a new nameless user. Return None if unable to create.
-  """
-  user_key = session.get('user_key')
-  user_name = users.get_user_by_key(get_db(), user_key)
-  if user_name is not None:
-    return user_name
-  
-  # Try to create a nameless user
-  return users.add_or_update_user(get_db(),
-                                  None, users.DEFAULT_TOKEN_COUNT)
- 
   
 @bp.route("/login", methods=("GET", "POST"))
 def login():
@@ -515,7 +501,8 @@ def login():
 
     # Support the auto-login by creating a user key.
     name = users.add_or_update_user(get_db(), None,
-                                    users.DEFAULT_TOKEN_COUNT)
+                                    users.DEFAULT_TOKEN_COUNT,
+                                    request.remote_addr)
     return redirect(url_for('analysis.login', authkey=name))      
 
   else: # POST
@@ -538,7 +525,8 @@ def login():
       else:
         # Create or get the user entry.
         users.add_or_update_user(get_db(), 
-                                 address, users.DEFAULT_TOKEN_COUNT)
+                                 address, users.DEFAULT_TOKEN_COUNT,
+                                 request.remote_addr)
         key = users.get_user_key(get_db(), address)
 
     if key is not None:
