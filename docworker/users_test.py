@@ -7,6 +7,7 @@ import pkg_resources
 
 USER_NAME='test-user'
 USER_KEY='test-key'
+USER_NAME_2 ='test-user-2'
 
 class UsersDBTestCase(unittest.TestCase):
 
@@ -29,14 +30,20 @@ class UsersDBTestCase(unittest.TestCase):
   def testFunctions(self):
     # Add user
     self.assertEqual(users.count_users(self.db), 0)
-    users.add_or_update_user(self.db, self.storage_dir.name, USER_NAME, 100)
+    users.add_or_update_user(self.db, USER_NAME, 100)
+    users.check_initialized_user(self.db, self.storage_dir.name, USER_NAME)
     self.assertEqual(users.count_users(self.db), 1)    
     users.note_user_access(self.db, USER_NAME)
-    users.add_or_update_user(self.db, self.storage_dir.name, USER_NAME, 200)    
+    users.add_or_update_user(self.db, USER_NAME, 200)    
 
     # Add nameless user
-    name = users.add_or_update_user(self.db, self.storage_dir.name, None, 100)
+    name = users.add_or_update_user(self.db, None, 100)
+    users.check_initialized_user(self.db, self.storage_dir.name, name)
     self.assertIsNotNone(name)
+    self.assertEqual(users.count_users(self.db), 2)    
+
+    # Create unitialized user
+    users.add_or_update_user(self.db, USER_NAME_2, 100)
     self.assertEqual(users.count_users(self.db), 2)    
 
     # Verify access key functions

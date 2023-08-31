@@ -126,7 +126,7 @@ def init_db_command():
 @click.argument('limit', default=100000)
 def set_user_command(name, limit):
   """Create or update a user."""
-  users.add_or_update_user(get_db(), current_app.instance_path, name, limit)
+  users.add_or_update_user(get_db(), name, limit)
   click.echo('Configured user.')
 
 @bp.cli.command('set-user-key')
@@ -189,7 +189,11 @@ def load_logged_in_user():
     user_name = users.get_user_by_key(get_db(), user_key)
     if user_name is not None:
       g.user = user_name
+      users.check_initialized_user(get_db(), 
+                                   current_app.instance_path,
+                                   user_name)
       users.note_user_access(get_db(), user_name)
+
 
 def login_required(view):
   @functools.wraps(view)
@@ -202,6 +206,11 @@ def login_required(view):
 def set_logged_in_user(user_name):
   # For testing
   g.user = user_name
+  users.check_initialized_user(get_db(), 
+                               current_app.instance_path,
+                               user_name)
+  users.note_user_access(get_db(), user_name)
+
 
 @bp.route("/", methods=("GET","POST"))
 @login_required
@@ -451,7 +460,7 @@ def get_or_create_user():
     return user_name
   
   # Try to create a nameless user
-  return users.add_or_update_user(get_db(), current_app.instance_path,
+  return users.add_or_update_user(get_db(),
                                   None, users.DEFAULT_TOKEN_COUNT)
  
   
@@ -509,7 +518,7 @@ def login():
         flask.flash("User limit hit. No more available at this time.")
       else:
         # Create or get the user entry.
-        users.add_or_update_user(get_db(), current_app.instance_path,
+        users.add_or_update_user(get_db(), 
                                  address, users.DEFAULT_TOKEN_COUNT)
         key = users.get_user_key(get_db(), address)
 

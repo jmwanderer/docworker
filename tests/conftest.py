@@ -17,9 +17,9 @@ def app():
   with app.app_context():
     init_db()
     name = 'test1'
-    users.add_or_update_user(get_db(), app.instance_path, name, 10)
+    users.add_or_update_user(get_db(), name, 10)
     name = 'test2'
-    users.add_or_update_user(get_db(), app.instance_path, name, 10)
+    users.add_or_update_user(get_db(), name, 10)
 
   yield app
 

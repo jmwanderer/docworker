@@ -13,9 +13,9 @@ DEFAULT_TOKEN_COUNT = 100000
 
 def count_users(db):
   """
-  Return the number of user accounts
+  Return the number of initialized user accounts
   """
-  result = db.execute("SELECT COUNT(*) FROM user").fetchone()
+  result = db.execute("SELECT COUNT(*) FROM user WHERE initialized = TRUE").fetchone()
   return result[0]
   
   
@@ -117,7 +117,7 @@ def check_available_tokens(db, name):
   
   return consumed < limit
 
-def add_or_update_user(db, storage_dir, name, limit):
+def add_or_update_user(db, name, limit):
   """
   Add a user if it doesn't exist. Otherwise update the limit.
   If name is None, make the name the same as the access key.
@@ -132,18 +132,27 @@ def add_or_update_user(db, storage_dir, name, limit):
     key = uuid.uuid4().hex
     if name is None:
       name = key
-    user_dir = os.path.join(storage_dir, name)
 
     logging.info("add user %s", name)
     db.execute("INSERT INTO user (username, access_key, limit_tokens) VALUES (?,?,?)",
                (name, key, limit))
-    populate_samples(user_dir)
   else:
     logging.info("update user %s", name)
     db.execute("UPDATE user SET limit_tokens = ? WHERE username = ?",
                (limit,name))
   db.commit()
   return name
+
+
+def check_initialized_user(db, storage_dir, name):
+  # If a user entry is not initialized, set up a directory and mark initialized.
+  (initialized,) = db.execute("SELECT initialized FROM user WHERE username = ?",
+                              (name,)).fetchone()
+  if not initialized:
+    db.execute("UPDATE user SET initialized = TRUE WHERE username = ?", (name,))
+    user_dir = os.path.join(storage_dir, name)
+    populate_samples(user_dir)
+  db.commit()
 
 
 def delete_user(db, name, storage_dir):
@@ -197,11 +206,11 @@ def report_user(db, name):
       
     
 def list_users(db):
-  q = db.execute("SELECT id, username, access_key, consumed_tokens, limit_tokens, last_access, last_email FROM user")
-  for (id, user, access_key, consumed, limit, last_access, last_email) in q.fetchall():
+  q = db.execute("SELECT id, username, access_key, initialized, consumed_tokens, limit_tokens, last_access, last_email FROM user")
+  for (id, user, access_key, initialized, consumed, limit, last_access, last_email) in q.fetchall():
     access_dt = datetime.datetime.fromtimestamp(last_access)
     email_dt = datetime.datetime.fromtimestamp(last_email)    
-    print("user: [%d] %s (%s), limit: %d, consumed %d, last access: %s, last email: %s" %
-          (id, user, access_key, limit, consumed,
+    print("user: [%d] %s init:%s, (%s), limit: %d, consumed %d, last access: %s, last email: %s" %
+          (id, user, initialized, access_key, limit, consumed,
            access_dt.isoformat(sep=' '),
            email_dt.isoformat(sep=' ')))          
