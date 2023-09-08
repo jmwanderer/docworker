@@ -138,6 +138,7 @@ class RunRecord:
     self.text_records = {}  # key is record_id
     self.doc_segments = []
     self.completions = []
+    self.status_message = ''
 
   def get_item_by_name(self, name):
     for segment in self.doc_segments:
