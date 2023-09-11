@@ -17,9 +17,18 @@ class DocConvertTestCase(unittest.TestCase):
 
   def testChunking(self):
     tokenizer = tiktoken.encoding_for_model(section_util.AI_MODEL)    
-    chunks = [ x for x in doc_convert.chunks(TEXT, 20, tokenizer) ]
+    chunks = [ x for x in doc_convert.chunks(TEXT, 20, tokenizer, 0) ]
     self.assertEqual(len(chunks), 15)
     for chunk in chunks:
-      self.assertTrue(len(chunk) <= 20)
+      self.assertLessEqual(len(chunk), 20)
+
+  def testChunkingOverlap(self):
+    tokenizer = tiktoken.encoding_for_model(section_util.AI_MODEL)    
+    chunks = [ x for x in doc_convert.chunks(TEXT, 20, tokenizer, 0.2) ]
+    self.assertEqual(len(chunks), 17)
+    for chunk in chunks:
+      self.assertLessEqual(len(chunk), 20)
+      self.assertGreaterEqual(len(chunk), 10)
+
 
     

@@ -631,10 +631,12 @@ class Document:
 
     if op_type == OP_TYPE_CONSOLIDATE:
       chunk_size = int(section_util.AI_MODEL_SIZE * 0.75)
+      overlap = 0.1
     else:
       chunk_size = int(section_util.AI_MODEL_SIZE * 0.45)
+      overlap = 0
       
-    chunks = doc_convert.chunk_text(text, chunk_size)
+    chunks = doc_convert.chunk_text(text, chunk_size, overlap)
     for chunk in chunks:
       run_record.add_new_segment(chunk.get_text(), chunk.size)
       

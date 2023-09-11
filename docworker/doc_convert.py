@@ -68,7 +68,11 @@ def token_count(text: str):
   tokenizer = tiktoken.encoding_for_model(section_util.AI_MODEL)  
   return len(tokenizer.encode(text))
 
-def chunk_text(text: str, chunk_size):
+def chunk_text(text: str, chunk_size, overlap):
+  """
+  Divide text into sections no larger than chunk size along natural
+  breaks. Overlap sections by overlap percent.
+  """
   result = []
   if text is None:
     return result
@@ -78,7 +82,8 @@ def chunk_text(text: str, chunk_size):
   
   for chunk  in chunks(text, 
                        chunk_size,
-                       tokenizer):
+                       tokenizer,
+                       overlap):
     entry = section_util.Chunk()
     chunk_text = tokenizer.decode(chunk).strip()
     if len(chunk_text) > 0:
@@ -96,7 +101,7 @@ def docx_to_chunks(file: io.BytesIO) -> [section_util.Chunk]:
     in_file = docx_extract.get_result()
     return section_util.chunks_from_structured_file(in_file)
 
-def chunks(text, n, tokenizer):
+def chunks(text, n, tokenizer, overlap):
   # Split a text into smaller chunks of size n,
   # preferably ending at the end of a sentence.
 
@@ -106,44 +111,60 @@ def chunks(text, n, tokenizer):
   while i < len(tokens):
     # Find the nearest end of sentence within a range of 0.5 * n and n tokens
 
-    # Look for period - CR
     j = min(i + int(1.0 * n), len(tokens))
-    while j > i + int(0.5 * n):
-      # Decode the tokens and check for period
-      chunk = tokenizer.decode(tokens[i:j])
-      if chunk.endswith(".\n"):
-        logging.debug("broke chunk on period / newline: %d", j)
-        break
-      j -= 1
-
-    # If no period / CR found, just look for a period 
-    # TODO: handle case where valid cut found at 0.5 * n
-    if j == i + int(0.5 * n):
-      j = min(i + int(1.0 * n), len(tokens))
-      while j > i + int(0.5 * n):
-        # Decode the tokens and check for period
-        chunk = tokenizer.decode(tokens[i:j])
-        if chunk.endswith("."):
-          logging.debug("broke chunk on period: %d", j)
-          break
-        j -= 1
-
-    # If no end of sentence found, use n tokens as the chunk size
-    if j == i + int(0.5 * n):
-      j = min(i + int(1.0 * n), len(tokens))
-      while j > i + int(0.5 * n):
-        # Decode the tokens and check for full stop or newline
-        chunk = tokenizer.decode(tokens[i:j])
-        if chunk.endswith("\n"):
-          logging.debug("broke chunk on newline: %d", j)
-          break
-        j -= 1
-
-    # If still no end of sentence found, use n tokens as the chunk size
-    if j == i + int(0.5 * n):      
-      j = min(i + n, len(tokens))
+    # Check for last section
+    if i + n > len(tokens):
+      j = len(tokens)
+    else:
+      # Reverse search for a natural break.
+      j = rsearch_break(tokens, i, n, tokenizer)
     yield tokens[i:j]
-    i = j
+
+    # If there is an overlap, start next chunk before end of current
+    if overlap > 0 and j != len(tokens):
+      delta = int((j - i) * overlap)
+      # Search for break in portion between 3/2 and 1/2 delta prior to end.
+      j = rsearch_break(tokens, j - int(3 * delta / 2), delta, tokenizer)
+    i = j 
+
+def rsearch_break(tokens, start, n, tokenizer):
+  # Look for period - CR
+  j = rsearch_break_str(tokens, start, n, ".\n", tokenizer)
+
+  # If no period / CR found, just look for a period 
+  if j == start + int(0.5 * n):
+    j = rsearch_break_str(tokens, start, n, ".", tokenizer)
+    
+  # If no end of sentence found, use a CR
+  if j == start + int(0.5 * n):
+    j = rsearch_break_str(tokens, start, n, "\n", tokenizer)
+
+  # If still no end of sentence found, use n tokens as the chunk size
+  if j == start + int(0.5 * n):      
+    j = min(start + n, len(tokens))
+
+  return j
+ 
+def rsearch_break_str(tokens, start, n, break_str, tokenizer):
+  """
+  Perform a reverse search on the tokens to find the break string.
+  Starting at start + n, search backward up to 50% of the section to 
+  match the break string. If found, return the end of the section.
+  If not found, returns n / 2
+
+  """
+  j = min(start + n, len(tokens))
+  while j > start + int(0.5 * n):
+    # Decode the tokens and check for period
+    # TODO: consider optimizing this and call only once
+    chunk = tokenizer.decode(tokens[start:j])
+    if chunk.endswith(break_str):
+      logging.debug("broke chunk on %s: %d", break_str, j)
+      break
+    j -= 1
+  return j
+
+
 
 class DocError(Exception):
   pass
