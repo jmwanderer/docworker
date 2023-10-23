@@ -85,8 +85,16 @@ Single pane application page.
 	    </div>
 	  </div>
 	</td>
-	{% if not doc is none and not doc.is_running()  %}
-	<td style="vertical-align:top;">
+
+	{% if doc is none %}
+    {# Empty space - no form or controls #}
+  <td style="width:40em;">
+  </td>	  
+  {% else %}
+    {% if run_id is none and not doc.is_running() %} 
+      {# Form to start a prompt run #}
+
+  <td style="vertical-align:top;">
 	  <div
 	    style="border-width:1px;border-style:solid;border-color:grey;padding:5px;">
 	  Select or enter a prompt to run on the text below:
@@ -95,9 +103,9 @@ Single pane application page.
 	    <select name="prompt_manu" id="prompt_menu"
 		    style="vertical-align:top;" onchange="prompt_change()">
 	      <option value=""></option>	
-	      {% for prompt in prompts %}
+	        {% for prompt in prompts %}
 	      <option value="{{ prompt[1] }}">{{ prompt[0] }}</option>
-	      {% endfor %}
+	        {% endfor %}
 	    </select>
 	    <textarea id="prompt" name="prompt" rows="3" cols="70"></textarea>
 	    <input id="run" name="run" type="submit" value="Run Prompt"
@@ -120,20 +128,14 @@ Single pane application page.
 	  </form>
 	  </div>
 	</td>
-	{% else %}
-	<td style="width:40em;">
-	</td>	  
-	{% endif %}
-      </tr>
-      {% if not doc is none and not run_id is none %}
-      <tr>
-	<td colspan="2">
-	  <br>
-	  Run Details:
+
+     {% else %}
+       {# Run details #}
+  <td style="vertical-align:top;">
 	  <div style="border-width:1px;border-style:solid;border-color:grey;padding:1em;">
-	    Run: {{ doc.run_id_date_time(run_id) }}
+  	  Prompt: {{ doc.get_run_prompt(run_id) }}
 	    <br>
-	    Prompt: {{ doc.get_run_prompt(run_id) }}
+	    Date / Time: {{ doc.run_id_date_time(run_id) }}
 	    <br>
 	    {% if doc.run_type_consolidate(run_id)  %}
 	    Type: Consolidate
@@ -159,8 +161,8 @@ Single pane application page.
 	    {{ doc.get_status_message(run_id) }}
 	  </div>
 	</td>
-      </tr>
-      {% endif %}
+    {% endif %}
+  {% endif %}
     </table>
 
     {% if not doc is none %}
