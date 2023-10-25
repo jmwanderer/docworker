@@ -87,53 +87,62 @@ Single pane application page.
 	</td>
 
 	{% if doc is none %}
-    {# Empty space - no form or controls #}
-  <td style="width:40em;">
-  </td>	  
-  {% else %}
-    {% if run_id is none and not doc.is_running() %} 
-      {# Form to start a prompt run #}
+	
+	{# Empty space - no form or controls #}
+	<td style="width:40em;">
+	</td>
+	
+	{% else %}
+	
+	{% if (run_id is none or not process is none) and not doc.is_running() %} 
+	{# Form to start a prompt run #}
 
-  <td style="vertical-align:top;">
+	<td style="vertical-align:top;">
 	  <div
 	    style="border-width:1px;border-style:solid;border-color:grey;padding:5px;">
-	  Select or enter a prompt to run on the text below:
-	  <form action="{{ url_for('analysis.main')}}"
-		method="post" id="form">
-	    <select name="prompt_manu" id="prompt_menu"
-		    style="vertical-align:top;" onchange="prompt_change()">
-	      <option value=""></option>	
+	    Select or enter a prompt to run on the text below:
+	    <form action="{{ url_for('analysis.main')}}"
+		  method="post" id="form">
+	      <select name="prompt_manu" id="prompt_menu"
+		      style="vertical-align:top;" onchange="prompt_change()">
+		<option value=""></option>
+		
 	        {% for prompt in prompts %}
-	      <option value="{{ prompt[1] }}">{{ prompt[0] }}</option>
+		<option value="{{ prompt[1] }}">{{ prompt[0] }}</option>
 	        {% endfor %}
-	    </select>
-	    <textarea id="prompt" name="prompt" rows="3" cols="70"></textarea>
-	    <input id="run" name="run" type="submit" value="Run Prompt"
-		   style="vertical-align:top;"/>
-	    <input type="hidden" id="doc" name="doc" value="{{ doc.id() }}"/>
-	    <br>
-	    Operation Type:
-	    <br>
-	    <input type="radio" id="consolidate" name="op_type"
-		   value="consolidate" checked="checked">
-	    <label for="consolidate">Consolidate</label>
-	    - reduce the document to a small amount of text<br>
-	    <input type="radio" id="transform" name="op_type"
-		   value="transform">
-	    <label for="transform">Transform</label>
-	    - rewrite the document to a similar size
-	    {% if not run_id is none %}
-	    <input type="hidden" id="run_id" name="run_id" value="{{ run_id }}"/>
-	    {% endif %}
-	  </form>
+		
+	      </select>
+	      <textarea id="prompt" name="prompt" rows="3" cols="70">
+	      </textarea>
+
+	      <input id="run" name="run" type="submit" value="Run Prompt"
+		     style="vertical-align:top;"/>
+	      <input type="hidden" id="doc" name="doc" value="{{ doc.id() }}"/>
+	      <br>
+	      Operation Type:
+	      <br>
+	      <input type="radio" id="consolidate" name="op_type"
+		     value="consolidate" checked="checked">
+	      <label for="consolidate">Consolidate</label>
+	      - reduce the document to a small amount of text<br>
+	      <input type="radio" id="transform" name="op_type"
+		     value="transform">
+	      <label for="transform">Transform</label>
+	      - rewrite the document to a similar size
+
+	      {% if not run_id is none %}
+	      <input type="hidden" id="run_id" name="run_id" value="{{ run_id }}"/>
+	      {% endif %}
+	    </form>
 	  </div>
 	</td>
 
-     {% else %}
-       {# Run details #}
-  <td style="vertical-align:top;">
+	{% else %}
+	{# Run details #}
+
+	<td style="vertical-align:top;">
 	  <div style="border-width:1px;border-style:solid;border-color:grey;padding:1em;">
-  	  Prompt: {{ doc.get_run_prompt(run_id) }}
+  	    Prompt: {{ doc.get_run_prompt(run_id) }}
 	    <br>
 	    Date / Time: {{ doc.run_id_date_time(run_id) }}
 	    <br>
@@ -149,9 +158,10 @@ Single pane application page.
 	    {% else %}
 	    <b>Complete</b>
 	    {% endif %}
-      <br>
-      Token Cost:
-      {{ doc.get_completion_cost(run_id) }}
+	    <br>
+
+	    Token Cost:
+	    {{ doc.get_completion_cost(run_id) }}
 	    <br>
 	    Number of source blocks:
 	    {{ doc.get_src_block_count(run_id=None) }}
@@ -161,25 +171,33 @@ Single pane application page.
 	    {{ doc.get_status_message(run_id) }}
 	  </div>
 	</td>
-    {% endif %}
-  {% endif %}
+	{% endif %}
+	{% endif %}
     </table>
+    
 
     {% if not doc is none %}
-
     {% if not run_id is none %}
-    {% if doc.get_result_item(run_id) %}    
+    {% if doc.get_result_item(run_id) %}
+    
     <br>
-    <b>Result Text:</b> ( {{ doc.get_result_item(run_id).token_count() }} )
+    <b>
+      {% if process is none %}
+      Result
+      {% endif %}
+      Text:</b> ( {{ doc.get_result_item(run_id).token_count() }} )
     <table style="width:100%">
       <tr>
 	<td>
 	  <div style="border-width:1px;border-style:solid;border-color:grey;">
 
 	    
-      <pre id="result" style="line-height:1.5;background:{{ doc.item_color(doc.get_result_item(run_id)) }};white-space:pre-wrap;overflow-x:auto;padding:1em;margin:0;font-family:PT Mono;">{{ doc.get_result_item(run_id).text() | e }}</pre>
-    </div>
+	    <pre id="result" style="line-height:1.5;background:{{ doc.item_color(doc.get_result_item(run_id)) }};white-space:pre-wrap;overflow-x:auto;padding:1em;margin:0;font-family:PT Mono;">{{ doc.get_result_item(run_id).text() | e }}</pre>
+	  </div>
 	</td>
+	
+	{% if process is none %}
+	{# Only show for a results view #}
 	<td style="vertical-align:top;">
 	  <div>
 	    <button onclick="copyResults()">Copy All Text</button>
@@ -203,11 +221,22 @@ Single pane application page.
 	      <input type="hidden" id="top" name="top"
 		     value="{{ doc.get_result_item(run_id).name() }}">
 	    </form>
+	  </div>	    
+	  <div>
+	    <form action="{{ url_for('analysis.main')}}" method="get">
+	      <input type="submit" value="Processs"/>
+	      <input type="hidden" id="doc" name="doc" value="{{ doc.id() }}"/>
+	      <input type="hidden" id="run_id" name="run_id" value="{{ run_id }}"/>
+	      <input type="hidden" id="process" name="process" value=""/>	      	      
+	    </form>
 	  </div>
 	</td>
+	{% endif %}
       </tr>
     </table>
+    
     {% else %}
+    
     {# Case: generation run is in progress. May display in progress work #}
     {% if not doc.get_recent_gen_item(run_id) is none %}
     <br>
@@ -228,7 +257,9 @@ Single pane application page.
     </table>
     {% endif %}
     {% endif %}
+    
     {% else %}
+    
     {# Case: No run selected. Show source document #}
     <br>
     <b>Document Text:</b> ( {{ doc.get_src_tokens(run_id) }} )
@@ -241,7 +272,7 @@ Single pane application page.
 	</td>
 	<td style="vertical-align:top;">
 	  <div>
-	    <button onclick="copyResults()">Copy Text</button>
+	    <button onclick="copyResults()">Copy All Text</button>
 	  </div>
 	  <div>
 	    <form action="{{ url_for('analysis.export')}}" method="post">
@@ -255,6 +286,8 @@ Single pane application page.
     
     {% endif %}
     {% endif %}
+
+    
     <p>    
     <div style="width: 100%;">
       <div style="width: 50%;float:left;">

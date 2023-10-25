@@ -264,7 +264,8 @@ def main():
                            doc=doc,
                            username=username,
                            run_id=run_id,
-                           prompts=encoded_prompt_set)
+                           prompts=encoded_prompt_set,
+                           process=request.args.get('process'))
 
   else:
     doc_id = request.form.get('doc')
