@@ -397,9 +397,9 @@ class Document:
   def snippet_text(self, text):
     if text is None:
       return None
-    if len(text) < 90:
+    if len(text) < 200:
       return self.strip_text(text)
-    return self.strip_text(text[0:45] + " ... " + text[-46:])
+    return self.strip_text(text[0:99] + " [...] " + text[-99:])
 
 
   def get_current_run_record(self):

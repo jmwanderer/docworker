@@ -435,6 +435,7 @@ def run_all_docgen(file_path, doc, run_state):
         id = run_state.pop_item()
         logging.debug("skip unnecessary docgen: %d", id)
         # Add directly to results list for further processing
+        # TODO: is this a bug with result_id here and id above?
         run_state.note_step_completed(result_id)
       else:
         logging.debug("loop for running docgen")

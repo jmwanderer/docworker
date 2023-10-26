@@ -42,7 +42,7 @@ class BasicDocumentTestCase(unittest.TestCase):
     text = self.doc.snippet_text("This is some more text")
     self.assertEqual(len(text), 22)
     text = self.doc.snippet_text(LONG_TEXT)
-    self.assertEqual(len(text), 96)
+    self.assertEqual(len(text), 205)
     
   def testGetItems(self):
     self.assertIsNotNone(self.doc.get_item_by_id(self.run_id,
