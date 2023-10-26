@@ -241,20 +241,34 @@ Single pane application page.
     {% if not doc.get_recent_gen_item(run_id) is none %}
     <br>
     <b>In Progress Work:</b>
-    <table>
+    <table style="border-spacing:5px;">                
+      {% for (indent, item) in source_list %}
       <tr>
-	<th>Result</th>
-	<th>Source</th>
-      </tr>
-      <tr>
-	<td style="width:50%;vertical-align:top">
-	  <pre style="line-height:1.5;background:{{ doc.item_color(doc.get_recent_gen_item(run_id)[0]) }};white-space:pre-wrap;overflow-x:auto;padding:1em;margin:0;font-family:PT Mono;">{{ doc.get_recent_gen_item(run_id)[0].text() | e }}</pre>	  
+	{# Generate indent #}
+	{% for i in range(0, indent - 1)  %}
+	<td>
+	  &nbsp;&nbsp;&nbsp;&nbsp;
 	</td>
-	<td style="width:50%;vertical-align:top">	  
-	  <pre style="line-height:1.5;background:{{ doc.item_color(doc.get_recent_gen_item(run_id)[1]) }};white-space:pre-wrap;overflow-x:auto;padding:1em;margin:0;font-family:PT Mono;">{{ doc.get_recent_gen_item(run_id)[1].text() | e }}</pre>	  
+	{% endfor %}
+	  
+	<td style="padding:2px;border-width:1px;border-style:solid;border-color:grey;"
+	    colspan="{{ depth - indent + 1 }}">
+
+	  <div>
+	    {% if item.is_doc_segment() %}
+	    Section
+	    {% endif %}
+	    {{ item.name() }}
+	  </div>
+	
+	  <div style="background:{{ doc.item_color(item) }};padding:2px;">
+	    {{ doc.snippet_text(item.text()) | e }}
+	  </div>
 	</td>
       </tr>
+      {% endfor %}
     </table>
+
     {% endif %}
     {% endif %}
     

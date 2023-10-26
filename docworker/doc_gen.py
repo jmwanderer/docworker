@@ -19,7 +19,7 @@ import openai
 # Global Flag to mock the AI call
 FAKE_AI_COMPLETION=False
 # Global value for sleep duration in a mock AI call
-FAKE_AI_SLEEP=1
+FAKE_AI_SLEEP=5
 
 # Global value for base timeout in seconds
 AI_BASE_TIMEOUT=60

@@ -260,11 +260,17 @@ def main():
     if not current_app.config.get('NO_USER_LOGIN'):
       username = g.user
 
+    (depth, item_list) = (0, [])      
+    if run_id:
+      (depth, item_list) = doc.get_completion_family(run_id)
+      
     return render_template("main.html",
                            doc=doc,
                            username=username,
                            run_id=run_id,
                            prompts=encoded_prompt_set,
+                           depth=depth,
+                           source_list=item_list,
                            process=request.args.get('process'))
 
   else:

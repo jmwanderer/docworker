@@ -301,15 +301,24 @@ class RunRecord:
     
     return: (max, list[])  - list entry: (depth, completion)
     """
+    # Default, show entire set of completions starting from
+    # the final result.
     if id == None:
       id = self.result_id
-      
+
+    # Function results
     max_depth = 0
     result = []
-    completion = self.get_item_by_id(id)
-    if completion is None or completion.is_doc_segment():
-      return (0, [])
-    max_depth = self.comp_family_visit_node(1, completion, result)
+
+    # If there is no final result, iterate over all existing completions.
+    if id == 0:
+      for completion in self.completions:
+        max_depth = max(max_depth,
+                        self.comp_family_visit_node(1, completion, result))
+    else:
+      completion = self.get_item_by_id(id)
+      if completion is not None and not completion.is_doc_segment():
+        max_depth = self.comp_family_visit_node(1, completion, result)
     return (max_depth, result)
 
   def get_src_text(self):
