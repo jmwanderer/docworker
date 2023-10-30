@@ -141,6 +141,9 @@ class RunRecord:
     self.status_message = ''
 
   def get_item_by_name(self, name):
+    if name is None:
+      return None
+    
     for segment in self.doc_segments:
       if segment.name() == name:
         return segment
@@ -577,7 +580,7 @@ class Document:
     run_record = self.get_run_record(run_id)
     if run_record != None:
       return run_record.get_completion_family(id)
-    return None
+    return (0, [])
     
   def get_completion_list(self, run_id):
     """

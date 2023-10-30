@@ -400,14 +400,20 @@ def segview():
 
   run_id = request.args.get('run_id')
   item_name = request.args.get("item")
-  item = doc.get_item_by_name(run_id, item_name)  
-  if run_id is None or item is None:
+  item = doc.get_item_by_name(run_id, item_name)
+  if run_id is None:
     return redirect(url_for('analysis.main', doc=doc_id))
+
+  if item is not None:
+    item_id = item.id()
+  else:
+    item_id = None
   
   # Source items for a completion (returns empty for docseg)
-  (depth, item_list) = doc.get_completion_family(run_id, item.id())
-  # Remove first item
-  if (len(item_list) > 0):
+  (depth, item_list) = doc.get_completion_family(run_id, item_id)
+
+  # Remove first item if we are showing a specific item.
+  if item_id is not None and (len(item_list) > 0):
     item_list.pop(0)
 
   # Generate next and prev items

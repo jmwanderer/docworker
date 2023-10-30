@@ -12,6 +12,7 @@
   </p>
   <hr>
 
+  {% if not item is none %}
   <div style="width: 100%;">
     {# TODO: add a parent link #} 
     <div style="width: 50%;float:left;">
@@ -54,22 +55,23 @@
   {% else %}
   <pre style="line-height:1.5;background:{{ doc.item_color(item) }};white-space:pre-wrap;overflow-x:auto;padding:1em;margin:0;font-family:PT Mono;">{{ item.text() | e }}</pre>
   {% endif %}
+  {% endif %} {# end if item is not none #}  
 
-  {% if not item.is_doc_segment() %}
+  {% if item is none or not item.is_doc_segment() %}
   <h2>Source Text:</h2>
   Generated using the following text:
   <table style="border-spacing:5px;">                
-    {% for (indent, item) in source_list %}
+    {% for (level, item) in source_list %}
     <tr>
-      {% for i in range(1, indent - 1)  %}
+      {% for i in range(1, level)  %}
       <td>
 	&nbsp;&nbsp;&nbsp;&nbsp;
       </td>
       {% endfor %}
 	  
       <td style="padding:2px;border-width:1px;border-style:solid;border-color:grey;"
-	  colspan="{{ depth - indent + 1 }}">
-
+	  colspan="{{ depth - level +1 }}">
+	<!-- depth: {{ depth }}, level: {{ level }}  -->
 	<div>
 	{% if item.is_doc_segment() %}
 	Section

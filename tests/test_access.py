@@ -99,8 +99,11 @@ def test_access_with_doc(client, auth):
   response = client.get('/segview?doc=PA_utility.docx&item=Block+1')
   assert response.status_code == 302
 
+  response = client.get('/segview?doc=PA_utility.docx&run_id=1')
+  assert response.status_code == 200
+
   response = client.get('/segview?doc=PA_utility.docx&run_id=1&item=Block+1')
-  assert response.status_code == 302
+  assert response.status_code == 200
 
   response = client.post('/export',
                          data={ 'doc': 'PA_utility.docx',
