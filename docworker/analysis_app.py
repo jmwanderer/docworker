@@ -419,17 +419,31 @@ def segview():
   # Generate next and prev items
   next_item = None
   prev_item = None
-  ordered_list = []
-  
-  (x, list) = doc.get_completion_family(run_id)
-  ordered_items = [ x[1] for x in list ]
-      
-  if item in ordered_items:
-    item_index = ordered_items.index(item)
-    if item_index > 0:
-      prev_item = ordered_items[item_index - 1]
-    if item_index < len(ordered_items) - 1:
-      next_item = ordered_items[item_index + 1]
+
+  # Get a list of all completions
+  (x, entries) = doc.get_completion_family(run_id)
+  level = 0
+
+  # Find the level of the current item
+  for entry in entries:
+    if entry[1] == item:
+      level = entry[0]
+      break
+
+  if level > 0:
+    # Build list of items at the current level.
+    level_list = []
+
+    for entry in entries:
+      if entry[0] == level:
+        level_list.append(entry[1])
+
+    if item in level_list:
+      item_index = level_list.index(item)
+      if item_index > 0:
+        prev_item = level_list[item_index - 1]
+      if item_index < len(level_list) - 1:
+        next_item = level_list[item_index + 1]
   
   return render_template("segview.html",
                          doc=doc,
