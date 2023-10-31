@@ -432,24 +432,27 @@ def segview():
       break
 
   if level > 0:
-    # Build list of items at the current level.
-    level_list = []
+    # Build list of items under the same parent.
+    sibling_list = []
     parent_candidate = None
+    sibling_candidate = []
 
     for entry in entries:
       if entry[0] == level:
-        level_list.append(entry[1])
+        sibling_candidate.append(entry[1])
       if entry[0] == level - 1:
+        sibling_candidate = []
         parent_candidate = entry[1]
       if entry[1] == item:
         parent_item = parent_candidate
+        sibling_list = sibling_candidate
         
-    if item in level_list:
-      item_index = level_list.index(item)
+    if item in sibling_list:
+      item_index = sibling_list.index(item)
       if item_index > 0:
-        prev_item = level_list[item_index - 1]
-      if item_index < len(level_list) - 1:
-        next_item = level_list[item_index + 1]
+        prev_item = sibling_list[item_index - 1]
+      if item_index < len(sibling_list) - 1:
+        next_item = sibling_list[item_index + 1]
   
   return render_template("segview.html",
                          doc=doc,

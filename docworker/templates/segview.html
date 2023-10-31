@@ -14,14 +14,18 @@
 
   {% if not item is none %}
   <div style="width: 100%;">
-    {% if not parent_item is none %}
-    <div style="text-align:center;">
+    <div style="text-align:center;">    
+      {% if parent_item is none %}
+      <a
+	href="{{ url_for('analysis.segview', doc=doc.id(), run_id=run_id) }}"> Top
+	</a>
+      {% else %}
       <a
 	href="{{ url_for('analysis.segview', doc=doc.id(), run_id=run_id, item=parent_item.name()) }}">
 	{{ parent_item.name() }}
       </a>
+      {% endif %}
     </div>
-    {% endif %}
 
     <div style="width: 50%;float:left;">
       {% if not prev_item is none %}
@@ -54,7 +58,7 @@
     {{ item.name() }}:
     {% if not item.is_doc_segment() %}
     [
-    {{ doc.prompt_name(item) }}
+    {{ doc.prompt_str(item) }}
     ]
     {% endif %}
     </b>
