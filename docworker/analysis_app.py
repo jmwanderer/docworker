@@ -419,6 +419,7 @@ def segview():
   # Generate next and prev items
   next_item = None
   prev_item = None
+  parent_item = None
 
   # Get a list of all completions
   (x, entries) = doc.get_completion_family(run_id)
@@ -433,11 +434,16 @@ def segview():
   if level > 0:
     # Build list of items at the current level.
     level_list = []
+    parent_candidate = None
 
     for entry in entries:
       if entry[0] == level:
         level_list.append(entry[1])
-
+      if entry[0] == level - 1:
+        parent_candidate = entry[1]
+      if entry[1] == item:
+        parent_item = parent_candidate
+        
     if item in level_list:
       item_index = level_list.index(item)
       if item_index > 0:
@@ -450,7 +456,8 @@ def segview():
                          run_id=run_id,
                          depth=depth,
                          source_list=item_list,
-                         item=item, prev_item=prev_item, next_item=next_item)
+                         item=item, prev_item=prev_item,
+                         next_item=next_item, parent_item=parent_item)
 
 
           

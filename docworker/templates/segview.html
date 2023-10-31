@@ -14,7 +14,15 @@
 
   {% if not item is none %}
   <div style="width: 100%;">
-    {# TODO: add a parent link #} 
+    {% if not parent_item is none %}
+    <div style="text-align:center;">
+      <a
+	href="{{ url_for('analysis.segview', doc=doc.id(), run_id=run_id, item=parent_item.name()) }}">
+	{{ parent_item.name() }}
+      </a>
+    </div>
+    {% endif %}
+
     <div style="width: 50%;float:left;">
       {% if not prev_item is none %}
       <a
@@ -24,6 +32,8 @@
       {% endif %}
       &nbsp;      
     </div>
+
+    
     <div style="width: 50%;float:right;text-align:right;">
       {% if not next_item is none %}
       <a
@@ -95,26 +105,4 @@
     {% endfor %}
   </table>
   {% endif %}
-
-  <div style="width: 100%;">
-    <div style="width: 50%;float:left;">
-      {% if not prev_item is none %}
-      <a
-	href="{{ url_for('analysis.segview', doc=doc.id(), run_id=run_id, item=prev_item.name()) }}">
-	{{ prev_item.name() }}
-      </a>
-      {% endif %}
-      &nbsp;      
-    </div>
-    <div style="width: 50%;float:right;text-align:right;">
-      {% if not next_item is none %}
-      <a
-	href="{{ url_for('analysis.segview', doc=doc.id(), run_id=run_id, item=next_item.name()) }}">
-	{{ next_item.name() }}
-      </a>
-      {% endif %}
-      &nbsp;
-    </div>	 
-  </div>
-  
 {% endblock %}
