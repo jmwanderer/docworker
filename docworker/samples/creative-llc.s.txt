@@ -1,0 +1,2586 @@
+Opinion of the Court 
+NOTICE: This  opinion  is subject  to formal revision before publication  in  the  
+United States Reports. Readers are requested to notify the Reporter of  
+Decisions, Supreme Court of  the United States, Washington, D. C. 20543, 
+pio@supremecourt.gov, of any typographical or other formal errors.  
+SUPREME COURT OF THE UNITED STATES 
+_________________ 
+No. 21–476  
+_________________ 
+303 CREATIVE LLC, ET  AL., PETITIONERS v.  
+AUBREY ELENIS, ET  AL. 
+ON WRIT OF CERTIORARI TO THE UNITED STATES COURT OF 
+APPEALS FOR THE TENTH CIRCUIT  
+[June 30, 2023] 
+JUSTICE GORSUCH  delivered the opinion of the Court. 
+  Like many States, Colorado has a law forbidding busi-
+nesses  from  engaging  in  discrimination  when  they  sell 
+goods and services to the public.  Laws along these lines 
+have done much to secure the civil rights of all Americans.  
+But in this particular case Colorado does not just seek to 
+ensure the sale of goods or services on equal terms.  It seeks 
+to use its law to compel an individual to create speech she 
+does not believe.  The question we face is whether that  
+course violates the Free Speech Clause of the First Amend-
+ment.  
+I 
+A 
+  Through her business, 303 Creative LLC, Lorie Smith of-
+fers website and graphic design, marketing advice, and so-
+cial media management services.  Recently, she decided to 
+expand her offerings to include services for couples seeking 
+websites for their weddings.  As she envisions it, her web-
+sites will provide couples with text, graphic arts, and videos 
+to “celebrate” and “conve[y]” the “details” of their “unique 
+ 
+love story.”  App. to Pet. for Cert. 182a, 187a, 198a.  The 
+ 
+2  303 CREATIVE LLC v. ELENIS  
+   
+Opinion of the Court 
+websites will discuss how the couple met, explain their 
+backgrounds, families, and future plans, and provide infor-
+mation about their upcoming wedding.  All of the text and 
+graphics on these websites will be “original,” “customized,” 
+and “tailored” creations.  Id., at 187a.  The websites will be 
+“expressive in nature,” designed “to communicate a partic-
+ular message.”  Id., at 181a.  Viewers will know, too, “that  
+the websites are [Ms. Smith’s] original artwork,” for the 
+name of the company she owns and operates by herself will 
+be displayed on every one.  Id., at 187a. 
+  While Ms. Smith has laid the groundwork for her new 
+venture, she has yet to carry out her plans.  She worries  
+that, if she does so, Colorado will force her to express views 
+with which she disagrees.  Ms. Smith provides her website 
+and graphic services to customers regardless of their race, 
+creed, sex, or sexual orientation.  Id., at 184a.  But she has  
+never created expressions that contradict her own views for 
+anyone—whether that means generating works that en-
+courage violence, demean another person, or defy her reli-
+gious beliefs by, say, promoting atheism. See ibid.;  see also  
+Tr. of Oral Arg. 19–20.  Ms. Smith does not wish to do oth-
+erwise now, but she worries Colorado has different plans.  
+Specifically, she worries that, if she enters the wedding 
+website business, the State will force her to convey mes-
+sages inconsistent with her belief that marriage should be 
+reserved to unions between one man and one woman.  App. 
+to Pet. for Cert. 177a–190a.  Ms.  Smith acknowledges that 
+her views about marriage may not be popular in all quar-
+ters.  But, she asserts, the First Amendment’s Free Speech 
+Clause protects her from being compelled to speak what she 
+does not believe.  The Constitution, she insists, protects her 
+right to differ. 
+B 
+  To clarify her rights, Ms. Smith filed a lawsuit in federal 
+ 
+  Cite as:  600 U. S. ____ (2023)  3 
+ 
+Opinion of the Court 
+district court.  In that suit, she sought an injunction to pre-
+vent the State from forcing her to create wedding websites 
+celebrating marriages that defy her beliefs.  App. 303–305.  
+To secure relief, Ms. Smith first had to establish her stand-
+ing to sue.  That required her to show “a credible threat” 
+existed that Colorado would, in fact, seek to compel speech 
+from her that she did not wish to produce.  Susan B. An-
+thony List v. Driehaus, 573 U. S. 149, 159 (2014). 
+  Toward that end, Ms. Smith began by directing the court 
+to the Colorado Anti-Discrimination Act (CADA).  That law 
+defines a “public accommodation” broadly to include almost
+every public-facing business in the State.  Colo. Rev. Stat.  
+§24–34–601(1) (2022).  In what some call its “Accommoda-
+tion Clause,” the law prohibits a public accommodation 
+from denying “the full and equal enjoyment” of its goods and 
+services to any customer based on his race, creed, disability, 
+sexual orientation, or other statutorily enumerated trait.   
+§24–34–601(2)(a).  Either state officials or private citizens 
+may bring actions to enforce the law.  §§24–34–306, 24–34– 
+602(1).  And a variety of penalties can follow.  Courts can 
+order fines up to $500 per violation. §24–34–602(1)(a). The 
+Colorado Commission on Civil Rights can issue cease-and-
+desist orders, §24–34–306(9), and require violators to take 
+various other “affirmative action[s].” §24–34–605; §24–34– 
+306(9).  In  the past, these have included participation in 
+mandatory educational programs and the submission of on-
+going compliance reports to state officials.  See Masterpiece  
+Cakeshop, Ltd. v. Colorado Civil Rights Comm’n, 584 U.  S.  
+___, ___ (2018) (slip op., at 8).1  
+—————— 
+1In addition to the Accommodation Clause, CADA contains a “Com-
+ 
+munication Clause” that prohibits a public accommodation from “pub-
+lish[ing] .  .  . any written . .  . communication” indicating that a person will 
+be denied “the full and equal enjoyment” of services or that he will be 
+“unwelcome, objectionable, unacceptable, or undesirable” based on a pro- 
+ 
+ 
+4  303 CREATIVE LLC v. ELENIS  
+   
+Opinion of the Court 
+  In her lawsuit, Ms. Smith alleged that, if she enters the 
+wedding website business to celebrate marriages she does 
+endorse, she faces a credible threat that Colorado will seek 
+to use CADA to compel her to create websites celebrating 
+marriages she does not endorse.  6 F. 4th 1160, 1173–1174  
+(CA10 2021).  As evidence, Ms. Smith pointed to Colorado’s 
+record of past enforcement actions under CADA, including 
+one that worked its way to this Court five years ago.  See 
+Masterpiece Cakeshop, 584 U. S., at ___ (slip op., at 9); see 
+also App. 25–155 (discussing Colorado’s other past enforce-
+ment actions).
+  To facilitate the district court’s resolution of the merits of 
+her case, Ms. Smith and the State stipulated to a number 
+of facts: 
+    Ms. Smith is “willing to work with all people regard-
+less of classifications such as race, creed, sexual ori-
+entation, and gender,” and she “will gladly create 
+custom graphics and websites” for clients of any sex-
+ual orientation.  App. to Pet. for Cert. 184a. 
+    She will not produce content that “contradicts bibli-
+cal truth” regardless of who orders it.  Ibid.  
+    Her belief that marriage is a union between one man 
+and one woman is a sincerely held religious convic-
+tion.  Id., at 179a. 
+    All of the graphic and website design services Ms. 
+Smith provides are “expressive.”  Id., at 181a. 
+    The websites and graphics Ms. Smith designs are
+“original, customized” creations that “contribut[e] to 
+the overall messages” her business conveys “through 
+the websites” it creates.  Id., at 181a–182a. 
+—————— 
+tected classification.  Colo. Rev. Stat. §24–34–601(2)(a) (2022).  The Com-
+munication Clause, Ms. Smith notes, prohibits any speech inconsistent  
+with the Accommodation Clause.  Because Colorado concedes that its au-
+thority to apply the Communication Clause to Ms. Smith stands or falls 
+with its authority to apply the Accommodation Clause, see Brief for Re-
+spondents 44–45, we focus our attention on the Accommodation Clause.  
+ 
+  Cite as:  600 U. S. ____ (2023)  5 
+ 
+Opinion of the Court 
+    Just like the other services she provides, the wed-
+ding websites Ms. Smith plans to create “will be ex-
+pressive in nature.”  Id., at 187a. 
+    Those wedding websites will be “customized and tai-
+lored” through close collaboration with individual 
+couples, and they will “express Ms. Smith’s and 303 
+Creative’s message celebrating and promoting” her 
+view of marriage.  Id., at 186a–187a. 
+    Viewers of Ms. Smith’s websites “will know that the  
+websites are [Ms. Smith’s and 303 Creative’s] origi-
+nal artwork.”  Id., at 187a. 
+    To the extent Ms. Smith may not be able to provide
+certain services to a potential customer, “[t]here are 
+numerous companies in the State of Colorado and 
+across the nation that offer custom website design 
+services.”  Id., at 190a. 
+C 
+  Ultimately, the district court ruled against Ms. Smith.  
+405 F. Supp. 3d 907, 912 (Colo. 2019).  So did the Tenth 
+Circuit.  6 F. 4th, at 1168.  For its part, the Tenth Circuit
+held that Ms. Smith had standing to sue.  In that court’s  
+judgment, she had established a credible threat that, if she 
+follows through on her plans to offer wedding  website ser-
+vices, Colorado will invoke CADA to force her to create 
+speech she does not believe or endorse.  Id., at 1172–1175.   
+The court pointed to the fact that “Colorado has a history of 
+past  enforcement  against  nearly  identical  conduct—i.e.,  
+Masterpiece Cakeshop”; that anyone in the State may file a 
+complaint against Ms. Smith and initiate “a potentially 
+burdensome  administrative  hearing”  process;  and  that 
+“Colorado [has] decline[d] to disavow future enforcement” 
+proceedings against her.  Id., at 1174.  Before us, no party
+challenges these conclusions. 
+  Turning to the merits, however, the Tenth Circuit held 
+that  Ms.  Smith  was  not  entitled  to  the  injunction  she 
+ 
+6  303 CREATIVE LLC v. ELENIS  
+   
+Opinion of the Court 
+sought.  The court acknowledged that Ms. Smith’s planned 
+wedding websites qualify as “pure speech” protected by the 
+First Amendment.  Id., at 1176.  As a result, the court rea-
+soned, Colorado had to satisfy “strict scrutiny” before com-
+pelling speech from her that she did not wish to create.  Id.,  
+at 1178.  Under that standard, the court continued, the  
+State had to show both that forcing Ms. Smith to create 
+speech would serve a compelling governmental interest and 
+that no less restrictive alternative exists to secure that in-
+terest. Ibid. Ultimately, a divided panel concluded that the 
+State had carried these burdens.  As the majority saw it, 
+Colorado has a compelling interest in ensuring “equal ac-
+cess to publicly available goods and services,” and no option 
+short of coercing speech from Ms. Smith can satisfy that in-
+terest because she plans to offer “unique services” that are, 
+“by definition, unavailable elsewhere.”  Id., at 1179–1180  
+(internal quotation marks omitted).
+  Chief Judge Tymkovich dissented.  He observed that “en-
+suring access to a particular person’s” voice, expression, or 
+artistic talent has never qualified as “a compelling state in-
+terest” under this Court’s precedents. Id., at 1203.  Nor, he  
+submitted, should courts depart from those precedents now.  
+“Taken to its logical end,” Chief Judge Tymkovich warned, 
+his colleagues’ approach would permit the government to 
+“regulate the messages communicated by all artists”—a re-
+sult he called “unprecedented.”  Id., at 1204.  
+  We granted certiorari to review the Tenth Circuit’s dispo-
+sition.  595 U. S. ___ (2022).  
+II  
+  The framers designed the Free Speech Clause of the First 
+Amendment to protect the “freedom to think as you will and 
+to speak as you think.”  Boy Scouts of America v. Dale, 530  
+U. S. 640, 660–661 (2000) (internal quotation  marks omit-
+ted).  They did so because they saw the freedom of speech 
+“both as an end and as a means.”  Whitney v. California, 
+ 
+  Cite as:  600 U. S. ____ (2023)  7 
+ 
+Opinion of the Court 
+274 U. S. 357, 375 (1927) (Brandeis, J., concurring); see also 
+12 The Papers of James Madison 193–194 (C. Hobson & R. 
+Rutland eds. 1979).  An end because the freedom to think 
+and speak is among our inalienable human rights.  See, e.g., 
+4 Annals of Cong. 934 (1794) (Rep. Madison).  A means be-
+cause the freedom of thought and speech is “indispensable 
+to the discovery and spread of political truth.”  Whitney, 274 
+U. S., at 375 (Brandeis, J., concurring).  By allowing all
+views to flourish, the framers understood, we may test and 
+improve our own thinking both as individuals and as a Na-
+tion.  For all these reasons, “[i]f there is any fixed star in 
+our constitutional constellation,” West Virginia Bd. of Ed.  
+v. Barnette, 319 U. S. 624, 642 (1943), it is the principle that 
+the government may not interfere with “an uninhibited  
+marketplace of ideas,” McCullen v.  Coakley, 573 U. S. 464,  
+476 (2014) (internal quotation marks omitted).
+  From time to time, governments in this country have 
+sought to test these foundational principles.  In Barnette, 
+for example, the Court faced an effort by the State of West 
+Virginia to force schoolchildren to salute the Nation’s flag 
+and recite the Pledge of Allegiance. If the students refused, 
+the State threatened to expel them and fine or jail their par-
+ents.  Some families objected on the ground that the State 
+sought to compel their children to express views at odds 
+with their faith as Jehovah’s Witnesses.  When the dispute 
+arrived here, this Court offered a firm response.  In seeking 
+to compel students to salute the flag and recite a pledge, the 
+Court held, state authorities had “transcend[ed] constitu-
+tional limitations on their powers.”  319 U. S.,  at 642.  Their 
+dictates “invade[d] the sphere of intellect and spirit which 
+it is the purpose of the First Amendment . . . to reserve from 
+all official control.”  Ibid.  
+  A similar story unfolded in Hurley v. Irish-American Gay,  
+Lesbian and Bisexual Group of Boston, Inc., 515 U. S. 557 
+(1995).  There, veterans organizing a St. Patrick’s Day pa-
+rade in Boston refused to include a group of gay, lesbian,  
+ 
+8  303 CREATIVE LLC v. ELENIS  
+   
+Opinion of the Court 
+and bisexual individuals in their event.  The group argued 
+that Massachusetts’s public accommodations statute enti-
+tled it to participate in the parade as a matter of law.  Id., 
+at 560–561. Lower courts agreed. Id., at 561–566.  But this  
+Court reversed.  Id., at 581.  Whatever state law may de-
+mand, this Court explained, the parade was constitution-
+ally protected speech and requiring the veterans to include 
+voices they wished to exclude would impermissibly require 
+them to “alter the expressive content of their parade.”  Id., 
+at 572–573.  The veterans’ choice of what to say (and not
+say)  might  have  been  unpopular,  but  they  had  a  First 
+Amendment right to present their message undiluted by 
+views they did not share. 
+  Then there is Boy Scouts of America  v. Dale. In that case,  
+the Boy Scouts excluded James Dale, an assistant scout-
+master, from membership after learning he was gay.  Mr.  
+Dale argued that New Jersey’s public accommodations law 
+required the Scouts to reinstate him.  530 U. S., at 644–645.   
+The New Jersey Supreme Court sided with Mr. Dale, id., at 
+646–647, but again this Court reversed, id., at 661.  The 
+decision to exclude Mr. Dale may not have implicated pure 
+speech, but this Court held that the Boy Scouts “is an ex-
+pressive association” entitled to First Amendment protec-
+tion.  Id., at 656.  And, the Court found, forcing the Scouts 
+to include Mr. Dale would “interfere with [its] choice not to 
+propound a point of view contrary to its beliefs.”   Id., at 654.  
+  As these cases illustrate, the First Amendment protects 
+an  individual’s  right  to  speak  his  mind  regardless  of 
+whether the government considers his speech sensible and 
+well intentioned or deeply “misguided,” Hurley, 515 U. S., 
+at 574, and likely to cause “anguish” or “incalculable grief,” 
+Snyder v. Phelps, 562 U. S. 443, 456 (2011).  Equally, the 
+First Amendment protects acts of expressive association.  
+See, e.g., Dale, 530 U. S., at 647–656; Hurley, 515 U. S., at 
+568–570, 579.  Generally, too, the government may not com-
+pel a person to speak its own preferred messages.  See  
+ 
+  Cite as:  600 U. S. ____ (2023)  9 
+ 
+Opinion of the Court 
+Tinker v. Des Moines Independent  Community School Dist., 
+393 U. S. 503, 505–506 (1969); see also, e.g., Miami Herald  
+Publishing Co. v. Tornillo, 418 U. S. 241, 256 (1974); Wooley 
+v. Maynard, 430 U. S. 705, 714 (1977); National Institute of  
+Family and Life Advocates v. Becerra, 585 U. S. ___, ___ 
+(2018) (NIFLA) (slip op., at 8).  Nor does it matter whether 
+the government seeks to compel a person to speak its mes-
+sage when he would prefer to remain silent or to force an 
+individual to include other ideas with his own speech that 
+he would prefer not to include.  See Hurley, 515 U. S., at  
+568–570, 576; see also Rumsfeld v. Forum for Academic &  
+Institutional Rights, Inc., 547 U. S. 47, 63–64 (2006) (FAIR)
+(discussing cases).  All that offends the First Amendment 
+just the same. 
+III  
+  Applying these principles to this case, we align ourselves 
+with much of the Tenth Circuit’s analysis.  The Tenth Cir-
+cuit held that the wedding websites Ms. Smith seeks to cre-
+ate qualify as “pure speech” under this Court’s precedents.  
+6 F. 4th, at 1176.  We agree.  It is a conclusion that flows  
+directly from the parties’ stipulations.  They have stipu-
+lated that Ms. Smith’s websites promise to contain “images, 
+words, symbols, and other modes of expression.”  App. to  
+Pet. for Cert. 181a. They have stipulated that every website
+will be her “original, customized” creation.  Id., at 181a– 
+182a.  And they have stipulated that Ms. Smith will create 
+these  websites  to  communicate  ideas—namely,  to  “cele-
+brate and promote the couple’s wedding and unique love 
+story” and to “celebrat[e] and promot[e]” what Ms. Smith 
+understands to be a true marriage.  Id., at 186a–187a. 
+  A hundred years ago, Ms. Smith might have furnished 
+her services using pen and paper. Those services are no less 
+protected speech today because they are conveyed with a 
+“voice that resonates farther than it could from any soap-
+box.” Reno v. American Civil Liberties Union, 521 U. S. 844, 
+ 
+10   303 CREATIVE LLC v. ELENIS  
+   
+Opinion of the Court 
+870 (1997).  All manner of speech—from “pictures, films, 
+paintings, drawings, and engravings,” to “oral utterance 
+and the printed word”—qualify for the First  Amendment’s 
+protections; no less can hold true when it comes to speech 
+like Ms. Smith’s conveyed over the Internet.  Kaplan v. Cal-
+ifornia, 413 U. S. 115, 119–120 (1973); see also Shurtleff v. 
+Boston,  596  U. S.  ___,  ___–___  (2022)  (slip  op.,  at  7–8) 
+(flags); Brown v. Entertainment Merchants Assn., 564 U. S.  
+786, 790 (2011) (video games); Hurley, 515 U. S., at 568– 
+570 (parades); Ward v. Rock Against Racism, 491 U. S. 781,  
+790 (1989) (music); Joseph Burstyn, Inc. v. Wilson, 343 U. S.  
+495, 501–502 (1952) (movies). 
+  We further agree with the Tenth Circuit that the wedding 
+websites Ms. Smith seeks to create involve her speech.  6 
+F. 4th, at 1181, and n.  5.  Again, the parties’ stipulations 
+lead the way to that conclusion.   See App. to Pet. for Cert. 
+181a, 187a. As the parties have described it, Ms. Smith in-
+tends  to  “ve[t]”  each  prospective  project  to  determine  
+whether it is one she is  willing to endorse.  Id., at 185a.  She  
+will consult with clients to discuss “their unique stories as 
+source material.” Id., at 186a. And she will produce a final 
+story for each couple using her own words and her own 
+“original  artwork.”    Id.,  at  182a–183a.    Of  course,  Ms. 
+Smith’s speech may combine with the couple’s in the final  
+product.  But for purposes of the First Amendment that 
+changes nothing.  An individual “does not forfeit constitu-
+tional protection simply by combining multifarious voices” 
+in a single communication.  Hurley, 515 U. S., at 569. 
+  As surely as Ms. Smith seeks to engage in protected First 
+Amendment speech, Colorado seeks to compel speech Ms. 
+Smith does not wish to provide.  As the Tenth Circuit ob-
+served, if Ms. Smith offers wedding websites celebrating 
+marriages she endorses, the State intends to “forc[e her] to
+create custom websites” celebrating other marriages she 
+does not.  6 F. 4th, at 1178.  Colorado seeks to compel this 
+speech in order to “excis[e] certain ideas or viewpoints from 
+ 
+  Cite as:  600 U. S. ____ (2023)  11  
+ 
+Opinion of the Court 
+the public dialogue.”  Turner Broadcasting System, Inc. v. 
+FCC, 512 U. S. 633, 642 (1994).  Indeed, the Tenth Circuit 
+recognized that the coercive “[e]liminati[on]” of dissenting 
+“ideas” about marriage constitutes Colorado’s “very pur-
+pose” in seeking to apply its law to Ms. Smith.  6 F. 4th, at 
+1178. 
+  We part ways with the Tenth Circuit only when it comes 
+to  the  legal  conclusions  that  follow.    While  that  court  
+thought Colorado could compel speech from Ms. Smith con-
+sistent with the Constitution, our First Amendment prece-
+dents laid out above teach otherwise.  In  Hurley,  the Court  
+found that Massachusetts impermissibly compelled speech 
+in violation of the First Amendment when it sought to force 
+parade organizers to accept participants who would “affec[t] 
+the[ir] message.” 515 U. S., at 572. In Dale, the Court held 
+that New Jersey intruded on the Boy Scouts’ First Amend-
+ment rights when it tried to require the group to “propound 
+a point of view contrary to its beliefs” by directing its mem-
+bership choices.  530 U. S., at 654.  And in Barnette, this 
+Court found impermissible coercion when West Virginia re-
+quired schoolchildren to recite a pledge that contravened 
+their convictions on threat of punishment or expulsion. 319  
+U. S., at 626–629.  Here, Colorado seeks to put Ms. Smith
+to a similar choice:  If she wishes to speak, she must either 
+speak as the State demands or face sanctions for expressing 
+her own beliefs, sanctions that may include compulsory par-
+ticipation in “remedial . . . training,” filing periodic compli-
+ance reports as officials deem necessary, and paying mone-
+tary fines.  App. 120; supra, at 3.  Under our precedents,
+that “is enough,” more than enough, to represent an imper-
+missible  abridgment  of  the  First  Amendment’s  right  to  
+speak freely.  Hurley, 515 U. S., at 574. 
+  Consider what a contrary approach would mean.  Under 
+Colorado’s logic, the government may compel anyone who 
+speaks for pay on a given topic to accept all commissions on 
+that same topic—no matter the underlying message—if the 
+ 
+12   303 CREATIVE LLC v. ELENIS  
+   
+Opinion of the Court 
+topic somehow implicates a customer’s statutorily protected 
+trait.  6  F. 4th,  at  1198  (Tymkovich,  C. J.,  dissenting).  
+Taken seriously, that principle would allow the government 
+to force all manner of artists, speechwriters, and others 
+whose services involve speech to speak what they do not be-
+lieve on pain of penalty.  The government could require “an 
+unwilling Muslim movie director to make a  film with a Zi-
+onist message,” or “an atheist muralist to accept a commis-
+sion celebrating Evangelical zeal,” so long as they would
+make films or murals for other members of the public with
+different messages.  Id., at 1199.  Equally, the government
+could force a male website designer married to another man 
+to  design  websites  for  an  organization  that  advocates
+against same-sex marriage.  See Brief for Petitioners 26– 
+27.  Countless other creative professionals, too, could be 
+forced  to  choose  between  remaining  silent,  producing 
+speech that violates their beliefs, or speaking their minds 
+and incurring sanctions for doing so. See, e.g., Brief for Cre-
+ative Professionals et al. as Amici Curiae 5–10; Brief for 
+First Amendment Scholars as Amici Curiae 19–22.  As our 
+precedents recognize, the First Amendment tolerates none 
+of that. 
+  In saying this much, we do not question the vital role pub-
+lic accommodations laws play in realizing the civil rights of 
+all Americans.  This Court has recognized that govern-
+ments in this country have a “compelling interest” in elim-
+inating discrimination in places of public accommodation.  
+Roberts v. United States Jaycees, 468 U. S. 609, 628 (1984);  
+see also Hurley, 515 U. S., at 571–572.  This Court has rec-
+ognized, too, that public accommodations laws “vindicate 
+the deprivation of personal dignity that surely accompanies 
+denials of equal access to public establishments.”  Heart of  
+Atlanta Motel, Inc. v. United States, 379 U. S. 241, 250  
+(1964) (internal quotation marks omitted); see also, e.g., 
+Katzenbach v. McClung, 379 U. S. 294 (1964);  Newman v. 
+ 
+  Cite as:  600 U. S. ____ (2023)  13  
+ 
+Opinion of the Court 
+Piggie Park Enterprises, Inc., 390 U. S. 400 (1968) (per cu-
+riam). 
+  Over time, governments in this country have expanded 
+public accommodations laws in notable ways too.  Statutes  
+like Colorado’s grow from nondiscrimination rules the com-
+mon law sometimes imposed on common carriers and places 
+of traditional public accommodation like hotels and restau-
+rants. Dale, 530 U. S., at 656–657.  Often, these enterprises 
+exercised  something  like  monopoly  power  or  hosted  or 
+transported others or their belongings much like bailees.  
+See, e.g.,  Liverpool & Great Western Steam Co. v. Phenix 
+Ins. Co., 129 U. S. 397, 437 (1889); Primrose v. Western Un-
+ion Telegraph Co., 154 U. S. 1, 14 (1894).  Over time, some  
+States, Colorado included, have expanded the reach of these 
+nondiscrimination rules to cover virtually every place of 
+business engaged in any sales to the public.  Compare 1885
+Colo. Sess. Laws pp. 132–133 (a short list of entities origi-
+nally bound by the State’s public accommodations law) with 
+Colo. Rev. Stat. §24–34–601(1) (currently defining a public 
+accommodation to include “any place of business engaged 
+in any sales to the public”).
+  Importantly, States have also expanded their laws to pro-
+hibit more forms of discrimination. Today, for example, ap-
+proximately half the States have laws like Colorado’s that
+expressly prohibit discrimination on the basis of sexual ori-
+entation.2  And, as we have recognized, this is entirely “un-
+exceptional.”  Masterpiece Cakeshop, 584 U. S., at ___ (slip 
+—————— 
+2Besides Colorado, this includes Cal. Civ.  Code Ann. §51 (West 2020); 
+ 
+Conn. Gen. Stat. §46a–81d (2021); Del. Code Ann., Tit. 6, §4504 (2019); 
+Haw. Rev. Stat. §489–3 (Cum. Supp. 2021); Ill. Comp. Stat., ch. 775, 
+§5/1–102 (West 2021); Iowa Code §216.7 (2022); Me. Rev. Stat. Ann.,  
+Tit. 5, §4591 (2013); Md. State Govt. Code Ann. §20–304 (2021); Mass.  
+Gen. Laws, ch. 272, §98 (2021); Mich. Comp. Laws Ann.  §37.2302 (West  
+2013); Minn.  Stat. §363A.11 (2022); Nev. Rev. Stat. §651.070 (2017); N.  
+H. Rev. Stat. Ann. §354–A:17 (2022); N. J. Stat. Ann.  §10:5–12 (West  
+2013); N. M. Stat. Ann. §28–1–7 (2022); N. Y. Exec. Law Ann. §291(2)   
+ 
+ 
+14   303 CREATIVE LLC v. ELENIS  
+   
+Opinion of the Court 
+op., at 10).  States may “protect gay persons, just as [they] 
+can protect other classes of individuals, in acquiring what-
+ever products and services they choose on the same terms 
+and conditions as are offered to other members of the pub-
+lic. And there are no doubt innumerable goods and services 
+that no one could argue implicate the First Amendment.”  
+Ibid.; see also Hurley, 515 U. S., at 571–572; 6 F. 4th, at  
+1203 (Tymkovich, C. J., dissenting).  Consistent with all of 
+this, Ms. Smith herself recognizes that Colorado and other
+States are generally free to apply their public accommoda-
+tions laws, including their provisions protecting gay per-
+sons, to a vast array of businesses.  Reply Brief 15; see Tr.
+of Oral Arg. 45–46. 
+  At the same time, this Court has also recognized that no 
+public accommodations law is immune from the demands of 
+the Constitution.  In particular, this Court has held, public 
+accommodations statutes can sweep too broadly when de-
+ployed to compel speech.  In  Hurley, the Court commented  
+favorably on Massachusetts’ public accommodations law, 
+but made plain it could not be “applied to expressive activ-
+ity” to compel speech.  515 U. S., at 571, 578.  In Dale, the 
+Court observed that New Jersey’s public accommodations 
+law had many lawful applications but held that it could “not 
+justify such a severe intrusion on the Boy Scouts’ rights to 
+freedom of expressive association.”  530 U. S., at 659.  And,  
+once more, what was true in those cases must hold true 
+here.  When a state public accommodations law and the 
+Constitution collide, there can be no question which must 
+prevail.  U. S. Const., Art. VI, cl. 2. 
+  Nor is it any answer, as the Tenth Circuit seemed to sup-
+pose, that Ms. Smith’s services are “unique.”  6 F. 4th, at  
+—————— 
+(West 2019); Ore. Rev. Stat. §659A.403 (2021); R. I. Gen. Laws §11–24–
+2 (2002); Vt. Stat. Ann., Tit. 9, §4502(a) (2020); Va. Code Ann. §2.2–3904 
+(2022); Wash. Rev. Code §49.60.215 (2022); Wis. Stat. §106.52 (2019– 
+2020).  See also Brief for Local Governments et al. as Amici Curiae 5 
+(noting that many local governments have  enacted similar rules). 
+ 
+  Cite as:  600 U. S. ____ (2023)  15  
+ 
+Opinion of the Court 
+1180.  In some sense,  of course, her voice is  unique; so is 
+everyone’s.  But that hardly means a State may coopt an 
+individual’s voice for its own purposes.  In  Hurley, the vet-
+erans had an “enviable” outlet for speech; after all, their pa-
+rade was a notable and singular event.  515 U. S., at 560, 
+577–578. In Dale, the Boy Scouts offered what some might 
+consider a unique experience.  530 U. S., at 649–650.  But 
+in both cases this Court held that the State could not use 
+its public accommodations statute to deny speakers the 
+right “to choose the content of [their] own message[s].”  Hur-
+ley, 515 U. S., at 573; see Dale, 530 U. S., at 650–656.  Were 
+the rule otherwise, the better the artist, the finer the writer,  
+the more unique his talent, the more easily his voice could 
+be conscripted to disseminate the government’s preferred  
+messages.  That would not respect the First Amendment; 
+more nearly, it would spell its demise.  
+IV 
+  Before us, Colorado appears to distance itself from the 
+Tenth  Circuit’s  reasoning.    Now,  the  State  seems  to  
+acknowledge that the First Amendment does forbid it from 
+coercing Ms. Smith to create websites endorsing same-sex 
+marriage or expressing any other message with which she 
+disagrees.  See Brief for Respondents 12 (disclaiming any 
+interest in “interfer[ing] with [Ms. Smith’s] choice to offer 
+only websites of [her] own design”); see also Brief for United 
+States as Amicus Curiae 19 (conceding that “constitutional
+concerns” would arise if Colorado “require[d] petitione[r] to 
+design a website” that she “would not create or convey for 
+any client”). Instead, Colorado devotes most of its efforts to 
+advancing an alternative theory for affirmance. 
+  The State’s alternative theory runs this way.  To comply
+with Colorado law, the State says, all Ms. Smith must do is 
+repurpose websites she will create to celebrate marriages 
+she does endorse for marriages she does not.  She sells a 
+product to some, the State reasons, so she must sell the  
+ 
+16   303 CREATIVE LLC v. ELENIS  
+   
+Opinion of the Court 
+same product to all.  Brief for Respondents 15, 20.  At bot-
+tom, Colorado’s theory rests on a belief that the Tenth Cir-
+cuit erred at the outset when it said this case implicates 
+pure speech.  Id., at 19.  Instead, Colorado says, this case  
+involves only the sale  of an ordinary commercial product 
+and  any  burden  on Ms.  Smith’s  speech is  purely  “inci-
+dental.”  Id., at 18, 25–28; see Tr. of Oral Arg. 65, 97–98.  
+On the State’s telling, then, speech more or less vanishes
+from the picture—and, with it, any need for First Amend-
+ment scrutiny.  In places, the dissent seems to advance the 
+same line of argument.  Post,  at 29 (opinion of SOTOMAYOR,  
+J.).
+  This alternative theory, however, is difficult to square 
+with the parties’ stipulations.  As we have seen, the State 
+has stipulated that Ms. Smith does not seek to sell an ordi-
+nary commercial good but intends to create “customized  
+and tailored” speech for each couple.  App. to Pet. for Cert.  
+181a, 187a.  The State has stipulated that “[e]ach website 
+303 Creative designs and creates is an original, customized 
+creation for each client.”  Id., at 181a.  The State has stipu-
+lated, too, that Ms. Smith’s wedding websites “will be ex-
+pressive in nature, using text, graphics, and in some cases 
+videos to celebrate and promote the couple’s wedding and
+unique love story.”  Id., at 187a.  As the case comes to us,  
+then, Colorado seeks to compel just the sort of speech that 
+it tacitly concedes lies beyond the reach of its powers. 
+  Of course, as the State emphasizes, Ms. Smith offers her 
+speech for pay and does so through 303 Creative LLC, a 
+company in which she is “the sole member-owner.”  Id., at 
+181a; see also post,  at 33 (opinion of SOTOMAYOR,  J.)  (em-
+phasizing Ms. Smith’s “commercial” activity).  But none of 
+that makes a difference.  Does anyone think a speechwriter
+loses his First Amendment right to choose for whom he 
+works if he accepts money in return?  Or that a visual artist  
+who accepts commissions from the public does the same?  
+Many of the world’s great works of literature and art were 
+ 
+  Cite as:  600 U. S. ____ (2023)  17  
+ 
+Opinion of the Court 
+created with an expectation of compensation.  Nor, this  
+Court has held, do speakers shed their First Amendment 
+protections by employing the corporate form to disseminate 
+their speech.  This fact underlies our cases involving every-
+thing from movie producers to book publishers to newspa-
+pers. See, e.g.,  Joseph Burstyn, Inc., 343 U. S., at 497–503;  
+Simon & Schuster, Inc. v. Members of N. Y. State Crime Vic-
+tims Bd., 502 U. S. 105, 114–116 (1991); Grosjean v. Amer-
+ican Press Co., 297 U. S. 233, 240–241, 249 (1936).
+  Colorado next urges us to focus on the reason Ms. Smith  
+refuses to offer the speech it seeks to compel.  She refuses, 
+the State insists, because she objects to the “protected char-
+acteristics” of certain customers.  Brief for Respondents 16;  
+see also post,  at 26–27, 31–32 (opinion of SOTOMAYOR,  J.)  
+(reciting the same argument).  But once more, the parties’ 
+stipulations speak differently.  The parties agree that Ms.
+Smith “will gladly create custom graphics and websites for
+gay, lesbian, or bisexual clients or for organizations run by 
+gay, lesbian, or bisexual persons so long as the custom 
+graphics and websites” do not violate her beliefs.  App. to 
+Pet.  for  Cert.  184a.  That  is  a  condition,  the  parties 
+acknowledge, Ms. Smith applies to “all customers.”  Ibid.  
+Ms. Smith stresses, too, that she has not and will not create 
+expressions that defy any of her beliefs for any customer, 
+whether that involves encouraging violence, demeaning an-
+other person, or promoting views inconsistent with her re-
+ligious commitments.  See Tr. of Oral Arg. 18–20.  Nor, in 
+any event, do the First Amendment’s protections belong 
+only to speakers whose motives the government finds wor-
+thy;  its  protections  belong  to  all,  including  to  speakers 
+whose motives others may find misinformed or offensive.  
+See Federal Election Comm’n v. Wisconsin Right to Life, 
+Inc., 551 U.  S. 449, 468–469 (2007) (opinion  of ROBERTS, 
+C. J.) (observing that “a speaker’s motivation is entirely ir-
+relevant” (internal quotation marks omitted)); National So-
+cialist  Party  of  America v.  Skokie,  432  U. S.  43,  43–44 
+ 
+18   303 CREATIVE LLC v. ELENIS  
+   
+Opinion of the Court 
+(1977) (per curiam) (upholding free-speech rights of partic-
+ipants in a Nazi parade); Snyder, 562 U. S., at 456–457  
+(same for protestors of a soldier’s funeral).3  
+  Failing all else, Colorado suggests that this Court’s deci-
+sion in FAIR supports affirmance.  See also post,  at 25–26 
+(opinion of SOTOMAYOR,  J.) (making the same argument).  
+In FAIR, a group of schools challenged a law requiring 
+them, as a condition of accepting federal funds, to permit 
+military recruiters space on campus on equal terms with 
+other potential employers.  547 U.  S., at 51–52, 58.  The 
+only expressive activity required of the law schools, the 
+Court found, involved the posting of logistical notices along
+these lines:  “‘The U. S. Army recruiter will meet interested 
+ 
+students in Room 123 at 11 a.m.’”  Id., at 61–62.  And, the  
+ 
+Court reasoned, compelled speech of this sort was “inci-
+dental” and a “far cry” from the speech at issue in our “lead-
+ing First Amendment precedents [that] have established 
+the principle that freedom of speech prohibits the govern-
+ment from telling people what they must say.”  Ibid.; see 
+also NIFLA, 585 U. S., at ___ (slip op., at 8). 
+  It is a far cry from this case too.  To be sure, our cases  
+have held that the government may sometimes “requir[e]  
+—————— 
+3The dissent labels the distinction between status and message “amus-
+ 
+ing” and “embarrassing.”  Post, at 32. But in doing so, the dissent ignores 
+a fundamental feature of the  Free Speech Clause.  While it does not pro-
+tect status-based discrimination unrelated to expression, generally it  
+does protect a  speaker’s right to control her own message—even when we 
+may disapprove of the speaker’s motive or the message itself.  The dis-
+sent’s derision is no answer  to any of this.  It ignores, too, the fact that  
+Colorado itself has, in other contexts, distinguished status-based dis-
+crimination (forbidden) from the right of a speaker to  control his own  
+message (protected).  See App. 131, 137, 140, 143–144,  149, 152, 154.  
+(Truth be told, even the dissent acknowledges “th[is] distinction” else-
+where in its opinion.  Post, at 31, n.  11.)  Nor is the distinction unusual  
+in societies committed both to nondiscrimination rules and free expres-
+sion. See, e.g., Lee v.  Ashers Baking Co. Ltd., [2018] UKSC 49, p. 14 (“The 
+less favourable treatment was afforded to the message not to the man.”).  
+Does the dissent really find  all that amusing and embarrassing?  
+ 
+  Cite as:  600 U. S. ____ (2023)  19  
+ 
+Opinion of the Court 
+the dissemination of purely factual and uncontroversial in-
+formation,” particularly in the context of “commercial ad-
+vertising.”  Hurley, 515 U. S., at 573 (internal quotation 
+marks omitted); see also NIFLA, 585 U. S., at ___ (slip op.,  
+at 8); Riley v. National Federation of Blind of N. C., Inc., 
+487 U. S. 781, 795–796 (1988).  But this case involves noth-
+ing like that.  Here, Colorado does not seek to impose an 
+incidental burden on speech. It seeks to force an individual 
+to “utter what is not in [her] mind” about a question of po-
+litical and religious significance.  Barnette, 319 U. S., at 
+634.  And that, FAIR reaffirmed, is something the First 
+Amendment does not tolerate.  No government, FAIR rec-
+ognized, may affect a “speaker’s message” by “forc[ing]” her 
+to “accommodate” other views, 547 U. S., at 63; no govern-
+ment may “‘alter’” the “‘expressive content’” of her mes-
+       
+sage, id., at 63–64 (alteration omitted); and no government
+may “interfer[e] with” her “desired message,” id., at 64. 
+V 
+  It is difficult to read the dissent and conclude we are look-
+ing at the same case. Much of it focuses on the evolution of 
+public accommodations laws, post, at 7–13, and the strides 
+gay Americans have made towards securing equal justice
+under law, post, at 14–17.  And, no doubt, there is much to 
+applaud here.  But none of this answers the question we 
+face today:  Can a State force someone who provides her 
+own  expressive  services  to  abandon  her  conscience  and 
+speak its  preferred message instead?
+  When the dissent finally gets around to that  question—
+more than halfway into its opinion—it reimagines the facts 
+of this case from top to bottom.  The dissent claims that Col-
+orado wishes to regulate Ms. Smith’s “conduct,” not her 
+speech.  Post, at 24–29.  Forget Colorado’s stipulation that 
+Ms. Smith’s activities are “expressive,” App. to Pet. for Cert. 
+181a, and the Tenth Circuit’s conclusion that the State 
+ 
+20   303 CREATIVE LLC v. ELENIS  
+   
+Opinion of the Court 
+seeks to compel “pure speech,” 6 F. 4th, at 1176.  The dis-
+sent chides us for deciding a pre-enforcement challenge.  
+Post, at 23.  But it ignores the Tenth Circuit’s finding that 
+Ms. Smith faces a credible threat of sanctions unless she  
+conforms her views to the State’s.  6 F. 4th, at 1172–1175.   
+The dissent suggests (over and over again) that any burden 
+on speech here is “incidental.”  Post, at 24, 26–30, 32–33.   
+All despite the Tenth Circuit’s finding that Colorado in-
+tends to force Ms. Smith to convey a message she does not 
+believe with the “very purpose” of “[e]liminating . . . ideas”  
+that differ from its own.  6 F. 4th, at 1178.4  
+  Nor does the dissent’s reimagination end there. It claims  
+that, “for the first time in its history,” the Court “grants a 
+business open to the public” a “right to refuse to serve mem-
+bers of a protected class.” Post, at 1; see also id., at 26, n. 10, 
+35. Never mind that we do no such thing and Colorado itself  
+has stipulated Ms. Smith will (as CADA requires) “work 
+with all people regardless of . . . sexual orientation.”  App.
+to Pet. for Cert. 184a.  Never mind, too, that it is the dissent 
+that would have this Court do something truly novel by al-
+lowing a government to coerce an  individual to speak con-
+trary to her beliefs on a  significant issue of personal convic-
+tion, all in order to eliminate ideas that differ from its own. 
+  There is still more.  The dissent asserts that we “sweep 
+under the rug petitioners’ challenge to CADA’s Communi-
+cation Clause.” Post, at 26. This despite the fact the parties
+and the Tenth Circuit recognized that Ms. Smith’s Commu-
+nication Clause challenge hinges on her Accommodation  
+Clause challenge.  (So much so that Colorado devoted less 
+than two pages at the tail end of its brief to the Communi-
+cation Clause and the Tenth Circuit afforded it just three 
+—————— 
+4Perplexingly,  too, the dissent suggests that, by recounting the Tenth 
+ 
+Circuit’s conclusion on this score, we “misunderstan[d] this case” and 
+“invo[ke] . . . Orwellian thought policing.”  Post, at 34, n. 14. 
+ 
+  Cite as:  600 U. S. ____ (2023)  21  
+ 
+Opinion of the Court 
+paragraphs in its free-speech analysis.  See Brief for Re-
+spondents 44–45; 6 F.  4th, at 1182–1183.)5   The dissent 
+even suggests that our decision today is akin to endorsing a 
+“separate but equal” regime that would allow law firms to 
+refuse women admission into partnership, restaurants to 
+deny service to Black Americans, or businesses seeking em-
+ployees to post something like a “White Applicants Only” 
+sign.  Post,  at 1, 16–21, 26, 28–29, 32, and n. 13, 37.  Pure  
+fiction all. 
+  In some places, the dissent gets so turned around about
+the facts that it opens fire on its own position. For instance:  
+While stressing that a Colorado company cannot refuse “the 
+full and equal enjoyment of [its] services” based on a cus-
+tomer’s protected status, post, at 27, the dissent assures us 
+that a company selling creative services “to the public” does  
+have a right “to decide what messages to include or not to 
+include,” post,  at 28.  But if that is true, what  are we even  
+debating?
+  Instead of addressing the parties’ stipulations about the 
+case actually before us, the dissent spends much of its time 
+adrift on a sea of hypotheticals about photographers, sta-
+tioners, and others, asking if  they too provide expressive 
+services covered by the First Amendment.  Post,  at 27–29,  
+31–32, 37.  But those cases are not this case.  Doubtless, 
+determining what qualifies as expressive activity protected  
+—————— 
+5Why does the dissent try to refocus this case around the Communica-
+ 
+tion Clause?  Perhaps because the moment one acknowledges the parties’ 
+stipulations—and the fact  Colorado seeks to use its Accommodation  
+Clause to compel speech in order to ensure conformity to its own views 
+on a topic of major significance—the First Amendment implications be-
+come obvious.  As does the fact that our case is nothing like a typical 
+application of a public accommodations law requiring an ordinary, non-
+expressive business to serve all customers or consider all applicants.  Our  
+decision today does not concern—much less endorse—anything like the 
+“ ‘straight couples only’ ” notices the dissent conjures out of thin air.   Post, 
+   
+at 26, n.  10.  Nor do the parties discuss anything of the sort in their stip-
+ulations.   
+ 
+22   303 CREATIVE LLC v. ELENIS  
+   
+Opinion of the Court 
+by the First Amendment can sometimes raise difficult ques-
+tions.  But this case presents no complication of that kind.  
+The parties have stipulated  that Ms. Smith seeks to engage  
+in expressive activity.  And the Tenth Circuit has recog-
+nized her services involve “pure speech.” See supra, at 6, 9.   
+Nothing the dissent says can alter this—nor can it displace 
+the First Amendment protections that follow. 
+  The dissent’s treatment of precedent parallels its han-
+dling of the facts.  Take its remarkable suggestion that a  
+government  forcing  an  individual  to  create  speech  on 
+weighty issues with which she disagrees—all, as the Tenth 
+Circuit found, with the goal of “[e]liminating” views it does 
+not share, 6 F. 4th, at 1178—only “incidental[ly]” burdens 
+First Amendment liberties.  Post, at 26–35.  Far from em-
+bracing a notion like that, our cases have rejected it time 
+after time—including in the context of public accommoda-
+tions laws.  See Parts II–IV, supra; FAIR, 547 U. S., at 61– 
+64 (no government may affect a “speaker’s own message” by 
+“forc[ing]” her to “accommodate” views she does not hold); 
+Hurley, 515 U. S., at 563, 566 (using a public accommoda-
+tions law to compel parade organizers to include speech
+they did not believe was no mere “‘incidental’” infringe-
+   
+ment on First Amendment rights); Dale, 530 U. S., at 659  
+(employing a public accommodations law to require the Boy 
+Scouts to alter their admissions policies had more than “an 
+incidental effect on protected speech”).6  
+—————— 
+6 The dissent observes that public accommodations laws may some-
+ 
+times  touch on speech incidentally as  they work to ensure ordinary, non-
+expressive goods and services are sold on equal terms.  Cf.  post, at 24–27  
+(citing Sorrell v.  IMS Health Inc., 564 U. S. 552 (2011); Rumsfeld v.  
+FAIR, 547 U. S. 47 (2006); United States v.  O’Brien, 391 U. S. 367 (1968)).   
+But as Hurley  observed, there is nothing “incidental” about an infringe-
+ment on speech when a public accommodations law is applied “pecu-
+liar[ly]” to compel expressive activity.  Hurley v.  Irish-American Gay,  
+Lesbian and Bisexual Group of Boston, Inc., 515 U. S. 557, 572 (1995). 
+ 
+ 
+ 
+  Cite as:  600 U. S. ____ (2023)  23  
+ 
+Opinion of the Court 
+  When it finally gets around to discussing these control-
+ling precedents, the dissent offers a wholly unpersuasive
+attempt to distinguish them.  The First Amendment protec-
+tions furnished in Barnette, Hurley, and Dale, the dissent 
+declares, were limited to schoolchildren and “nonprofit[s],” 
+and it is “dispiriting” to think they might also apply to Ms. 
+Smith’s “commercial” activity.  Post,  at 32–35.  But our 
+precedents  endorse  nothing  like  the  limits  the  dissent 
+would project on them.  Instead, as we have seen, the First 
+Amendment extends to all persons engaged in expressive 
+conduct,  including  those  who  seek  profit  (such  as 
+speechwriters, artists, and website designers).  See supra, 
+at 16–17.  If anything is truly dispiriting here, it is the dis-
+sent’s failure to take seriously this Court’s enduring com-
+mitment to protecting the speech rights of all comers, no 
+matter how controversial—or even repugnant—many may 
+find the message at hand.
+  Finally, the dissent comes out and says what it really 
+means:  Once  Ms.  Smith  offers  some  speech,  Colorado 
+“would require [her] to create and sell speech, notwith-
+standing [her] sincere objection to doing so”—and the dis-
+sent would force her to comply with that demand.  Post, at 
+29–30.  Even as it does so, however, the dissent refuses to  
+acknowledge where its reasoning leads.  In a world like  
+that, as Chief Judge Tymkovich highlighted, governments 
+could force “an unwilling Muslim movie director to make a 
+ 
+—————— 
+The dissent notes that our case law has not sustained every First Amend-
+ment objection to an antidiscrimination rule, as with a law firm that 
+sought to exclude women from partnership.  Post, at 19–21 (citing  Hishon  
+v. King & Spalding, 467 U. S. 69 (1984); Roberts v.  United States Jaycees, 
+468 U. S. 609 (1984)).  But the dissent disregards Dale’s holding that  
+context matters and that very different considerations come into play 
+when a law is  used to force individuals to toe the government’s preferred 
+line when speaking (or associating to express themselves) on matters of 
+significance.  Boy Scouts of America v. Dale, 530 U. S. 640, 648–653  
+(2000). 
+ 
+24   303 CREATIVE LLC v. ELENIS  
+   
+Opinion of the Court 
+film with a Zionist message,” they could compel “an atheist 
+muralist to accept a commission celebrating Evangelical 
+zeal,” and they could require a gay website designer to cre-
+ate websites for a group advocating against same-sex mar-
+riage, so long as these speakers would accept commissions 
+from the public with different messages.  6 F. 4th, at 1199 
+(dissenting opinion). Perhaps the dissent finds these possi-
+bilities untroubling because it trusts state governments to 
+coerce only “enlightened” speech.   But if that is the calcula-
+tion, it is a dangerous one indeed.7   
+  The dissent is right about one thing—“[w]hat a differ-
+ence” time can make.  See post,  at 2 (internal quotation
+marks omitted).  Eighty years ago in Barnette, this Court 
+affirmed that “no official, high or  petty, can prescribe what 
+shall be orthodox in politics, nationalism, religion, or other 
+matters of opinion.”  319 U. S., at 642.  The Court did so  
+despite the fact that the speech rights it defended were 
+deeply unpopular; at the time, the world was at war and 
+many thought respect for the flag and the pledge “essential 
+for the welfare of the state.”  Id., at 662–663 (Frankfurter,  
+J., dissenting); see also id., at 636, 640 (majority opinion).  
+Fifty years ago, this Court protected the right of Nazis to 
+march through a town home to many Holocaust survivors 
+and along the way espouse ideas antithetical to those for 
+—————— 
+7Perhaps the dissent finds these possibilities untroubling  for another  
+ 
+reason.  It asserts that CADA does not apply to “[m]any filmmakers, vis-
+ual artists, and writers” because they do not “hold out” their services to  
+the public. Post, at 27.  But the dissent cites nothing to support its claim 
+and instead, once more, fights the facts.  As we have seen, Colorado’s law  
+today applies to “any place of business engaged in  any sales to the pub-
+lic.” Colo. Rev. Stat. §24–34–601(1) (emphasis added); see also Part III, 
+supra.  And the dissent can hardly dispute that many artists and writers 
+accept commissions from the public.  Brief for Creative Professionals 
+et al. as Amici Curiae 5–21.  Certainly, Colorado does not advance any-
+thing like the  dissent’s argument; it calls any exemption to its law for 
+“artists” and others who provide “custom” services “unworkable.”  Brief 
+for Respondents 28–31 (internal quotation  marks omitted). 
+ 
+  Cite as:  600 U. S. ____ (2023)  25  
+ 
+Opinion of the Court 
+which this Nation stands.  See Skokie, 432 U. S., at 43–44;  
+supra,  at 17–18.  Five years ago, in a case the dissenters 
+highlight at the outset of their opinion, the Court stressed 
+that “it is not . . . the role of the State or its officials to pre-
+scribe what shall be offensive.”  Masterpiece Cakeshop, 584 
+U. S., at  ___ (slip op., at 16).  And just days ago, Members 
+of today’s dissent joined in holding that the First Amend-
+ment restricts how States may prosecute stalkers despite 
+the “harm[ful],” “low-value,” and “upsetting” nature of their 
+speech.  Counterman v. Colorado, 600 U. S. ___, ___ (2023) 
+(slip op., at 6); id., at ___ (SOTOMAYOR, J., concurring in part 
+and concurring in judgment) (slip op., at 5).
+  Today, however, the dissent abandons what this Court’s 
+cases have recognized time and time again: A commitment 
+to speech for only some messages and some persons is no 
+commitment at all.  By approving a government’s effort to 
+“[e]liminat[e]” disfavored “ideas,” 6 F. 4th, at 1178, today’s 
+dissent is emblematic of an unfortunate tendency by some 
+to defend First Amendment values only when they find the 
+speaker’s message sympathetic. But “[i]f liberty means an-
+ything at all, it means the right to tell people what they do 
+not want to hear.”  6 F.  4th, at 1190 (Tymkovich, C. J., dis-
+senting) (quoting G. Orwell). 
+* 
+  In this case, Colorado seeks to force an individual to  
+speak in ways that align with its views but defy her con-
+science about a matter of major significance.  In the past,
+other States in Barnette, Hurley, and Dale have similarly 
+tested the First Amendment’s boundaries by seeking to 
+compel speech they thought vital at the time.  But, as this 
+Court has long held, the opportunity to think for ourselves 
+and to express those  thoughts freely is among our most 
+cherished liberties and part of what keeps our Republic 
+strong.  Of course, abiding the Constitution’s commitment 
+to the freedom of speech means all of us will encounter ideas 
+ 
+26   303 CREATIVE LLC v. ELENIS  
+   
+Opinion of the Court 
+we  consider  “unattractive,”  post,  at  38  (opinion  of 
+SOTOMAYOR,  J.), “misguided, or even hurtful,” Hurley, 515 
+U. S., at 574.  But tolerance, not coercion, is  our Nation’s  
+answer. The First Amendment envisions the United States 
+as a rich and complex place where all persons are free to 
+think and speak as they wish, not as the government de-
+mands.  Because Colorado seeks to deny that promise, the 
+judgment is 
+ 
+Reversed.  
+ 
+  Cite as:  600 U. S. ____ (2023)  1 
+ 
+SOTOMAYOR,  J., dissenting  
+SUPREME COURT OF THE UNITED STATES 
+_________________ 
+No. 21–476  
+_________________ 
+303 CREATIVE LLC, ET  AL., PETITIONERS v.  
+AUBREY ELENIS, ET  AL. 
+ON WRIT OF CERTIORARI TO THE UNITED STATES COURT OF 
+APPEALS FOR THE TENTH CIRCUIT  
+[June 30, 2023] 
+JUSTICE SOTOMAYOR, with whom JUSTICE  KAGAN and 
+JUSTICE JACKSON join, dissenting. 
+  Five years ago, this Court recognized the “general rule” 
+that religious and philosophical objections to gay marriage 
+“do not allow business owners and other actors in the econ-
+omy and in society to deny protected persons equal access 
+to goods and services under a neutral and generally appli-
+cable public accommodations law.”  Masterpiece Cakeshop,  
+Ltd. v.  Colorado Civil Rights Comm’n, 584 U. S. ___, ___ 
+(2018) (slip op., at 9).   The Court also recognized the “seri-
+ous stigma” that would result if “purveyors of goods and ser-
+vices who object to gay marriages for moral and religious 
+reasons” were “allowed to put up signs saying ‘no goods or 
+services will be sold if they will be used for gay marriages.’”  
+ 
+Id., at ___ (slip op., at 12). 
+  Today, the Court, for the first time in its history, grants 
+a business open to the public a constitutional right to refuse 
+to serve members of a protected class.  Specifically, the 
+Court holds that the First Amendment exempts a website-
+design company from a state law that prohibits the com-
+pany from denying wedding websites to same-sex couples if 
+the company chooses to sell those websites to the public.  
+The Court also holds that the company has a right to post a 
+notice that says, “‘no [wedding websites] will be sold if they 
+ 
+will be used for gay marriages.’”  Ibid.  
+ 
+ 
+2  303 CREATIVE LLC v. ELENIS  
+   
+SOTOMAYOR,  J., dissenting  
+  “What a difference five years makes.”  Carson v. Makin, 
+596 U. S. ___, ___ (2022) (SOTOMAYOR, J., dissenting) (slip
+op., at 5).  And not just at the Court.  Around the country, 
+there has been a backlash to the movement for liberty and
+equality for gender and sexual minorities.  New forms of  
+inclusion have been met with reactionary exclusion.  This  
+is heartbreaking.  Sadly, it is also familiar.  When the civil 
+rights and women’s rights movements sought equality in 
+public life, some public establishments refused. Some even 
+claimed, based on sincere religious beliefs, constitutional 
+rights to discriminate.  The brave Justices who once sat on  
+this Court decisively rejected those claims. 
+  Now the Court faces a similar test.  A business open to
+the public seeks to deny gay and lesbian customers the full 
+and equal enjoyment of its services based on the owner’s 
+religious belief that same-sex marriages are “false.”  The 
+business argues, and a majority of the Court agrees, that 
+because the business offers services that are customized 
+and expressive, the Free Speech Clause of the  First Amend-
+ment shields the business from a generally applicable law 
+that prohibits discrimination in the sale of publicly availa-
+ble goods and services.  That is wrong.  Profoundly wrong.  
+As I will explain, the law in question targets conduct, not 
+speech, for regulation, and the act of discrimination has 
+never  constituted  protected  expression  under  the  First 
+Amendment.  Our Constitution contains no right to refuse 
+service to a disfavored group.  I dissent. 
+I 
+A 
+  A “public accommodations law” is a law that guarantees 
+to every person the full and equal enjoyment of places of
+public accommodation without unjust discrimination.  The 
+American  people,  through  their  elected  representatives, 
+have enacted such laws at all levels of government: The 
+federal Civil Rights Act of 1964 and the Americans with 
+ 
+  Cite as:  600 U. S. ____ (2023)  3 
+ 
+SOTOMAYOR,  J., dissenting  
+Disabilities Act of 1990 prohibit discrimination by places of 
+public accommodation on the basis of race, color, religion, 
+national origin, or disability.1  All but five States have 
+analogous laws that prohibit discrimination on the basis of 
+these and other traits, such as age, sex, sexual orientation, 
+and  gender  identity.2    And  numerous  local  laws  offer 
+similar protections.
+  The people  of Colorado have adopted the Colorado Anti-
+Discrimination Act (CADA), which provides: 
+  “It is a discriminatory practice and unlawful for a 
+person, directly or indirectly, to refuse, withhold from, 
+—————— 
+1See 42 U. S. C. §2000a et seq. (Title II of Civil Rights Act  of 1964); 42  
+ 
+U. S. C. §12181 et seq. (Title III of Americans with Disabilities Act of 
+1990). 
+2See Alaska Stat. §18.80.230 (2023); Ariz. Rev. Stat. Ann. §41–1442  
+ 
+(2017); Ark. Code Ann. §16–123–107 (Supp. 2021); Cal. Civ. Code Ann.  
+§51 (West 2020); Colo. Rev.  Stat. §24–34–601 (2022); Conn. Gen. Stat.  
+§§46a–64, 46a–81d (Cum. Supp. 2023); Del. Code Ann., Tit. 6, §4504 
+(Cum. Supp. 2022); Fla. Stat. §§413.08, 760.08 (2022); Haw. Rev. Stat.  
+§489–3 (Cum. Supp. 2021); Idaho Code Ann. §67–5909 (2020); Ill. Comp. 
+Stat., ch. 775, §5/1–102 (West Supp. 2021); Ind. Code §22–9–1–2 (2022); 
+Iowa Code §216.7 (2023); Kan. Stat. Ann. §44–1001 (2021); Ky. Rev. Stat. 
+Ann. §§344.120, 344.145 (West 2018); La. Rev. Stat. Ann. §51:2247 (West  
+Cum. Supp. 2023); Me. Rev.  Stat. Ann., Tit. 5, §4591 (Cum. Supp. 2023); 
+Md. State Govt. Code Ann. §20–304 (2021); Mass. Gen. Laws, ch. 272, 
+§98 (2020); Mich. Comp. Laws §§37.1102, 37.2302 (1981), as amended, 
+2023 Mich. Pub. Acts no. 6 (sine die); Minn. Stat. §363A.11 (2022); Mo.  
+Rev. Stat. §213.065 (Cum. Supp. 2021); Mont. Code Ann. §49–2–304  
+(2021); Neb. Rev. Stat. §20–134 (2022); Nev. Rev. Stat. §651.070 (2017);  
+N. H. Rev. Stat. Ann.  §354–A:17 (2022); N.  J. Stat. Ann.  §10:5–12 (West  
+Cum. Supp. 2023); N. M. Stat. Ann. §28–1–7 (2022); N.  Y. Civ. Rights  
+Law Ann. §40 (West 2019); N. D. Cent. Code Ann. §14–02.4–14 (2017); 
+Ohio Rev. Code Ann. §4112.02 (Lexis Supp. 2023); Okla. Stat., Tit. 25, 
+§1402 (2011); Ore. Rev. Stat. §659A.403 (2021); Pa. Stat. Ann., Tit. 43, 
+§953 (Purdon 2020); R. I. Gen. Laws §11–24–2 (2002); S. C. Code Ann. 
+§45–9–10 (2016); S. D. Codified Laws §20–13–23 (2016); Tenn. Code Ann. 
+§4–21–501 (2021); Utah Code §13–7–3 (2022); Vt. Stat. Ann., Tit. 9, 
+§4502  (2020);  Va.  Code  Ann.  §2.2–3904  (2022);  Wash.  Rev.  Code 
+§49.60.215 (2022); W. Va. Code Ann. §5–11–2 (Lexis 2022); Wis. Stat. 
+§106.52 (2019–2020); Wyo. Stat. Ann. §6–9–101 (2021).  
+ 
+4  303 CREATIVE LLC v. ELENIS  
+   
+SOTOMAYOR,  J., dissenting  
+or deny to an individual or a group, because of disabil-
+ity, race, creed, color, sex, sexual orientation, gender 
+identity, gender expression, marital status, national 
+origin, or ancestry, the full and equal enjoyment of the 
+goods, services, facilities, privileges, advantages, or ac-
+commodations  of  a  place  of  public  accommodation.”  
+Colo. Rev. Stat. §24–34–601(2)(a). 
+This  provision,  known  as  the  Act’s  “Accommodation 
+Clause,” applies to any business  engaged in sales “to the 
+public.”  §24–34–601(1).  The Accommodation Clause does  
+not apply to any “church, synagogue, mosque, or other place 
+that is principally used for religious purposes.”  Ibid.  
+  In addition, CADA contains what is referred to as the 
+Act’s “Communication Clause,” which makes it unlawful to 
+advertise that services “will be refused, withheld from, or 
+denied,” or that an individual is “unwelcome” at a place of 
+public accommodation, based on the same protected traits.  
+§24–34–601(2)(a).  In other words, just as a business open 
+to the public may not refuse to serve customers based on  
+race, religion, or sexual  orientation, so too the business may 
+not hang a sign that says, “No Blacks, No Muslims, No 
+Gays.” 
+  A public accommodations law has two core purposes. 
+First, the law ensures “equal access to publicly available
+goods and services.”  Roberts v. United States Jaycees, 468  
+U. S. 609, 624 (1984) (emphasis added).  For social groups 
+that face discrimination, such access is vital.  All the more 
+so if the group is small in number or if discrimination 
+against the group is widespread.  Equal access  is mutually 
+beneficial: Protected persons receive “equally effective and 
+meaningful opportunity to benefit from all aspects of life in 
+America,” 135 Cong. Rec. 8506 (1989) (remarks of Sen. 
+Harkin) (Americans with Disabilities Act), and “society,” in 
+return, receives “the benefits of wide participation in polit-
+ical, economic, and cultural life.”  Roberts, 468 U. S., at 625.  
+ 
+  Cite as:  600 U. S. ____ (2023)  5 
+ 
+SOTOMAYOR,  J., dissenting  
+  Second, a public accommodations law ensures equal dig-
+nity in the common market.  Indeed, that is the law’s “fun-
+damental object”: “to vindicate ‘the deprivation of personal 
+dignity that surely accompanies denials of equal access to 
+public establishments.’”  Heart of Atlanta Motel, Inc. v.  
+ 
+United States, 379 U. S. 241, 250 (1964) (quoting S. Rep. 
+No. 872, 88th Cong., 2d Sess., 16 (1964)).  This purpose does 
+not depend on whether goods or services are otherwise 
+available. “‘Discrimination is not simply dollars and cents, 
+ 
+hamburgers and movies; it is the humiliation, frustration, 
+and embarrassment that a person must surely feel when he 
+is told that he is unacceptable as a member of the public 
+because of his [social identity].  It is equally the inability to 
+explain to a  child that regardless of education, civility, cour-
+tesy, and morality he will be denied the right to enjoy equal 
+treatment.’”  379 U. S., at 292 (Goldberg, J., concurring).  
+ 
+When a young Jewish girl and her parents come across a 
+business with a sign out front that says, “‘No dogs or Jews 
+ 
+allowed,’”3 the fact that another business might serve her 
+ 
+family does not redress that “stigmatizing injury,” Roberts, 
+468 U. S., at 625.  Or, put another way, “the hardship
+Jackie Robinson suffered when on the road” with his base-
+ball team “was not an inability to find some hotel that would 
+have him; it was the indignity of not being allowed to stay 
+in the same hotel as his white teammates.”  J. Oleske, The 
+Evolution of Accommodation, 50 Harv. Civ. Rights-Civ. Lib. 
+L. Rev. 99, 138 (2015).
+  To illustrate, imagine a funeral home in rural Mississippi 
+agrees to transport and cremate the body of an elderly man 
+who has passed away, and to host a memorial lunch.  Upon  
+learning that the man’s surviving spouse is also a man, 
+however, the funeral home refuses to deal with the family.   
+—————— 
+3Hearings on the Nomination of Ruth Bader Ginsburg To Be Associate 
+ 
+Justice of the Supreme Court of the United States before the Senate 
+Committee on the Judiciary,  103d Cong., 1st Sess., 139 (1993).  
+ 
+6  303 CREATIVE LLC v. ELENIS  
+   
+SOTOMAYOR,  J., dissenting  
+Grief stricken, and now isolated and humiliated, the family 
+desperately searches for another funeral home that will 
+take the body. They eventually find one more than 70 miles 
+away.  See  First  Amended  Complaint  in  Zawadski   v. 
+Brewer  Funeral  Services,  Inc.,  No.  55CI1–17–cv–00019  
+(C. C. Pearl River Cty., Miss., Mar. 7, 2017), pp. 4–7.4  This  
+ostracism, this otherness, is among the most distressing 
+feelings that can be felt by our social species.  K. Williams, 
+Ostracism, 58 Ann. Rev. Psychology 425, 432–435 (2007). 
+  Preventing the “unique evils” caused by “acts of invidious 
+discrimination  in  the  distribution  of  publicly  available 
+goods, services, and other advantages” is a compelling state 
+interest “of the highest order.”  Roberts, 468 U. S., at 624, 
+628; see Board of Directors of Rotary Int’l v. Rotary Club of 
+Duarte, 481 U. S. 537,  549 (1987).  Moreover, a law that 
+prohibits only such acts by businesses open to the public is
+narrowly tailored to achieve that compelling interest.  The  
+law “responds precisely to the substantive problem which 
+legitimately concerns the State”: the harm from status-
+based discrimination in the public marketplace.  Roberts, 
+468 U. S., at 629 (internal quotation marks omitted).
+  This last aspect of a public accommodations law deserves 
+special emphasis: The law regulates only businesses that 
+choose to sell goods or services “to the general public,” e.g., 
+Va. Code Ann. §2.2–3904, or “to the public,” e.g., Mich.  
+Comp. Laws §37.2301.  Some public accommodations laws, 
+—————— 
+4The men in this story are Robert “Bob” Huskey and John “Jack” 
+ 
+Zawadski.  Bob and Jack were a loving  couple of 52 years.  They moved 
+from California to Colorado to care for Bob’s mother, then to Wisconsin 
+to farm apples and teach special education, and then to Mississippi to  
+retire.  Within weeks of this Court’s decision in Obergefell v.  Hodges, 576  
+U. S. 644 (2015), Bob and Jack got married.  They  were 85 and 81 years  
+old on their wedding day.  A few months later, Bob’s health took a turn.  
+He died the following spring.  When  Bob’s family was forced to find an
+alternative funeral home more than an hour from where Bob and Jack 
+lived, the lunch in Bob’s memory had to be canceled.  Jack died the next 
+year.  
+ 
+  Cite as:  600 U. S. ____ (2023)  7 
+ 
+SOTOMAYOR,  J., dissenting  
+such as the federal Civil Rights Act, list establishments 
+that qualify, but these establishments are ones open to the 
+public generally.  See, e.g., 42 U.  S. C. §2000a(b) (hotels,  
+restaurants, gas stations, movie theaters, concert halls, 
+sports arenas, stadiums).  A public accommodations law 
+does not force anyone to start a business, or to hold out the 
+business’s goods or services to the public at large.  The law 
+also does not compel any business to sell any particular 
+good or service. But if a business chooses to profit from the 
+public market, which is established and maintained by the 
+state, the state may require the business to abide by a legal 
+norm of nondiscrimination. In particular, the state may en-
+sure that groups historically marked for second-class status 
+are not denied goods or services on equal terms. 
+  The concept of a public accommodation thus embodies a 
+simple,  but  powerful,  social  contract:  A  business  that 
+chooses to sell to the public assumes a duty to serve the 
+public without unjust discrimination.  J. Singer, No Right 
+To Exclude: Public Accommodations and Private Property, 
+90 Nw. U. L. Rev. 1283, 1298 (1996) (Singer).  
+B 
+  The legal duty of a business open to the public to serve 
+the public without unjust discrimination is deeply rooted in 
+our history.  The true power of this principle, however, lies 
+in its capacity to evolve, as society comes to understand 
+more forms of unjust discrimination and, hence, to include
+more persons as full and equal members of “the public.” 
+1 
+  “At common law, innkeepers, smiths, and others who 
+‘made profession of a public employment,’ were prohibited 
+from refusing, without good reason, to serve a customer.”   
+Hurley v. Irish-American Gay, Lesbian and Bisexual Group 
+of Boston, Inc., 515 U. S. 557, 571 (1995) (quoting Lane v. 
+Cotton, 12 Mod. 472, 485, 88 Eng. Rep. 1458, 1465 (K. B.  
+ 
+8  303 CREATIVE LLC v. ELENIS  
+   
+SOTOMAYOR,  J., dissenting  
+1701) (Holt, C. J.)).  “Public employment” meant a business 
+“in which the owner has held himself out as ready to serve 
+the public by exercising his trade.”  Singer 1307; see, e.g., 
+Gisbourn v.  Hurst, 1 Salk. 249, 91 Eng. Rep. 220 (K. B.  
+1710).  Take, for example, Lane v. Cotton, “[t]he leading 
+English case” on the subject “cited over and over again in 
+the nineteenth century in the United States.”  Singer 1304.  
+There, Lord Chief Justice Holt explained: 
+  “[W]here-ever any subject takes upon himself a pub-
+lic trust for the benefit  of the rest of his fellow-subjects, 
+he is eo ipso bound to serve the subject in all the things 
+that are within the reach and comprehension of such 
+an office, under pain of an action against him. . . . If on  
+the road a shoe fall off my horse, and I come to a smith 
+to have one put on, and the smith refuse to do it, an 
+action will lie against him, because he has made pro-
+fession of a  trade which is for the public good, and has 
+thereby exposed and vested an interest of himself in all 
+the King’s subjects that will employ him in the way of 
+his trade.”  Lane v. Cotton, 12 Mod., at 484, 88 Eng. 
+Rep., at 1464. 
+That is to say, a business’s duty to serve all comers derived 
+from its choice to hold itself out as ready to serve the public.  
+This holding-out rationale became firmly established in 
+early American law. See 2 J. Kent, Commentaries on Amer-
+ican Law 464–465 (1827); J. Story, Commentaries on the 
+Law of Bailments §§495, 591 (1832); see also,  e.g., Mark-
+ham v. Brown, 8 N. H. 523, 528 (1837); Jencks v. Coleman, 
+13 F. Cas. 442, 443 (No. 7,258) (CC RI 1835) (Story, J.);  
+Dwight v. Brewster, 18 Mass. 50, 53 (1822). 
+  The majority is therefore mistaken to suggest that public 
+accommodations or common carriers historically assumed 
+duties to serve all comers because they enjoyed monopolies
+or otherwise had market power.  Ante, at 13. Tellingly, the
+majority cites no common-law case espousing the monopoly  
+ 
+  Cite as:  600 U. S. ____ (2023)  9 
+ 
+SOTOMAYOR,  J., dissenting  
+rationale.5   That is because nowhere in the relevant case 
+law “is monopoly suggested as the distinguishing character-
+istic.”  E. Adler, Business Jurisprudence, 28 Harv. L. Rev. 
+135, 156 (1914) (“A distinction based on monopoly would re-
+quire proof that the common carrier had some kind of a mo-
+nopoly which the private carrier did not have, or that ‘com-
+mon’ was synonymous with ‘monopoly.’  The plain meaning 
+of the cases is [instead that] the common was the public, the 
+professional, the business carrier or other trader”).6  
+2 
+  After the Civil War, some States codified the common-law 
+duty of public accommodations to serve all comers.  See M. 
+Konvitz & T. Leskes, A Century of Civil Rights 155–157 
+(1961). Early state public accommodations statutes prohib-
+ited discrimination based on race or color. Yet the principle  
+was at times stated more broadly: to provide “a remedy 
+against any unjust discrimination to the citizen in all public 
+places.”  Ferguson v. Gies, 82 Mich. 358, 365, 46 N. W. 718,  
+720 (1890).  In 1885, Colorado adopted “‘An Act to Protect 
+ 
+All Citizens in Their Civil Rights,’ which guaranteed ‘full  
+—————— 
+5For example, a case on which the majority relies found that it could 
+ 
+“shortly dispos[e]” of the question whether a steamship company was a 
+common carrier because the company was “the owner of a general ship,  
+carrying goods for hire . . . and perform[ing]” that service “regular[ly].”   
+Liverpool & Great Western Steam  Co. v. Phenix Ins. Co., 129 U. S. 397, 
+437 (1889).  No showing of market power  was required.  Ibid.  
+6Nor does “host[ing] or transport[ing] others and their belongings,”  
+ 
+ante, at 13, explain the right of access.  Smiths, for instance, did not al-
+ways practice  their trade by holding  property for others.  And even when  
+they did, any duty of care resulting from such bailment cannot explain  
+the duty to serve all comers, which logically must be assumed before-
+hand.  See Lane v.  Cotton, 12 Mod. 472, 484, 88 Eng. Rep. 1458, 1464  
+(K. B. 1701) (Holt, C. J.).  That duty instead came from somewhere else, 
+and the weight of authority indicates that  it came from a business’s act  
+of holding itself out to the public as ready to serve anyone who would hire 
+it.  Singer 1304–1330; 3 W. Blackstone, Commentaries on the Laws of  
+England 164 (1768); J. Story, Commentaries on the Law of Bailments  
+§§495, 591 (1837); 1 T. Parsons, Law of Contracts 639, 643, 649 (1853). 
+ 
+10   303 CREATIVE LLC v. ELENIS  
+   
+SOTOMAYOR,  J., dissenting  
+and equal enjoyment’ of certain public facilities to ‘all citi-
+zens,’ ‘regardless of race, color or previous condition of ser-
+vitude.’”  Masterpiece Cakeshop, 584 U. S., at ___–___ (slip 
+ 
+op., at 4–5)  (quoting 1885 Colo. Sess. Laws p. 132).  “A dec-
+ade later, the [State] expanded the requirement to apply  to 
+‘all other places of public accommodation.’”  584 U. S., at  
+ 
+___ (slip op., at 5) (quoting 1895 Colo. Sess. Laws ch. 61, p. 
+139).  Congress, too, passed the Civil Rights Act of 1875, 
+which established “[t]hat all persons within the jurisdiction 
+of the United States shall be entitled to the full and equal 
+enjoyment of the accommodations, advantages, facilities,
+and privileges of inns, public conveyances on land or water, 
+theaters, and other places of public amusement . . . applica-
+ble alike to citizens of every race and color, regardless of 
+any previous condition of servitude.”  Act of Mar. 1, 1875,  
+§1, 18 Stat. 336.
+  This Court, however, struck down the federal Civil Rights 
+Act of 1875 as unconstitutional.  Civil Rights Cases, 109  
+U. S. 3, 25 (1883).  Southern States repealed public accom-
+modations statutes and replaced them with Jim Crow laws.  
+And state courts construed any remaining right of access in 
+ways that furthered de jure and de facto racial segregation.7   
+Full  and  equal  enjoyment  came  to  mean  “separate  but
+equal” enjoyment.  The result of this backsliding was “the 
+replacement of a general right of access with a general right 
+to exclude . . . in order to promote a racial caste system.”  
+Singer 1295. 
+—————— 
+7Compare, e.g., Chesapeake, O. & S. R. Co. v.  Wells, 85 Tenn. 613, 615,  
+ 
+4 S. W. 5 (1887) (rejecting Ida B. Wells’s claim that she was denied “ ‘ac-
+ 
+commodations equal in all respects,’ ” when she tried to enter a train car 
+ 
+“set apart for white ladies and their gentlemen” on account of tobacco 
+smoke in her car, and was forcibly removed), with  Memphis & C. R. Co.  
+v. Benson, 85 Tenn. 627, 632, 4 S. W. 5, 7 (1887) (accepting that a white 
+man would be permitted to ride standing in the ladies’ car on account of 
+tobacco smoke in his car).  
+ 
+  Cite as:  600 U. S. ____ (2023)  11  
+ 
+SOTOMAYOR,  J., dissenting  
+  In time, the civil rights movement of the mid-20th cen-
+tury again demanded racial equality in public places.  In  
+1963, two decades after then–Howard University law stu-
+dent Pauli Murray organized sit-ins at cafeterias in Wash-
+ington, D. C., a diverse group of students and faculty from 
+Tougaloo College sat at Woolworth’s lunch counter in Jack-
+son, Mississippi.  For doing so, they were violently attacked  
+by a white mob.  See A. Moody, Coming of Age in Missis-
+sippi 235–240 (1992).  Around the country, similar acts of
+protest against racial injustice, some big and some small, 
+sought “to create such a crisis and foster such a tension” 
+that the country would be “forced to confront the issue.”  M. 
+King, Letter from a Birmingham Jail, Apr. 16, 1963.  That 
+year, Congress once more set out to eradicate “discrimina-
+tion . . . in places of accommodation and public facilities,”  
+Heart of Atlanta Motel, 379 U. S., at 246, notwithstanding 
+this Court’s previous declaration of a federal public accom-
+modations law to be unconstitutional. 
+  Congress believed, rightly, that discrimination in places
+of public accommodation—“the injustice of being arbitrarily 
+denied equal access to those facilities and accommodations 
+which are otherwise open to the general public”—had “no 
+place” in this country, the country “of the melting pot, of 
+equal rights, of one nation and one people.”  S. Rep. No. 872, 
+at 8–9 (quoting President Kennedy, June 19, 1963).  It 
+therefore passed Title II of the Civil Rights Act of 1964, 
+which declares: “All persons shall be entitled to the full and 
+equal enjoyment of the goods, services, facilities, privileges, 
+advantages, and accommodations of any place of public ac-
+commodation . . . without discrimination . . . on the ground
+of  race,  color,  religion,  or  national  origin.”    42  U. S. C. 
+§2000a. In enacting this landmark civil rights statute, Con-
+gress invoked the holding-out rationale from  antebellum 
+common law: “one who employed his private property for 
+purposes of commercial gain by offering goods or services to 
+the public must stick to his bargain.”  S. Rep. No. 872, at 
+ 
+12   303 CREATIVE LLC v. ELENIS  
+   
+SOTOMAYOR,  J., dissenting  
+22; see also id., at 9–10 (endorsing Lord Holt’s view in Lane 
+v. Cotton). 
+  This bargain, America would soon realize, had long ex-
+cluded half of society.  Women, though having won the right 
+to vote half a century earlier, were not equal in public.  In-
+stead, a “separate-spheres ideology” had “assigned women 
+to the home and men to the market.”  E. Sepper & D. Din-
+ner, Sex in Public, 129 Yale L. J. 78, 83, 88–90 (2019) (Sep-
+per & Dinner).  Women were excluded from restaurants,  
+bars, civic and professional organizations, financial institu-
+tions, and sports. “Just as it did for the civil rights struggle, 
+public accommodations served as kindling for feminist mo-
+bilization.”  Id., at 83, 97–104; cf. S. Mayeri, Reasoning 
+From Race: Feminism, Law, and the Civil Rights Revolu-
+tion 9–40 (2011).  In response to a movement for women’s  
+liberation, numerous States banned discrimination in pub-
+lic accommodations on the basis of “sex.”  See Sepper & Din-
+ner 104, nn. 145–147 (collecting statutes).  Colorado was  
+the first State to do so.  See 1969 Colo. Sess. Laws ch. 74, p. 
+200. 
+  In the decades that followed, the Nation opened its eyes
+to another injustice. People with disabilities, though inher-
+ently full and equal members of the public, had been ex-
+cluded  from  many  areas  of  public  life.     This  exclusion 
+worked harms not only to disabled people’s standards of liv-
+ing, but to their dignity too.  So Congress, responding once 
+again to a social movement, this time against the subordi-
+nation of people with disabilities, banned discrimination on 
+that basis and secured by law disabled people’s equal access 
+to public spaces. See S. Bagenstos, Law and the Contradic-
+tions of the Disability Rights Movement 13–20 (2009); R. 
+Colker, The Disability Pendulum 22–68 (2005). The center-
+piece of this political and social action was the Americans 
+with Disabilities Act of 1990 (ADA).  Title III of the ADA 
+provides  that  “[n]o  individual  shall  be  discriminated 
+ 
+  Cite as:  600 U. S. ____ (2023)  13  
+ 
+SOTOMAYOR,  J., dissenting  
+against on the basis of  disability in the full and equal enjoy-
+ment  of  the  goods,  services,  facilities,  privileges,  ad-
+vantages, or accommodations of any place of public accom-
+modation.”  42 U. S. C. §12182(a). 
+  Not only have public accommodations laws expanded to 
+recognize more forms of unjust discrimination, such as dis-
+crimination based on race, sex, and disability, such laws 
+have also expanded to include more goods and services as 
+“public accommodations.”  What began with common inns, 
+carriers, and smiths has grown to include restaurants, bars, 
+movie theaters, sports arenas, retail stores, salons, gyms,
+hospitals, funeral homes, and transportation networks.  See  
+nn. 1–2, supra; L. Lerman & A. Sanderson, Discrimination  
+in Access to Public Places: A Survey of State and Federal 
+Public Accommodations Laws, 7 N. Y. U. Rev. L. & Soc.  
+Change 215, 217 (1978) (“‘Public accommodations’ is a term 
+ 
+of art which was developed by the drafters of discrimination 
+laws to refer to [public] places other than schools, work 
+places, and homes”).   Today, laws like Colorado’s cover “any 
+place of business engaged in any sales to the public and any 
+place offering services . . . to the public.”  Colo. Rev. Stat.  
+§24–34–601(1);  see  also,  e.g.,  Ohio  Rev.  Code  Ann.  
+§4112.01(9).  Numerous other States extend such protec-
+tions to businesses offering goods or services to “the general 
+public.”  Ariz. Rev. Stat. Ann. §41–1441(2); see also, e.g., 
+Mass. Gen. Laws, ch. 272, §92A. 
+  This broader scope, though more inclusive than earlier 
+state public accommodations laws, is in keeping with the 
+fundamental  principle—rooted  in  the  common  law,  but
+alive and blossoming in statutory law—that  the duty to 
+serve without unjust discrimination is owed to everyone, 
+and it extends to any business that holds itself out as ready 
+to serve the public.  If you have ever taken advantage of a  
+public business without being denied service because of who 
+you are, then you have come to enjoy the dignity and free-
+dom that this principle protects.  
+ 
+14   303 CREATIVE LLC v. ELENIS  
+   
+SOTOMAYOR,  J., dissenting  
+3 
+  Lesbian, gay, bisexual, and transgender (LGBT) people, 
+no less than anyone else, deserve that dignity and freedom.  
+The movement for LGBT rights, and the resulting expan-
+sion of state and local laws to secure gender and sexual mi-
+norities’  full  and  equal  enjoyment  of  publicly  available 
+goods and services, is the latest chapter of this great Amer-
+ican story. 
+  LGBT people have existed for all of human history.  And 
+as sure as they have existed, others have sought to deny 
+their existence, and to exclude them from public life.  Those 
+who would subordinate LGBT people have often done so 
+with the backing of law.  For most of American history,
+there were laws criminalizing same-sex intimacy.  Oberge-
+fell v. Hodges, 576 U. S. 644, 660–661 (2015).  “Gays and
+lesbians were [also] prohibited from most government em-
+ployment, barred from military service, excluded under im-
+migration laws, targeted by police, and burdened in their 
+rights to associate.”  Id., at 661.  “These policies worked to
+create and reinforce the belief that gay men and lesbians” 
+constituted “an inferior class.”  Brief for Organization of  
+American  Historians  as  Amicus  Curiae  in  Obergefell  v.  
+Hodges, O. T. 2014, No. 14–556, p. 3. 
+  State-sponsored discrimination was compounded by dis-
+crimination in public accommodations, though the two of-
+ten went hand in hand.  The police raided bars looking for
+gays and lesbians so often that some bars put up signs say-
+ing, “‘We Do Not Serve Homosexuals.’”  Id., at 13 (quoting 
+   
+G. Chauncey, Why Marriage 8 (2004)).  LGBT discrimina-
+tion in public accommodations has continued well into the 
+21st century.  See UCLA School of Law Williams Institute, 
+C. Mallory & B. Sears, Evidence of Discrimination in Public 
+Accommodations Based on Sexual Orientation and Gender 
+Identity (2016).
+  A social system of discrimination created an environment 
+in which LGBT people were unsafe.  Who could forget the 
+ 
+  Cite as:  600 U. S. ____ (2023)  15  
+ 
+SOTOMAYOR,  J., dissenting  
+brutal murder of Matthew Shepard? Matthew was targeted 
+by two men, tortured, tied to a buck fence, and left to die for 
+who he was.  See K. Drake, Gay Man Beaten, Burned and 
+Left Tied to Fence, Casper Star-Tribune, Oct. 10, 1998, p. 
+A1.  Or the Pulse nightclub massacre, the second-deadliest 
+mass shooting in U. S. history?  See S. Stolberg, For Gays 
+Across America, a Massacre Punctuates Fitful Gains, N. Y.  
+Times, June 13, 2016, p. A1.  Rates of violent victimization 
+are  still  significantly  higher  for  LGBT  people,  with 
+transgender persons particularly vulnerable to attack.  See 
+Dept. of Justice, J. Truman & R. Morgan, Violent Victimi-
+zation by Sexual Orientation and Gender Identity, 2017–
+2020 (2022).
+  Determined not to live as “social outcasts,” Masterpiece  
+Cakeshop, 584 U. S., at ___ (slip op., at 9), LGBT people 
+have risen up.  The social movement for LGBT rights has 
+been long and complex.  See L. Faderman, The Gay Revolu-
+tion (2015) (Faderman).  But if there ever was an “earth-
+quake,” it occurred in the final days of June in 1969 at the 
+Stonewall Inn in Greenwich Village. Id., at 169. The Stone-
+wall Inn was a gay bar with a “varied and lively clientele.”  
+Id., at 171.  Its “‘unruly’ element” made it “an especially 
+ 
+inviting target” for police raids.  J. D’Emilio, Sexual Poli-
+tics, Sexual Communities 231 (1983) (D’Emilio).  “Patrons  
+of the Stonewall tended to be young and nonwhite.  Many
+were drag  queens. . . . ”  Ibid.  Just before midnight on June 
+27, the New York police’s Public Morals Squad showed up 
+to the bar and started making arrests.  Drag queens, for 
+example, were arrested for offenses like being “disguised” 
+in “unnatural attire.”  N. Y. Penal Law Ann. §240.35(4) 
+(West 1967).
+  What started out as a fairly routine police raid, however, 
+became anything but.  Outside the Stonewall Inn, patrons 
+who had been thrown out started  to form a crowd.  “Jeers 
+and catcalls arose from the onlookers when a paddy wagon 
+departed with the bartender, the Stonewall’s bouncer, and 
+ 
+16   303 CREATIVE LLC v. ELENIS  
+   
+SOTOMAYOR,  J., dissenting  
+three drag queens.”  D’Emilio 231. “A few minutes later, an 
+officer attempted to steer the last of the patrons, a lesbian, 
+through the bystanders to a nearby patrol car.”  Id., at 231– 
+232.  When  she started to struggle, protests erupted.  They
+lasted into the night and continued into the next.  News of 
+the Stonewall protests “spread rapidly,” and “within a year 
+gay liberation groups had sprung into existence on college 
+campuses and in cities around the nation.”  Id., at 233.   
+From there, the path to LGBT rights has not been quick or  
+easy. Nor is it over.  Still, change has come: change in social 
+attitudes,  in  representation,  and  in  legal  institutions.  
+Faderman 535–629. 
+  One significant change has been the addition of sexual 
+orientation and gender identity to public accommodations 
+laws. State and local legislatures took note of the failure of 
+such laws to protect LGBT people and, in response, acted to 
+guarantee them “all the privileges . . . of any other member
+of society.”  Hearings on S. B. 200  before the House Judici-
+ary Committee, 66th Gen. Assem., 2d Reg. Sess., 4, 11–12 
+(Colo.  2008)  (remarks  of  Sen.  Judd).  Colorado  thus  
+amended its antidiscrimination law in 2008 to prohibit the 
+denial of publicly available goods or services on the basis of 
+“sexual orientation.”  2008 Colo. Sess. Laws. ch. 341, pp.  
+1596–1597.  About half of the States now provide such pro-
+tections.8  It  is “‘unexceptional’” that they may do so.  Ante, 
+   
+at 13 (quoting Masterpiece Cakeshop, 584 U. S., at ___ (slip 
+op., at 10)).  “These are protections taken for granted by  
+—————— 
+8See Cal. Civ.  Code Ann. §51; Colo. Rev. Stat. §24–34–601; Conn.  Gen. 
+ 
+Stat. §46a–81d; Del. Code Ann., Tit. 6, §4504; Haw. Rev. Stat. §489–3; 
+Ill. Comp. Stat., ch. 775, §5/1–102; Iowa Code §216.7; Me. Rev. Stat. 
+Ann., Tit. 5, §4591; Md. State Govt. Code Ann. §20–304; Mass. Gen. 
+Laws, ch. 272, §98; Mich. Comp. Laws §37.2302, as amended; Minn. Stat. 
+§363A.11; Nev. Rev. Stat. §651.070; N. H. Rev. Stat. Ann. §354–A:17;  
+N. J. Stat. Ann. §10:5–12; N. M. Stat. Ann. §28–1–7; N. Y. Civ. Rights  
+Law Ann. §40; Ore. Rev. Stat. §659A.403; R. I. Gen. Laws §11–24–2; Vt. 
+Stat. Ann., Tit. 9, §4502; Va. Code Ann.  §2.2–3904; Wash. Rev. Code  
+§49.60.215; Wis. Stat. §106.52. 
+ 
+  Cite as:  600 U. S. ____ (2023)  17  
+ 
+SOTOMAYOR,  J., dissenting  
+most people either because they already have them or do 
+not need them; these are protections against exclusion from 
+an almost limitless number of transactions and endeavors 
+that constitute ordinary civic life in a free society.”  Romer  
+v. Evans, 517 U. S. 620, 631 (1996).  LGBT people do not 
+seek any special treatment.  All they seek is to exist in pub-
+lic.  To inhabit public spaces on the same terms and condi-
+tions as everyone else.  
+C 
+  Yet for as long as public accommodations laws have been 
+around, businesses have sought  exemptions from them.  
+The civil rights and women’s liberation eras are prominent 
+examples of this.  Backlashes to race and sex equality gave 
+rise  to  legal  claims  of  rights  to  discriminate,  including 
+claims based on First Amendment freedoms of expression 
+and association.  This Court was unwavering in its rejection 
+of those claims, as invidious discrimination “has never been 
+accorded affirmative constitutional protections.”  Norwood  
+v. Harrison, 413 U. S. 455, 470 (1973).  In particular, the 
+refusal to deal with or to serve a class of people is not an 
+expressive interest protected by the First Amendment. 
+1 
+  Opponents of the Civil Rights Act of 1964 objected that 
+the law would force business owners to defy their beliefs.  
+Cf. ante, at 3.  They argued that the Act would deny them 
+“any freedom to speak or to act on the basis of their religious 
+convictions or their deep-rooted preferences for associating 
+or not associating with certain classifications of people.”  
+110 Cong. Rec. 7778 (1964) (remarks of Sen. Tower).  Con-
+gress rejected those arguments.  Title II of the Act, in par-
+ticular, did not invade “rights of privacy [or] of free associ-
+ation,”  Congress  concluded,  because  the  establishments 
+covered by the law were “those regularly held open to the 
+ 
+18   303 CREATIVE LLC v. ELENIS  
+   
+SOTOMAYOR,  J., dissenting  
+public in general.” H. R. Rep. No. 914, 88th Cong., 1st Sess., 
+pt. 2, p. 9 (1963); see also S. Rep. No. 872, at 92.
+  Having failed to persuade Congress, opponents of Title II 
+turned to the federal courts.  In Heart of Atlanta Motel, one 
+of several arguments made by the plaintiff motel owner was 
+that Title II violated his Fifth Amendment due process
+rights by “tak[ing] away the personal liberty of an individ-
+ual to run his business as he sees fit with respect to the 
+selection and service of his customers.”  Brief for Appellant,  
+O. T. 1964, No. 515, p. 32.  This Court disagreed, based on 
+“a long line of cases” holding that “prohibition of racial dis-
+crimination in public accommodations” did not “interfer[e] 
+with personal liberty.”  379 U. S., at 260. 
+In Katzenbach v. McClung, 379 U. S. 294 (1964), the 
+owner of Ollie’s Barbecue (Ollie McClung) likewise argued 
+that Title II’s application to his business violated the “per-
+sonal rights of persons in their personal convictions” to 
+deny services to Black people.  Brief for Appellees, O. T.  
+1964, No. 543, p. 33 (citing, inter alia, West Virginia Bd. of  
+Ed. v.  Barnette, 319 U. S. 624 (1943)).  Note that McClung 
+did not refuse to transact with Black people.  Oh, no.  He  
+was willing to offer them take-out service at a separate 
+counter.  See Brief for NAACP Legal Defense and Educa-
+tional  Fund,  Inc.,  as  Amicus  Curiae  in  Katzenbach  v.  
+McClung, p. 4, n. 5.  Only integrated table service, you see, 
+violated McClung’s core beliefs.  So he claimed a constitu-
+tional right to offer Black people a limited menu of his ser-
+vices.  This Court rejected that claim, citing its decision in 
+Heart of Atlanta Motel.  See 379 U. S., at 298, n. 1. 
+Next is Newman v. Piggie Park Enterprises,  Inc., 390  
+U. S. 400 (1968) (per curiam), in which the owner of a chain 
+of drive-in establishments asserted that requiring him to 
+“contribut[e]” to racial integration in any way violated the 
+First Amendment by interfering with his religious liberty.  
+App. to Pet. for Cert., O. T. 1967, No. 339, p. 21a.  Title II 
+could not be applied to his business, he argued, because that  
+ 
+  Cite as:  600 U. S. ____ (2023)  19  
+ 
+SOTOMAYOR,  J., dissenting  
+would “‘controven[e] the will of God.’”  390 U.  S., at 402– 
+   
+403, n. 5.  The Court found this argument “patently frivo-
+lous.”  Ibid.  
+  Last but not least is  Runyon v. McCrary, 427 U. S. 160 
+(1976), a case the majority studiously avoids.  In Runyon, 
+the Court confronted the question whether “commercially 
+operated” schools had a First Amendment right to exclude 
+Black children, notwithstanding a federal law against ra-
+cial  discrimination  in  contracting.    Id.,  at  168;  see  42  
+U. S. C. §1981.  The schools in question offered “educational 
+services” for sale to “the general public.”  427 U. S., at 172.   
+They argued that the law, as applied to them, violated their 
+First Amendment rights of “freedom of speech, and associ-
+ation.”  Pet. for Cert., O. T. 1976, No. 75–62, p. 6; see also 
+Brief for Petitioners, O. T. 1976, No. 75–62, p. 12 (“Freedom 
+to teach, to express ideas”).  The Court, however, reasoned  
+that the schools’ “practice” of denying educational services
+to racial minorities was not shielded by the First Amend-
+ment, for two reasons: First, “the Constitution places no 
+value on discrimination.”  427 U. S., at 176 (alterations and 
+internal quotations marks omitted).  Second, the govern-
+ment’s regulation of conduct did not “inhibit” the schools’ 
+ability to teach its preferred “ideas or dogma.”  Ibid. (inter-
+nal quotation marks omitted).  Requiring the schools to 
+abide by an antidiscrimination law was not the same thing 
+as compelling the schools to express teachings contrary to 
+their sincerely held “belief that racial segregation is desira-
+ble.”  Ibid. 
+2 
+  First Amendment rights of expression and association 
+were also raised to challenge laws against sex discrimina-
+tion. In Roberts v.  United States Jaycees, the United States 
+Jaycees sought an exemption from a Minnesota law that 
+forbids discrimination on the basis of sex in public accom-
+modations.  The U. S. Jaycees was a civic organization, 
+ 
+20   303 CREATIVE LLC v. ELENIS  
+   
+SOTOMAYOR,  J., dissenting  
+which until then had denied admission to women.  The or-
+ganization alleged that applying the law to require it to in-
+clude women would violate its “members’ constitutional  
+rights of free speech and association.”  468 U. S., at 615.  
+“The power of the state to change the membership of an or-
+ganization is inevitably the power to change the way in  
+which it speaks,” the Jaycees argued.  Brief for Appellee,
+O. T. 1983, No. 83–724, p. 19 (emphasis added).  Thus, “the  
+right of the Jaycees to decide its own membership” was “in-
+separable,” in its view, “from its ability to freely express it-
+self.”  Ibid.  
+  This Court took a different view.  The Court held that the  
+“application of the Minnesota statute to compel the Jaycees 
+to accept women” did not infringe the organization’s First 
+Amendment “freedom of expressive association.”  Roberts, 
+468 U. S., at 622.  That was so because the State’s public 
+accommodations law did “not aim at the suppression of 
+speech” and did “not distinguish between prohibited and 
+permitted activity on the basis of viewpoint.”  Id., at 623– 
+624.  If the State had applied the law “for the purpose of 
+hampering the organization’s ability to express its views,” 
+that would be a different matter.  Id., at 624 (emphasis  
+added).  “Instead,” the law’s purpose was “eliminating dis-
+crimination and assuring [the State’s] citizens equal access
+to publicly available goods and services.”  Ibid. “That goal,”
+the Court reasoned, “was unrelated to the suppression of 
+expression” and “plainly serves compelling state interests 
+of the highest order.”  Ibid.  
+  Justice O’Connor concurred in part and concurred in the 
+judgment.  See id., at 631. She stressed that the U. S. Jay-
+cees was a predominantly commercial entity open to the 
+public.  And she took the view  that there  was a First 
+Amendment “dichotomy” between rights of commercial and 
+expressive association.   Id., at 634.  The State, for example, 
+was “free to impose any rational regulation” on commercial 
+transactions themselves.  “A shopkeeper,” Justice O’Connor 
+ 
+  Cite as:  600 U. S. ____ (2023)  21  
+ 
+SOTOMAYOR,  J., dissenting  
+explained, “has no constitutional right to deal only with per-
+sons of one sex.”  Ibid.  
+  To wit, the Court had just decided in Hishon v. King & 
+Spalding, 467 U. S. 69, 78 (1984),  that a law partnership 
+had no constitutional right to discriminate on  the basis of 
+sex in violation of Title VII.  The law partnership was an  
+act of association.  Its services (legal advocacy) were expres-
+sive; indeed, they consisted of speech.  So the law firm ar-
+gued that requiring it to consider a woman for the partner-
+ship  violated  its  First  Amendment  rights  “of  free  
+expression” and “of commercial association.”  Brief for Re-
+spondent, O. T. 1983, No. 82–940, pp.  14–18.  This Court 
+rejected that argument.  The application of Title VII did not 
+“infringe constitutional rights of expression or association,” 
+the Court held, because compliance with Title VII did not 
+“inhibi[t]” the partnership’s ability to advocate for certain 
+“ideas and beliefs.”  467 U. S., at 78 (internal quotation 
+marks omitted); see also supra, at 19 (discussing Runyon, 
+427 U. S., at 176).  The Court reiterated: “‘[I]nvidious pri-
+ 
+vate discrimination . . . has never been accorded affirmative 
+constitutional protections.’”  467 U. S., at 78 (quoting Nor-
+ 
+wood, 413 U. S., at 470). 
+II  
+  Battling  discrimination  is  like  “battling  the  Hydra.”  
+Shelby County v. Holder, 570 U. S. 529, 560 (2013) (Gins-
+burg, J., dissenting). Whenever you defeat “one form of . . . 
+discrimination,” another “spr[ings] up in its place.”  Ibid.   
+Time and again, businesses and other commercial entities 
+have claimed constitutional rights to discriminate.  And 
+time and again, this Court has courageously stood up to 
+those claims—until today.  Today, the Court shrinks.  A  
+business claims that it would like to sell wedding websites 
+to the general public, yet deny those same websites to gay 
+and lesbian couples.  Under state law, the business is free 
+to include, or not to include, any lawful message it wants in  
+ 
+22   303 CREATIVE LLC v. ELENIS  
+   
+SOTOMAYOR,  J., dissenting  
+its wedding websites.  The only thing the business may not 
+do is deny whatever websites it offers on the basis of sexual 
+orientation.  This Court, however, grants the business a  
+broad exemption from state law and allows the business to 
+post a notice that says: Wedding websites will be refused to 
+gays and lesbians.  The Court’s decision, which conflates  
+denial of service and protected expression, is a grave error. 
+A 
+  303 Creative LLC is a limited liability company that sells 
+graphic and website designs for profit.  Lorie Smith is the 
+company’s founder and sole member-owner.  Smith believes  
+same-sex marriages are “false,” because “‘God’s true story 
+ 
+of marriage’” is a story of a “‘union between one man and 
+   
+one woman.’”  Brief for Petitioners 4, 6–7 (quoting App. to 
+ 
+Pet. for Cert. 188a, 189a); Tr. of Oral Arg. 36, 40–41.  Same-
+sex marriage, according to her, “violates God’s will” and 
+“harms society and children.”  App. to Pet. for Cert. 186a. 
+  303 Creative has never sold wedding websites.  Smith  
+now believes, however, that “God is calling her ‘to explain
+His true story about marriage.’”  Brief for  Petitioners 7  
+ 
+(quoting App. to Pet. for Cert. 188a).  For that reason, she  
+says, she wants her for-profit company to enter the wedding 
+website business.  There is only one thing: Smith would like 
+her company to sell wedding websites “to the public,” App. 
+to Pet. for Cert. 189a; Colo. Rev. Stat. §24–34–601(1), but
+not to same-sex couples. She also wants to post a notice on 
+the company’s website announcing this intent to discrimi-
+nate. App. to Pet. for Cert. 188a–189a.  In Smith’s view, “it 
+would violate [her] sincerely held religious beliefs to create 
+a wedding website for a same-sex wedding because, by do-
+ing so, [she] would be expressing a message celebrating and 
+promoting a conception of marriage that [she] believe[s] is 
+contrary to God’s design.”  Id., at 189a. 
+  Again, Smith’s company has never sold a wedding web-
+site to any customer.  Colorado, therefore, has never had to 
+ 
+  Cite as:  600 U. S. ____ (2023)  23  
+ 
+SOTOMAYOR,  J., dissenting  
+enforce its antidiscrimination laws against the company.  
+As the majority puts it, however, Smith “worries that, if she 
+enters the wedding website business, the State will force 
+her to convey messages inconsistent with her belief that 
+marriage should be reserved to unions between one man 
+and one woman.”  Ante, at 2.  So Smith and her company,
+the petitioners here, sued the State in federal court.  They
+sought a court decree giving them a special exemption from 
+CADA’s Accommodation Clause (which, remember, makes 
+it unlawful for a business to hold itself out to the public yet 
+deny to any individual, because of sexual orientation, the 
+full and equal enjoyment of the business’s goods or services, 
+see  supra,  at  3–4)  and  CADA’s  Communication  Clause 
+(which makes it unlawful to advertise that goods or services 
+will be denied because of sexual orientation, see supra, 
+at 4).  App. 303–304. 
+  The breadth of petitioners’ pre-enforcement challenge is 
+astounding. According to Smith, the Free Speech Clause of 
+the First Amendment entitles her company to refuse to sell 
+any “websites for same-sex weddings,” even though the 
+company plans to offer wedding  websites to the general 
+public.  Ibid.; see also Brief for Petitioners 22–23, and n. 2; 
+Tr. of Oral Arg. 37–38.  In other words, the company claims 
+a categorical exemption from a public accommodations law 
+simply because the company sells expressive services.  The  
+sweeping nature of this claim should have led this Court to 
+reject it.  
+B 
+  The First Amendment does not entitle petitioners to a 
+special exemption from a state law that simply requires 
+them to serve all members of the public on equal terms.  
+Such a law does not directly regulate petitioners’ speech at 
+all, and petitioners may not escape the law by claiming an 
+expressive interest in discrimination.  The First Amend-
+ment likewise does not exempt petitioners from the law’s 
+ 
+24   303 CREATIVE LLC v. ELENIS  
+   
+SOTOMAYOR,  J., dissenting  
+prohibition on posting a notice that they will deny goods or 
+services based on sexual orientation. 
+1 
+  This Court has long held that “the First Amendment does 
+not prevent restrictions directed at commerce or conduct 
+from imposing incidental burdens on speech.”  Sorrell v. 
+IMS Health Inc., 564 U. S. 552, 567 (2011).  “Congress, for
+example, can prohibit employers from discriminating in hir-
+ing on the basis of race.  The fact that this will require an 
+employer to take down a sign reading ‘White Applicants 
+Only’ hardly means that the law should be analyzed as one 
+regulating  the  employer’s  speech  rather  than  conduct.”   
+Rumsfeld v.  Forum for Academic and Institutional Rights, 
+Inc., 547 U. S. 47, 62 (2006) (FAIR). This principle explains
+“why an ordinance against outdoor fires might forbid burn-
+ing a flag and why antitrust laws  can prohibit agreements 
+in restraint of trade.”  Sorrell, 564 U. S., at 567 (citation and 
+internal quotation marks omitted).
+Consider United States v. O’Brien, 391 U. S. 367 (1968).  
+In that case, the Court upheld the application of a law 
+against the destruction of draft cards to a defendant who
+had burned his draft card to protest the Vietnam War.  The  
+protester’s conduct was indisputably expressive.  Indeed, it 
+was political expression, which lies at the heart of the First 
+Amendment.  Whitney v. California, 274 U.  S. 357, 375  
+(1927) (Brandeis, J., concurring).  Yet the O’Brien Court fo-
+cused on whether the Government’s interest in regulating 
+the conduct was to burden expression.  Because it was not,  
+the regulation was subject to lesser constitutional scrutiny.  
+391 U. S., at 376–377, 381–382; Clark v. Community for 
+Creative Non-Violence, 468 U. S. 288, 294, 299 (1984).  The 
+O’Brien standard is satisfied if a regulation is unrelated to 
+the suppression of expression and “‘promotes a substantial 
+ 
+government interest that would be achieved less effectively  
+ 
+  Cite as:  600 U. S. ____ (2023)  25  
+ 
+SOTOMAYOR,  J., dissenting  
+absent the regulation.’”  FAIR, 547 U. S., at 67 (quoting  
+ 
+United States v. Albertini, 472 U. S. 675, 689 (1985)).9  
+  FAIR confronted the interaction between this principle 
+and an equal-access law.  The law at issue was the Solomon  
+Amendment, which prohibits an institution of higher edu-
+cation in receipt of federal funding from denying a military 
+recruiter “the same access to its campus and students that 
+it provides to the nonmilitary recruiter receiving the most 
+favorable access.”  547 U. S., at 55; see 10 U. S. C. §983(b).  
+A group of law schools challenged the Solomon Amendment 
+based on their sincere objection to the military’s “Don’t Ask, 
+Don’t Tell” policy.  For those who are too young to know, 
+“Don’t Ask, Don’t Tell” was a homophobic policy that barred 
+openly LGBT people from serving in the military.  LGBT 
+people could serve only if they kept their identities secret.  
+The idea was that their open existence was a threat to the 
+military.
+  The  law  schools  in  FAIR  claimed  that  the  Solomon 
+Amendment infringed the schools’ First Amendment free-
+dom of speech.  The schools provided recruiting assistance 
+in the form of emails, notices on bulletin boards, and flyers.  
+547 U. S., at 60–61.   As the Court acknowledged, those ser-
+vices “clearly involve speech.”  Id., at 60.  And the Solomon  
+Amendment  required  “schools  offering  such  services  to
+other recruiters” to provide them equally “on behalf of the 
+military,” even if the school deeply objected to creating such 
+speech.  Id., at 61.  But that did not transform the equal 
+provision of services into “compelled speech” of the kind 
+barred  by  the  First  Amendment,  because  the  school’s 
+speech was “only ‘compelled’ if, and to the extent, the school 
+provides such speech for other recruiters.”  Id., at 62.  Thus, 
+—————— 
+9The majority commits a fundamental error in suggesting that a law 
+ 
+does not regulate conduct if it ever applies to expressive activities.  See  
+ante, at 19, 22. This would come as a great surprise to the O’Brien Court. 
+ 
+26   303 CREATIVE LLC v. ELENIS  
+   
+SOTOMAYOR,  J., dissenting  
+any speech compulsion was “plainly incidental to the Solo-
+mon Amendment’s regulation of conduct.”  Ibid.  
+2 
+  The same principle resolves this case.  The majority tries 
+to sweep under the rug petitioners’ challenge to CADA’s 
+Communication Clause, so I will start with it.  Recall that 
+Smith wants to post a notice on her company’s homepage 
+that the company will refuse to sell any website for a same-
+sex couple’s wedding.  This Court, however, has already 
+said that “a ban on race-based hiring may require employ-
+ers to remove ‘White Applicants Only’ signs.”  Sorrell, 564 
+U. S., at 567 (quoting FAIR, 547 U. S., at 62; some internal 
+quotation marks omitted); see Pittsburgh Press Co. v. Pitts-
+burgh Comm’n on Human Relations, 413 U.  S. 376, 389 
+(1973).  So petitioners concede that they are not entitled to 
+an exemption from the Communication Clause unless they
+are also entitled to an exemption from the Accommodation 
+Clause.  Brief for Petitioners 34–35.  That concession is all 
+but fatal to their argument, because it shows that even 
+“pure speech” may be burdened incident to a valid regula-
+tion of conduct.10  
+  CADA’s Accommodation Clause and its application here 
+are valid regulations of conduct.  It is well settled that a  
+public accommodations law like the Accommodation Clause 
+does not “target speech or discriminate on the basis of its
+content.” Hurley, 515 U. S., at 572.  Rather, “the focal point 
+of its prohibition” is “on the act of discriminating against 
+—————— 
+10The majority  appears to find this discussion of the Communication 
+ 
+Clause upsetting. See ante, at 20–21, and n.  5. It is easy to understand  
+why: The Court’s prior First Amendment cases clearly explain that a  ban 
+on discrimination may require a business to take down a sign that ex-
+presses the business owner’s intent to discriminate. See,  e.g., FAIR, 547  
+U. S., at 62. This principle is deeply inconsistent with the majority’s po-
+sition. Thus, a “straight couples only” notice, like the one the Court today 
+allows, see App. to Pet. for Cert. 188a–189a, is itself a devastating indict-
+ment of the majority’s logic.  
+ 
+  Cite as:  600 U. S. ____ (2023)  27  
+ 
+SOTOMAYOR,  J., dissenting  
+individuals in the provision of publicly available goods, 
+privileges, and services.”  Ibid. (emphasis added).  The 
+State confirms this reading of CADA.  The law applies only 
+to  status-based  refusals  to  provide  the  full  and  equal 
+enjoyment of whatever services petitioners choose to sell to 
+the public.  See Brief for Respondents 15–18.
+  Crucially, the law “does not dictate the content of speech 
+at all, which is only ‘compelled’ if, and to the extent,” the 
+company offers “such speech” to other customers.  FAIR, 
+547 U. S., at 62.  Colorado does not require the company to 
+“speak [the State’s] preferred message.”  Ante, at 19.  Nor 
+does it prohibit the company from speaking the company’s 
+preferred message.  The company  could, for example, offer 
+only wedding websites with biblical quotations describing 
+marriage as between one man and one woman.  Brief for 
+Respondents 15.  (Just as it could offer only t-shirts with 
+such quotations.)  The company could also refuse to include 
+the words “Love is Love” if it would not provide those words 
+to any customer.  All the company has to do is offer its ser-
+vices without regard to customers’ protected characteris-
+tics.  Id., at 15–16.  Any effect on the company’s speech is 
+therefore “incidental” to the State’s content-neutral regula-
+tion of conduct.  FAIR, 547 U. S., at 62; see Hurley, 515 
+U. S., at 572–573. 
+  Once these features of the law are understood, it becomes  
+clear that petitioners’ freedom of speech is not abridged in 
+any meaningful sense, factual or legal.  Petitioners remain 
+free to advocate the idea that same-sex marriage betrays 
+God’s laws. FAIR, 547 U. S., at 60; Hishon, 467 U. S., at 78; 
+Runyon, 427 U. S., at 176.  Even if Smith believes God is  
+calling her to do so through her for-profit company, the com-
+pany need not hold out its goods or services to the public at 
+large.  Many filmmakers, visual artists, and writers never 
+do. (That is why the law does not require Steven Spielberg
+or Banksy to make films or art for anyone who asks.  But 
+cf. ante, at 12, 23–24.)  Finally, and most importantly, even 
+ 
+28   303 CREATIVE LLC v. ELENIS  
+   
+SOTOMAYOR,  J., dissenting  
+if the company offers its goods or services to the public, it 
+remains free under state law to decide what messages to 
+include or not to include.  To repeat (because it escapes the 
+majority):  The company can put whatever  “harmful” or  
+“low-value” speech it wants on its websites.  It can “tell peo-
+ple what they do not want to hear.”  Ante, at 25 (internal 
+quotation marks and brackets omitted).  All the company 
+may not do is offer wedding websites to the public yet refuse 
+those same websites to gay and lesbian couples.  See Run-
+yon, 427 U. S., at 176 (distinguishing between schools’ abil-
+ity to express their bigoted view “that racial segregation is 
+desirable” and the schools’ proscribable “practice of exclud-
+ing racial minorities”).
+  Another example might help to illustrate the point.  A 
+professional photographer is generally free to choose her 
+subjects. She can make a living taking photos of flowers or 
+celebrities.  The State does not regulate that choice.  If the 
+photographer opens a portrait photography business to the 
+public, however, the business may not deny to any person, 
+because of  race, sex, national origin, or other protected 
+characteristic, the full and equal enjoyment of whatever  
+services the business chooses to  offer.  That is so even  
+though portrait photography services are customized and
+expressive.  If the business offers school photos, it may not 
+deny  those  services  to  multiracial  children  because  the
+owner does not want to create any speech indicating that 
+interracial couples are acceptable.  If the business offers 
+corporate  headshots,  it  may  not  deny  those  services  to 
+women because the owner believes a woman’s place is in the 
+home.  And if the business offers passport photos, it may 
+not deny those services to Mexican Americans because the 
+owner opposes immigration from Mexico.
+  The same is true for sexual-orientation discrimination.  If 
+a photographer opens a photo booth outside of city hall and 
+offers to sell newlywed photos captioned with the words 
+“Just Married,” she may not refuse to sell that service to a 
+ 
+  Cite as:  600 U. S. ____ (2023)  29  
+ 
+SOTOMAYOR,  J., dissenting  
+newlywed gay or lesbian couple, even if she believes the 
+couple is not, in fact, just married because in her view their 
+marriage is “false.”  Tr. of Oral Arg. 36, 40–41.  
+3 
+  Because any burden on petitioners’ speech is incidental 
+to CADA’s neutral regulation of commercial conduct, the 
+regulation is subject to the standard set forth in O’Brien. 
+That standard is easily satisfied here because the law’s ap-
+plication “promotes a substantial government interest that 
+would be achieved less effectively absent the regulation.”   
+FAIR, 547 U. S., at 67 (internal quotation marks omitted).  
+Indeed, this Court has  already held that the State’s goal of 
+“eliminating discrimination and assuring its citizens equal 
+access to publicly available goods and services” is “unre-
+lated to the suppression of expression” and “plainly serves 
+compelling state interests of the highest order.”  Roberts, 
+468 U. S., at 624.  The Court has also held  that by prohibit-
+ing only “acts of invidious discrimination in the distribution 
+of publicly available goods, services, and other advantages,” 
+the  law  “responds  precisely  to  the  substantive  problem
+which legitimately concerns the State and abridges no more 
+speech . . . than is necessary to accomplish that purpose.”  
+Id., at 628–629 (emphasis added; internal quotation marks 
+omitted); see supra, at 4–7. 
+C 
+  The Court reaches the wrong answer in this case because 
+it asks the wrong questions.  The question is not whether 
+the  company’s  products  include  “elements  of  speech.”  
+FAIR, 547 U. S., at 61.  (They do.)  The question is not even 
+whether CADA would require the company to create and 
+sell speech, notwithstanding the owner’s sincere objection 
+to doing so, if the company chooses to offer “such speech” to 
+the public.  Id., at 62.  (It would.)  These questions do not 
+resolve the First Amendment inquiry any more than they 
+ 
+30   303 CREATIVE LLC v. ELENIS  
+   
+SOTOMAYOR,  J., dissenting  
+did in FAIR.  Instead, the proper focus is on the character 
+of state action and its relationship to expression.  Because  
+Colorado seeks to apply CADA only to the refusal to provide 
+same-sex couples the full and equal enjoyment of the com-
+pany’s publicly available services, so that the company’s 
+speech “is only ‘compelled’ if, and to the extent,” the com-
+pany chooses to offer “such speech” to the public, any bur-
+den on speech is “plainly incidental” to a content-neutral 
+regulation of conduct.  Ibid.  
+  The majority attempts to distinguish this clear holding of 
+FAIR by suggesting that the compelled speech in FAIR was  
+“incidental”  because  it  was  “logistical”  (e.g.,  “The  U.  S. 
+Army recruiter will meet interested students in Room 123 
+at 11 a.m.”). Ante, at 18 (internal quotation marks omitted).  
+This attempt fails twice over.  First, the law schools in FAIR  
+alleged that the Solomon Amendment required them to cre-
+ate and disseminate speech propagating the military’s mes-
+sage, which they deeply objected to, and to include military
+speakers in on- and off-campus forums (if the schools pro-
+vided equally favorable services to other recruiters).  547 
+U. S., at 60–61; App. 27 and Brief for Respondents 5–8 in 
+Rumsfeld v.  Forum for Academic and Institutional Rights, 
+Inc., O. T. 2005, No. 04–1152.  The majority simply skips 
+over the Court’s key reasoning for why any speech compul-
+sion was nevertheless “incidental” to the Amendment’s reg-
+ulation of conduct: It would occur only “if, and to the ex-
+tent,” the regulated entity provided “such speech” to others.   
+FAIR, 547 U. S., at 62.  Likewise in O’Brien, the reason the  
+burden on O’Brien’s expression was incidental was not be-
+cause his message was factual or uncontroversial.  But cf.  
+ante, at 19. O’Brien burned his draft card to send a political 
+message, and the burden on his expression was substantial.  
+Still, the burden was “incidental” because it was ancillary 
+to a regulation that did not aim at expression.  391 U. S., at  
+377. 
+ 
+  Cite as:  600 U. S. ____ (2023)  31  
+ 
+SOTOMAYOR,  J., dissenting  
+  Second, the majority completely ignores the categorical 
+nature of the exemption claimed by petitioners. Petitioners 
+maintain, as they have throughout  this litigation, that they 
+will refuse to create any wedding website for a same-sex  
+couple.  Even an announcement of the time and place of a  
+wedding  (similar  to  the  majority’s  example from  FAIR)
+abridges petitioners’ freedom of speech, they claim, because 
+“the announcement of the wedding itself is a concept that 
+[Smith] believes to be false.”  Tr. of Oral Arg. 41.  Indeed, 
+petitioners here concede that if a same-sex couple came
+across an opposite-sex wedding website created by the com-
+pany and requested an identical website, with only the 
+names and date of the wedding changed, petitioners would 
+refuse. Id., at 37–38.11  That is status-based discrimination, 
+plain and simple.
+  Oblivious to this fact, the majority insists that petitioners
+discriminate based on message, not status.  The company, 
+says the majority, will not sell same-sex wedding websites 
+to anyone.  Ante, at 17.  It will sell only opposite-sex wed-
+ding websites; that is its service.  Petitioners, however, 
+“cannot define their service as ‘opposite-sex wedding [web-
+sites]’ any more than a hotel can recast its services as 
+‘whites-only lodgings.’”  Telescope Media Group v. Lucero, 
+ 
+—————— 
+11Because petitioners have never sold a wedding website to anyone, 
+ 
+the record contains only a mockup website.  The mockup confirms what 
+you would expect: The website provides details of the event, a form to 
+RSVP, a gift registry, etc.  See App. 51–72.  The customization of these  
+elements pursuant to a content-neutral regulation of conduct does not 
+unconstitutionally intrude upon any protected expression of the website 
+designer.  Yet Smith claims a First Amendment right to refuse to provide  
+any wedding website for a same-sex couple.  Her claim therefore rests on 
+the idea that her act of service is itself a form of protected expression.  In  
+granting Smith’s claim, the majority collapses the distinction between 
+status-based and message-based refusals  of service.  The history shows
+just how profoundly wrong that is.  See Runyon v.  McCrary, 427 U. S.  
+160, 176 (1976); Hishon v. King & Spalding, 467 U. S. 69, 78 (1984); Rob-
+erts v.  United States Jaycees, 468 U. S. 609, 622–629 (1984). 
+ 
+32   303 CREATIVE LLC v. ELENIS  
+   
+SOTOMAYOR,  J., dissenting  
+936 F. 3d 740, 769 (CA8 2019) (Kelly, J., concurring in part 
+and dissenting in part).  To allow a business open to the 
+public to define the expressive quality of its goods or ser-
+vices to exclude a protected group would nullify public ac-
+commodations laws. It would mean that a large retail store 
+could sell “passport photos for white people.” 
+  The majority protests that Smith will gladly sell her 
+goods and services to anyone, including same-sex couples. 
+Ante, at 2, 17.  She just will not sell websites for same-sex  
+weddings. Apparently, a gay or lesbian couple might buy a 
+wedding website for their straight friends.  This logic would  
+be amusing if it were not so embarrassing.12  I suppose the
+Heart of Atlanta Motel could have argued that Black people 
+may still rent rooms for their white friends.  Smith answers  
+that she will sell other websites for gay or lesbian clients.  
+But then she, like Ollie McClung, who would serve Black 
+people take-out but not table service, discriminates against
+LGBT people by offering them a limited menu.13  This is  
+plain to see, for all who do not look  the other way. 
+  The majority, however, analogizes this case to Hurley and 
+Boy Scouts of America v. Dale, 530 U. S. 640 (2000).  The 
+law schools in FAIR likewise relied on Hurley  and Dale to 
+argue that the Solomon Amendment violated their free-
+speech rights.  FAIR confirmed, however, that a neutral 
+regulation  of  conduct  imposes  an  incidental  burden  on 
+speech when the regulation grants a right of equal access 
+—————— 
+12The majority tacitly acknowledges the absurdity.  At the start of its  
+ 
+opinion, it explains that Smith “decided to expand her offerings to in-
+clude services for couples seeking websites for their weddings.”  Ante, at 1 
+(emphasis added).  
+13What is “‘embarrassing’” about this reasoning is not, as the Court 
+     
+claims, the “distinction between status and message.”  Ante, at 18, n.  3.  
+It is petitioners’ contrivance, embraced by  the Court, that a prohibition 
+on status-based discrimination can be avoided by asserting that a group 
+can always buy services on  behalf of others, or else that the group can 
+access a “separate but equal” subset  of the services made available to 
+everyone else. 
+ 
+  Cite as:  600 U. S. ____ (2023)  33  
+ 
+SOTOMAYOR,  J., dissenting  
+that requires the regulated party to provide speech only if, 
+and to the extent, it provides such speech for others.  Supra, 
+at 25–26, 29–30. 
+  Hurley and Dale, by contrast, involved “peculiar” applica-
+tions of public accommodations laws, not to “the act of dis-
+criminating . . . in the provision of publicly available goods” 
+by “clearly commercial entities,” but rather to private, non-
+profit expressive associations in ways that  directly bur-
+dened speech.  Hurley, 515 U. S., at 572 (private parade); 
+Dale, 530 U. S., at 657 (Boy Scouts).  The Court in Hurley  
+and Dale  stressed that the speech burdens in those cases 
+were not incidental to prohibitions on status-based discrim-
+ination because the associations did not assert that “mere 
+acceptance of a member from a particular group would im-
+pair [the association’s] message.”  Dale, 530 U. S., at 653;  
+see also ibid. (reasoning that Dale was excluded for being a 
+gay rights activist, not for being gay); ibid. (explaining that
+in Hurley, “the parade organizers did not wish to exclude
+the GLIB [Irish-American gay, lesbian, and bisexual group] 
+members because of their sexual orientations, but because 
+they wanted to march behind a GLIB banner”); Hurley, 515 
+U. S., at 572–573. 
+  Here, the opposite is true.  303 Creative LLC is a “clearly 
+commercial entit[y].” Dale, 530 U. S., at 657.  The company
+comes under the regulation of CADA only if it sells services 
+to the public, and only if it denies the equal enjoyment of 
+such services because of sexual orientation.  The State con-
+firms that the company is free to include or not to include 
+any message in whatever services it chooses to offer.  Supra, 
+at 26–28.   And the company confirms that it plans to engage 
+in status-based discrimination.  Supra, at 22–23, 31–32.   
+Therefore, any burden on the company’s expression is inci-
+dental to the State’s content-neutral regulation of commer-
+cial conduct. 
+  Frustrated by this inescapable logic, the majority dials up 
+the rhetoric, asserting that “Colorado seeks to compel [the 
+ 
+34   303 CREATIVE LLC v. ELENIS  
+   
+SOTOMAYOR,  J., dissenting  
+company’s] speech in order to excise certain ideas or view-
+points from the public dialogue.”  The State’s “very purpose 
+in seeking to apply its law,” in the majority’s view, is “the 
+coercive elimination of dissenting ideas about marriage.”  
+Ante,  at  10–11  (internal  quotation  marks  and  brackets  
+omitted).14  That is an astonishing view of the law.  It is 
+contrary to the fact that a law requiring public-facing busi-
+nesses to accept all comers “is textbook viewpoint neutral,”  
+Christian Legal Soc. Chapter of Univ. of Cal., Hastings Col-
+lege of Law v. Martinez, 561 U. S. 661, 695 (2010); contrary 
+to the fact that the Accommodation Clause and the State’s  
+application of it here allows Smith to include in her com-
+pany’s goods and services whatever “dissenting views about 
+marriage” she wants; and contrary to this Court’s clear  
+holdings that the purpose of  a public accommodations law, 
+as applied to the commercial act of discrimination in the 
+sale of publicly available goods and services, is to ensure 
+equal access to and equal dignity in the public marketplace, 
+supra, at 4–6. 
+  So it is dispiriting to read the majority suggest that this 
+case resembles West Virginia Bd. of Ed. v. Barnette, 319 
+U. S. 624 (1943).  A content-neutral equal-access policy is 
+“a far cry” from a mandate to “endorse” a pledge chosen by 
+the Government.  FAIR, 547 U. S., at 62.  This Court has 
+said “it trivializes the freedom protected in Barnette” to  
+equate the two.  Ibid.   Requiring Smith’s company to abide 
+by a law against invidious discrimination in commercial 
+sales to the public does not conscript her into espousing the 
+government’s message.  It does not “invad[e]” her “sphere of 
+intellect” or violate her constitutional “right to differ.”  Ante, 
+at 2, 7 (internal quotation marks omitted).  All it does is 
+—————— 
+14The majority’s repeated invocation of this Orwellian thought policing 
+ 
+is revealing of just how much it misunderstands this case.  See ante, at  
+10–12, 19–20, 24–25 (claiming that the State seeks to “eliminate ideas” 
+and that it will punish Smith unless she “conforms her views to the 
+State’s”).  
+ 
+  Cite as:  600 U. S. ____ (2023)  35  
+ 
+SOTOMAYOR,  J., dissenting  
+require her to stick to her bargain: “The owner who hangs 
+a shingle and offers her services to the public cannot retreat 
+from the promise of open service; to do so is to offer the pub-
+lic marked money.  It is to convey the promise of a free and 
+open society and then take the prize away from the despised 
+few.” J. Singer, We Don’t Serve Your Kind Here: Public Ac-
+commodations and the Mark of Sodom, 95 B. U. L. Rev. 929,  
+949 (2015). 
+III  
+  Today is a sad day in American constitutional law and in 
+the lives of LGBT people.  The Supreme Court of the United 
+States declares that a particular kind of business, though 
+open to the public, has a constitutional right to refuse to 
+serve members of a protected class.  The Court does so for 
+the first time in its history.  By issuing this new license to 
+discriminate in a case brought by a company that seeks to 
+deny same-sex couples the full and equal enjoyment of its 
+services, the immediate, symbolic effect of the decision is to 
+mark gays and lesbians for second-class status.  In this way, 
+the decision itself inflicts a kind of stigmatic harm, on top 
+of any harm caused by denials of service.  The opinion of the
+Court is, quite literally, a notice that reads: “Some services 
+may be denied to same-sex couples.” 
+  “The truth is,” these “affronts and denials” “are intensely 
+human and personal.”  S. Rep. No. 872, at 15 (internal quo-
+tation marks omitted).  Sometimes they may “harm the 
+physical body, but always they strike at the root of the hu-
+man spirit, at the very core of human dignity.”  Ibid.  To see 
+how, imagine a same-sex couple browses the public market 
+with their child.  The market could be online or in a shop-
+ping mall.  Some stores sell products that are customized 
+and expressive.  The family sees a notice announcing that 
+services will be refused for same-sex weddings.  What mes-
+sage does that send? It sends the message that we live in a 
+society with social castes.  It says to the child of the same-
+ 
+36   303 CREATIVE LLC v. ELENIS  
+   
+SOTOMAYOR,  J., dissenting  
+sex couple that their parents’ relationship is not equal to 
+others’.  And it reminds LGBT people of a painful feeling 
+that they know all too well: There are some public places 
+where they can be themselves, and some where they cannot.  
+K. Yoshino, Covering 61–66 (2006).  Ask any LGBT person, 
+and you will learn just how often they are forced to navigate 
+life in this  way.  They must ask themselves:  If I reveal my 
+identity to this co-worker, or  to this shopkeeper, will they 
+treat me the same way? If I hold the hand of  my partner in 
+this setting, will someone stare at me, harass me, or even  
+hurt me? It is an awful way to live.  Freedom from this way 
+of life is the very object of a law that declares: All members 
+of the public are entitled to inhabit public spaces on equal 
+terms. 
+  This case cannot be understood outside of the context in  
+which it arises.  In that context, the outcome is even more  
+distressing. The LGBT rights movement has made historic 
+strides, and I am proud of the role this Court recently 
+played in that history. Today, however, we are taking steps
+backward.  A slew of anti-LGBT laws have been passed in 
+some parts of the country,15 raising the specter of a “bare 
+. . . desire to harm a politically unpopular group.”  Romer, 
+517 U. S., at 634 (internal quotation marks omitted).  This  
+is especially unnerving when “for centuries there have been 
+powerful voices to condemn” this small minority. Lawrence  
+v. Texas, 539 U. S. 558, 571 (2003).  In this pivotal moment, 
+the Court had an opportunity to reaffirm its commitment to 
+equality  on  behalf  of   all  members  of  society,  including 
+LGBT people.  It does not do so.  
+  Although the consequences of today’s decision might be 
+most pressing for the LGBT community, the decision’s logic 
+—————— 
+15These laws variously censor discussion of sexual orientation and   
+ 
+gender identity in schools, see, e.g., 2023 Ky. Acts pp. 775–779, and ban  
+drag shows in public, see 2023 Tenn. Pub. Acts ch. 2.  Yet we are told  
+that the real threat to free speech is that a commercial business open to 
+the public might have to serve all members of the public. 
+ 
+  Cite as:  600 U. S. ____ (2023)  37  
+ 
+SOTOMAYOR,  J., dissenting  
+cannot be limited to discrimination on the basis of sexual 
+orientation or gender identity.  The decision threatens to  
+balkanize the market and to allow the exclusion of other 
+groups  from  many  services.  A  website  designer  could 
+equally refuse to create a wedding website for an interracial 
+couple, for example.  How quickly we forget that opposition 
+to interracial marriage was often because “‘Almighty God 
+ 
+. . . did not intend for the races to mix.’” Loving v. Virginia, 
+ 
+388 U. S. 1, 3 (1967).  Yet the reason for discrimination need 
+not even be religious, as this case arises under the Free 
+Speech Clause.  A stationer could refuse to sell a birth an-
+nouncement for a disabled couple because she opposes their 
+having a child.  A large retail store could reserve its family 
+portrait services for “traditional” families. And so on.16  
+  Wedding  websites,  birth  announcements,  family  por-
+traits, epitaphs.  These are not just words and images.  
+They are the most profound moments in a human’s life.  
+They are the moments that give that life personal and cul-
+tural meaning.  You already heard the story of Bob and 
+Jack, the elderly gay couple forced to find a funeral home 
+more than an hour away.  Supra, at 5–6, and n. 4.  Now 
+hear the story of Cynthia and Sherry, a lesbian couple of 13 
+years until Cynthia died from cancer at age 35.  When Cyn-
+thia was diagnosed, she drew up a will, which authorized 
+Sherry to make burial arrangements.  Cynthia had asked
+Sherry to include an inscription on her headstone, listing
+the relationships that were important to her, for example, 
+“daughter, granddaughter, sister, and aunt.”  After Cynthia 
+—————— 
+16The potential implications of the Court’s logic are deeply troubling.  
+ 
+Would Runyon  v. McCrary  have come out differently if the schools had 
+argued that accepting Black children would have required them to create 
+original speech, like lessons, report cards, or diplomas, that they deeply 
+objected to?  What if the law firm in Hishon v. King & Spalding had  
+argued that promoting a woman to the partnership would have required 
+it to alter its speech, like letterhead or court filings, in ways that it would 
+rather not? Once  you look  closely, “compelled speech” (in the majority’s  
+facile understanding of that  concept) is everywhere.  
+ 
+38   303 CREATIVE LLC v. ELENIS  
+   
+SOTOMAYOR,  J., dissenting  
+died, the cemetery was willing to include those words, but 
+not  the  words  that  described  Cynthia’s  relationship  to 
+Sherry: “‘beloved life partner.’”  N. Knauer, Gay and Les-
+   
+bian Elders 102 (2011).  There are many such stories, too
+many to tell here.  And after today, too many to come. 
+  I fear that the symbolic damage of the Court’s opinion is 
+done.  But that does not mean that we are powerless in the 
+face of the decision.  The meaning of our Constitution is 
+found not in any law volume, but in the spirit of the people 
+who live under it.  Every business owner in America has a 
+choice whether to live out the values in the Constitution.  
+Make no mistake: Invidious discrimination is not one of  
+them. “[D]iscrimination in any form and in any degree has 
+no justifiable part whatever in our democratic way of life.”   
+Korematsu v. United States, 323 U. S. 214, 242 (1944) (Mur-
+phy, J., dissenting). “It is unattractive in any setting but it 
+is utterly revolting among a free people who have embraced 
+the principles set forth in the Constitution of the United 
+States.”  Ibid.  
+  The unattractive lesson of the majority opinion is this:
+What’s mine is mine, and what’s yours is yours.  The lesson 
+of the history of public accommodations laws is altogether 
+different.  It is that in a free and democratic society, there 
+can be no social castes.  And for that to be true, it must be 
+true in the public market.  For the “promise of freedom” is 
+an empty one if the Government is “powerless to assure
+that a dollar in the hands of [one person] will purchase the 
+same thing as a dollar in the hands of a[nother].”  Jones v. 
+Alfred H. Mayer Co., 392 U. S. 409, 443 (1968).  Because the  
+Court today retreats from that promise, I dissent. 
+ 
