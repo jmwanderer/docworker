@@ -1,3 +1,9 @@
+TODO
+----
+- add a logout button to clear the cookie
+- add a cleanout script for non-active users
+- test new user registration with large user table
+
 General Notes
 -------------
 
